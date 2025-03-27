@@ -16,45 +16,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-  <style>
-    :where([class^="ri-"])::before {
-      content: "\f3c2";
-    }
-
-    .hero-gradient {
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0) 100%);
-    }
-
-    .service-card:hover {
-      transform: translateY(-8px);
-      transition: all 0.3s ease;
-    }
-
-    @keyframes slow-spin {
-      from {
-        transform: rotate(0deg);
-      }
-
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .animate-spin {
-      animation: slow-spin 3s linear infinite;
-    }
-
-    .animate-bounce {
-      animation: bounce 2s infinite;
-    }
-
-    .animate-pulse {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
-  </style>
+  <link rel="stylesheet" href="./styles.css">
 </head>
 
-<body class="bg-white font-['Neue Montreal']">
+<body class="bg-white">
   <nav class="fixed w-full bg-[#08ac5c]/90 backdrop-blur-sm z-50 border-b border-gray-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -281,52 +246,7 @@
           <p class="text-gray-600">Clientes Satisfeitos</p>
         </div>
       </div>
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const mobileMenuButton = document.getElementById('mobile-menu-button');
-          const mobileMenu = document.getElementById('mobile-menu');
-          mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-          });
-          // Close mobile menu when clicking on a link
-          const mobileLinks = mobileMenu.querySelectorAll('a');
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              mobileMenu.classList.add('hidden');
-            });
-          });
-          const counters = document.querySelectorAll('.counter');
-          const animateCounter = (counter) => {
-            const target = parseInt(counter.getAttribute('data-target'));
-            const duration = parseInt(counter.getAttribute('data-duration'));
-            const step = target / (duration / 16); // 16ms per frame for 60fps
-            let current = 0;
-            const updateCounter = () => {
-              current += step;
-              if (current < target) {
-                counter.textContent = Math.floor(current);
-                requestAnimationFrame(updateCounter);
-              } else {
-                counter.textContent = target;
-              }
-            };
-            updateCounter();
-          };
-          const observerCallback = (entries, observer) => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target); // 取消观察，确保动画只执行一次
-              }
-            });
-          };
-          const observer = new IntersectionObserver(observerCallback, {
-            threshold: 0.5,
-            rootMargin: '0px'
-          });
-          counters.forEach(counter => observer.observe(counter));
-        });
-      </script>
+    
     </div>
   </section>
   <section id="portfolio" class="py-24 bg-gray-50">
@@ -404,7 +324,7 @@
     <h3 class="text-2xl font-bold text-gray-900 mb-4">Explore Nosso Modelo 3D Interativo</h3>
     <p class="text-gray-600 max-w-2xl mx-auto">Visualize em tempo real como trabalhamos com tecnologia de ponta para criar projetos detalhados e precisos. Interaja com o modelo abaixo!</p>
     </div>
-      <div id="model-viewer-container" class="relative w-full h-[600px] bg-emerald-50 overflow-hidden">
+      <div id="model-viewer-container" class="relative w-full h-[600px] overflow-hidden">
         <div id="model-controls"
           class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
           <button id="resetView" class="text-gray-700 hover:text-primary p-2 rounded-full">
@@ -424,97 +344,7 @@
           </button>
         </div>
       </div>
-    </div>
-    <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-          mobileMenu.classList.toggle('hidden');
-        });
-        // Close mobile menu when clicking on a link
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            mobileMenu.classList.add('hidden');
-          });
-        });
-        let scene, camera, renderer, controls;
-        const container = document.getElementById('model-viewer-container');
-        function init() {
-          scene = new THREE.Scene();
-          scene.background = new THREE.Color(0xf9fafb);
-          camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-          camera.position.z = 5;
-          renderer = new THREE.WebGLRenderer({ antialias: true });
-          renderer.setSize(container.clientWidth, container.clientHeight);
-          container.appendChild(renderer.domElement);
-          controls = new THREE.OrbitControls(camera, renderer.domElement);
-          controls.enableDamping = true;
-          controls.dampingFactor = 0.05;
-          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-          scene.add(ambientLight);
-          const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-          directionalLight.position.set(0, 10, 10);
-          scene.add(directionalLight);
-          const loader = new THREE.GLTFLoader();
-          loader.load('https://vinihorst.github.io/Horst-Engenharia/docs/modelo_3d.glb', function (gltf) {
-            const model = gltf.scene;
-            // Center the model
-            const box = new THREE.Box3().setFromObject(model);
-            const center = box.getCenter(new THREE.Vector3());
-            model.position.sub(center);
-            scene.add(model);
-            // Adjust camera to fit model
-            const size = box.getSize(new THREE.Vector3());
-            const maxDim = Math.max(size.x, size.y, size.z);
-            const fov = camera.fov * (Math.PI / 180);
-            camera.position.set(-37.50402996726097,22.72555369583926, -43.449848993597506);
-
-            controls.target.set(0, 0, 0);
-            controls.update();
-          });
-          animate();
-        }
-        function animate() {
-          requestAnimationFrame(animate);
-          controls.update();
-         // console.log(camera.position)
-          renderer.render(scene, camera);
-        }
-        function onWindowResize() {
-          camera.aspect = container.clientWidth / container.clientHeight;
-          camera.updateProjectionMatrix();
-          renderer.setSize(container.clientWidth, container.clientHeight);
-        }
-        window.addEventListener('resize', onWindowResize);
-        document.getElementById('resetView').addEventListener('click', function () {
-          camera.position.set(0, 0, 5);
-          controls.target.set(0, 0, 0);
-          controls.update();
-        });
-        document.getElementById('fullscreen').addEventListener('click', function () {
-          if (container.requestFullscreen) {
-            container.requestFullscreen();
-          }
-        });
-        // Remove model select event listener as we're only showing one model
-        init();
-      });
-    </script>
-    <style>
-      .portfolio-tab {
-        transition: all 0.3s ease;
-      }
-
-      .portfolio-tab:not(.active):hover {
-        background-color: #f3f4f6;
-      }
-
-      .portfolio-item {
-        transition: all 0.3s ease;
-      }
-    </style>
+    </div> 
   </section>
   <section id="contato" class="py-16" style="background-color: #dedede;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -593,6 +423,9 @@
     </div>
   </footer>
 
+  <script src="./countadorProjetos.js"></script>
+  <script src="./visualizador3d.js">
+    </script>
 </body>
 
 </html>
