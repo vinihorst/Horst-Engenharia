@@ -44,9 +44,3 @@
   .portfolio-item {
     transition: all 0.3s ease;
   }
-
-  canvas{
-    width: 100vw !important;
-    max-width: 1080px !important;
-    margin: 0 auto !important;
-  }
