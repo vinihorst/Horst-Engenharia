@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Horst Engenharia</title>
-    <link href="https://vinihorst.github.io/Horst-Engenharia/docs/icon.png" rel="icon" type="image/x-icon">
+  <link href="https://vinihorst.github.io/Horst-Engenharia/docs/icon.png" rel="icon" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -25,9 +25,7 @@
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <a href="#" class="flex items-center">
-            <img
-              src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/b4993f0053d1cf82e10cb874daf9c2d6.png"
-              alt="Horst Engenharia Logo" class="h-8">
+            <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia Logo" class="h-8">
           </a>
         </div>
         <div class="hidden md:block">
@@ -106,8 +104,8 @@
         </div>
         <div class="relative">
           <img
-            src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/668b222b4bd636698971658f7a4b52f3.jpeg"
-            alt="Engenheiro Eduardo Horst" class="w-full h-[600px] object-cover rounded-lg shadow-lg">
+            src="./docs/FotosLogo/vinao.jpg"
+            alt="Engenheiro Vinicíus Andrei Horst" class="w-full h-[600px] object-cover rounded-lg shadow-lg">
           <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg">
             <h3 class="text-lg font-semibold text-gray-900">Vinícius Andrei Horst</h3>
             <p class="text-gray-600">Engenheiro Civil</p>
@@ -246,7 +244,7 @@
           <p class="text-gray-600">Clientes Satisfeitos</p>
         </div>
       </div>
-    
+
     </div>
   </section>
   <section id="portfolio" class="py-24 bg-gray-50">
@@ -256,7 +254,7 @@
         <p class="text-gray-600 max-w-2xl mx-auto">Conheça alguns dos nossos principais projetos e realizações em
           diferentes segmentos. Explore nosso modelo 3D interativo.</p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16" id="portfolio-grid">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" id="portfolio-grid">
         <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
           <img src="https://public.readdy.ai/ai/img_res/3cde711db66ec81a7cfacefc5f0af64c.jpg" alt="Projeto Residencial"
             class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
@@ -318,33 +316,50 @@
             </div>
           </div>
         </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
+          <img src="https://public.readdy.ai/ai/img_res/22122257cafcaf74d827efb02227e260.jpg" alt="Projeto Comercial"
+            class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Centro Empresarial Tramontina</h3>
+              <p class="text-sm mb-2">Carlos Barbosa, RS</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">8.500m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
     <div class="text-center mb-8">
-    <h3 class="text-2xl font-bold text-gray-900 mb-4">Explore Nosso Modelo 3D Interativo</h3>
-    <p class="text-gray-600 max-w-2xl mx-auto">Visualize em tempo real como trabalhamos com tecnologia de ponta para criar projetos detalhados e precisos. Interaja com o modelo abaixo!</p>
+      <h3 class="text-2xl font-bold text-gray-900 mb-4">Explore Nosso Modelo 3D Interativo</h3>
+      <p class="text-gray-600 max-w-2xl mx-auto">Visualize em tempo real como trabalhamos com tecnologia de ponta para
+        criar projetos detalhados e precisos. Interaja com o modelo abaixo!</p>
     </div>
-      <div id="model-viewer-container" class="relative w-full h-[600px] overflow-hidden">
-        <div id="model-controls"
-          class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
-          <button id="resetView" class="text-gray-700 hover:text-primary p-2 rounded-full">
-            <i class="ri-refresh-line text-xl"></i>
-          </button>
-          <button id="rotate" class="text-gray-700 hover:text-primary p-2 rounded-full">
-            <i class="ri-rotate-3d-line text-xl"></i>
-          </button>
-          <button id="zoom" class="text-gray-700 hover:text-primary p-2 rounded-full">
-            <i class="ri-zoom-in-line text-xl"></i>
-          </button>
-          <button id="pan" class="text-gray-700 hover:text-primary p-2 rounded-full">
-            <i class="ri-drag-move-line text-xl"></i>
-          </button>
-          <button id="fullscreen" class="text-gray-700 hover:text-primary p-2 rounded-full">
-            <i class="ri-fullscreen-line text-xl"></i>
-          </button>
-        </div>
+    <div id="model-viewer-container" class="relative w-full h-[600px] overflow-hidden">
+      <div id="model-controls"
+        class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+        <button id="resetView" class="text-gray-700 hover:text-primary p-2 rounded-full">
+          <i class="ri-refresh-line text-xl"></i>
+        </button>
+        <button id="rotate" class="text-gray-700 hover:text-primary p-2 rounded-full">
+          <i class="ri-rotate-3d-line text-xl"></i>
+        </button>
+        <button id="zoom" class="text-gray-700 hover:text-primary p-2 rounded-full">
+          <i class="ri-zoom-in-line text-xl"></i>
+        </button>
+        <button id="pan" class="text-gray-700 hover:text-primary p-2 rounded-full">
+          <i class="ri-drag-move-line text-xl"></i>
+        </button>
+        <button id="fullscreen" class="text-gray-700 hover:text-primary p-2 rounded-full">
+          <i class="ri-fullscreen-line text-xl"></i>
+        </button>
       </div>
-    </div> 
+    </div>
+    </div>
   </section>
   <section id="contato" class="py-16" style="background-color: #dedede;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -411,9 +426,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center justify-center">
         <a href="#" class="flex items-center mb-2">
-          <img
-            src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/b4993f0053d1cf82e10cb874daf9c2d6.png"
-            alt="Horst Engenharia Logo" class="h-8">
+          <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia Logo" class="h-8">
         </a>
         <p class="text-white mb-4">Excelência em projetos desde 2022</p>
         <div class="border-t w-full mt-4 pt-4 text-center text-white" style="border-color: #0ce073;">
@@ -425,7 +438,7 @@
 
   <script src="./countadorProjetos.js"></script>
   <script src="./visualizador3d.js">
-    </script>
+  </script>
 </body>
 
 </html>
