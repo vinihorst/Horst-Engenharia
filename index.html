@@ -1,633 +1,685 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Horst Engenharia</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script>tailwind.config={theme:{extend:{colors:{primary:'#000000',secondary:'#0ce073'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
-<style>
-:where([class^="ri-"])::before { content: "\f3c2"; }
-.hero-gradient {
-background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 50%, rgba(255,255,255,0) 100%);
-}
-.service-card:hover {
-transform: translateY(-8px);
-transition: all 0.3s ease;
-}
-@keyframes slow-spin {
-from {
-transform: rotate(0deg);
-}
-to {
-transform: rotate(360deg);
-}
-}
-.animate-spin {
-animation: slow-spin 3s linear infinite;
-}
-.animate-bounce {
-animation: bounce 2s infinite;
-}
-.animate-pulse {
-animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horst Engenharia - Projetamos o Futuro com Precisão</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#059669',
+            secondary: '#064E3B'
+          },
+          borderRadius: {
+            'none': '0px',
+            'sm': '4px',
+            DEFAULT: '8px',
+            'md': '12px',
+            'lg': '16px',
+            'xl': '20px',
+            '2xl': '24px',
+            '3xl': '32px',
+            'full': '9999px',
+            'button': '8px'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+  <style>
+    :where([class^="ri-"])::before {
+      content: "\f3c2";
+    }
+
+    .hero-gradient {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0) 100%);
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      transition: all 0.3s ease;
+    }
+
+    @keyframes slow-spin {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .animate-spin {
+      animation: slow-spin 3s linear infinite;
+    }
+
+    .animate-bounce {
+      animation: bounce 2s infinite;
+    }
+
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
 </head>
-<body class="bg-white font-['Neue Montreal']">
-<nav class="fixed w-full bg-[#08ac5c]/90 backdrop-blur-sm z-50 border-b border-gray-100">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex items-center justify-between h-16">
-<div class="flex items-center">
-<a href="#" class="flex items-center">
-<img src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/b4993f0053d1cf82e10cb874daf9c2d6.png" alt="Horst Engenharia Logo" class="h-8">
-</a>
-</div>
-<div class="hidden md:block">
-<div class="flex items-center space-x-8">
-<a href="#inicio" class="text-white hover:text-white/80">Início</a>
-<a href="#sobre" class="text-white hover:text-white/80">Sobre</a>
-<a href="#servicos" class="text-white hover:text-white/80">Serviços</a>
-<a href="#portfolio" class="text-white hover:text-white/80">Portfólio</a>
-<a href="#contato" class="bg-[#0d3931] text-white px-6 py-2 !rounded-button hover:bg-[#0d3931]/90 cursor-pointer">Contato</a>
-</div>
-</div>
-<button class="md:hidden text-white" id="mobile-menu-button">
-<i class="ri-menu-line text-2xl"></i>
-</button>
-</div>
-<div class="hidden md:hidden" id="mobile-menu">
-<div class="px-2 pt-2 pb-3 space-y-1">
-<a href="#inicio" class="block text-white hover:text-white/80 py-2">Início</a>
-<a href="#sobre" class="block text-white hover:text-white/80 py-2">Sobre</a>
-<a href="#servicos" class="block text-white hover:text-white/80 py-2">Serviços</a>
-<a href="#portfolio" class="block text-white hover:text-white/80 py-2">Portfólio</a>
-<a href="#contato" class="block bg-[#0d3931] text-white px-6 py-2 !rounded-button hover:bg-[#0d3931]/90 cursor-pointer mt-4">Contato</a>
-</div>
-</div>
-</div>
-</nav>
-<section id="inicio" class="relative min-h-screen flex items-center" style="background-image: url('https://public.readdy.ai/ai/img_res/17d2945d31fa38233f09b1adb6f4fd36.jpg'); background-size: cover; background-position: center;">
-<div class="absolute inset-0 hero-gradient"></div>
-<div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-<div class="max-w-3xl">
-<div class="flex items-center gap-3 mb-4">
-<div class="h-1 w-20 bg-[#0ce073]"></div>
-<span class="text-[#0ce073] font-semibold tracking-wider text-sm sm:text-base">PROJETOS COMPLEMENTARES</span>
-</div>
-<h1 class="text-3xl sm:text-5xl font-bold text-gray-900 mb-6">TECNOLOGIA. INOVAÇÃO. <span class="text-[#0ce073]">SOLUÇÃO.</span></h1>
-<img src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/8c827101d6eadd74cedbd5f827f557d7.png" alt="Horst Engenharia Logo" class="h-12 sm:h-16 mb-8">
-<p class="text-lg sm:text-xl text-gray-700 mb-8">Combinamos tecnologia avançada e expertise para garantir projetos de engenharia impecáveis.</p>
-<div class="flex flex-col sm:flex-row gap-4">
-<a href="#portfolio" class="bg-[#0ce073] text-white px-8 py-3 !rounded-button hover:bg-[#0ce073]/90 transition-all flex items-center justify-center gap-2">
-<i class="ri-image-2-line"></i>
-Ver Portfólio
-</a>
-<a href="#contato" class="border-2 border-gray-900 text-gray-900 px-8 py-3 !rounded-button hover:bg-gray-900 hover:text-white transition-all flex items-center justify-center gap-2">
-<i class="ri-chat-1-line"></i>
-Fale Conosco
-</a>
-</div>
-</div>
-</div>
-</section>
-<section id="sobre" class="py-12 sm:py-24 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-16 items-center">
-<div>
-<h2 class="text-3xl font-bold text-gray-900 mb-6">Sobre a Horst Engenharia</h2>
-<p class="text-gray-600 mb-6">A Horst Engenharia nasceu com o propósito de transformar ideias em projetos sólidos e eficientes. Nosso compromisso é unir inovação e precisão técnica para oferecer soluções estruturais, elétricas e hidrossanitárias que garantam segurança, funcionalidade e excelência em cada obra.</p>
-<p class="text-gray-600 mb-6">Atuamos no desenvolvimento de projetos completos para edificações, desde a concepção estrutural até os sistemas complementares, sempre alinhados às melhores práticas e tecnologias do setor. Nosso trabalho é pautado pela engenharia de alto desempenho, otimizando recursos e proporcionando soluções personalizadas para cada cliente.</p>
-<p class="text-gray-600">Acreditamos que cada construção é única e merece um projeto que respeite sua viabilidade técnica e arquitetônica. Por isso, trabalhamos lado a lado com arquitetos, construtoras e clientes para garantir que cada detalhe seja pensado estrategicamente, resultando em obras seguras, eficientes e bem executadas.</p>
-</div>
-<div class="relative">
-<img src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/668b222b4bd636698971658f7a4b52f3.jpeg" alt="Engenheiro Eduardo Horst" class="w-full h-[600px] object-cover rounded-lg shadow-lg">
-<div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg">
-<h3 class="text-lg font-semibold text-gray-900">Vinícius Andrei Horst</h3>
-<p class="text-gray-600">Engenheiro Civil</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="servicos" class="py-24" style="background-color: #dedede;">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="text-3xl font-bold text-gray-900 mb-4">Nossos Serviços</h2>
-<p class="text-gray-600 max-w-2xl mx-auto">Oferecemos soluções completas em engenharia, combinando expertise técnica com inovação.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/5a95c474843913641949a8977b2c3e23.jpg" alt="Structural Engineering" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-building-2-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Estrutural</h3>
-<p class="text-gray-600">Desenvolvimento de projetos estruturais com foco em segurança e eficiência para edificações.</p>
-</div>
-</div>
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/51107002354f9703f694709b6073cb36.jpg" alt="Foundation Engineering" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-stack-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto de Fundação</h3>
-<p class="text-gray-600">Análise e desenvolvimento de projetos de fundações adequados para cada tipo de solo e estrutura.</p>
-</div>
-</div>
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/2bde486ae9e1f86c5452963e29680901.jpg" alt="Electrical Engineering" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-flashlight-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Elétrico</h3>
-<p class="text-gray-600">Instalações elétricas de alta performance e eficiência energética para seu empreendimento.</p>
-</div>
-</div>
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/9873813e40ad4327cd5a12eb3be807f9.jpg" alt="Hydraulic Engineering" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-drop-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Hidráulico</h3>
-<p class="text-gray-600">Soluções completas para sistemas hidráulicos com foco em sustentabilidade.</p>
-</div>
-</div>
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/2f60f4466f0b7f21b8cfa2259208dcbd.jpg" alt="Property Regularization" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-file-list-3-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Regularização</h3>
-<p class="text-gray-600">Regularização de imóveis e documentação junto aos órgãos competentes.</p>
-</div>
-</div>
-<div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
-<div class="absolute inset-0 z-0">
-<img src="https://public.readdy.ai/ai/img_res/9da5a44986fb55cd8d75db787b108633.jpg" alt="Technical Consulting" class="w-full h-full object-cover opacity-10">
-</div>
-<div class="relative z-10">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
-<i class="ri-customer-service-2-line text-primary text-2xl"></i>
-</div>
-<h3 class="text-xl font-semibold text-gray-900 mb-3">Assessoria</h3>
-<p class="text-gray-600">Consultoria técnica especializada para todas as fases do seu projeto.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="py-12 sm:py-16 bg-white">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 text-center">
-<div class="p-6 bg-white rounded-lg hover:shadow-md transition-all">
-<div class="text-4xl font-bold text-primary mb-2 flex items-center justify-center">
-<span class="counter" data-target="45000" data-duration="2000">0</span>
-<span class="ml-1">m²</span>
-</div>
-<p class="text-gray-600">Área Projetada</p>
-</div>
-<div class="p-6 bg-white rounded-lg hover:shadow-md transition-all">
-<div class="text-4xl font-bold text-primary mb-2 flex items-center justify-center">
-<span class="counter" data-target="150" data-duration="2000">0</span>
-<span class="ml-1">+</span>
-</div>
-<p class="text-gray-600">Projetos Realizados</p>
-</div>
-<div class="p-6 bg-white rounded-lg hover:shadow-md transition-all">
-<div class="text-4xl font-bold text-primary mb-2 flex items-center justify-center">
-<span class="counter" data-target="30" data-duration="2000">0</span>
-<span class="ml-1">+</span>
-</div>
-<p class="text-gray-600">Cidades Atendidas</p>
-</div>
-<div class="p-6 bg-white rounded-lg hover:shadow-md transition-all">
-<div class="text-4xl font-bold text-primary mb-2 flex items-center justify-center">
-<span class="counter" data-target="100" data-duration="2000">0</span>
-<span class="ml-1">+</span>
-</div>
-<p class="text-gray-600">Clientes Satisfeitos</p>
-</div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
-mobileMenuButton.addEventListener('click', () => {
-mobileMenu.classList.toggle('hidden');
-});
-// Close mobile menu when clicking on a link
-const mobileLinks = mobileMenu.querySelectorAll('a');
-mobileLinks.forEach(link => {
-link.addEventListener('click', () => {
-mobileMenu.classList.add('hidden');
-});
-});
-const counters = document.querySelectorAll('.counter');
-const animateCounter = (counter) => {
-const target = parseInt(counter.getAttribute('data-target'));
-const duration = parseInt(counter.getAttribute('data-duration'));
-const step = target / (duration / 16); // 16ms per frame for 60fps
-let current = 0;
-const updateCounter = () => {
-current += step;
-if (current < target) {
-counter.textContent = Math.floor(current);
-requestAnimationFrame(updateCounter);
-} else {
-counter.textContent = target;
-}
-};
-updateCounter();
-};
-const observerCallback = (entries, observer) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-animateCounter(entry.target);
-observer.unobserve(entry.target); // 取消观察，确保动画只执行一次
-}
-});
-};
-const observer = new IntersectionObserver(observerCallback, {
-threshold: 0.5,
-rootMargin: '0px'
-});
-counters.forEach(counter => observer.observe(counter));
-});
-</script>
-</div>
-</section>
-<section id="portfolio" class="py-24 bg-gray-50">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-16">
-<h2 class="text-3xl font-bold text-gray-900 mb-4">Nosso Portfólio</h2>
-<p class="text-gray-600 max-w-2xl mx-auto">Conheça alguns dos nossos principais projetos e realizações em diferentes segmentos. Explore nosso modelo 3D interativo.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16" id="portfolio-grid">
-<div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
-<img src="https://public.readdy.ai/ai/img_res/3cde711db66ec81a7cfacefc5f0af64c.jpg" alt="Projeto Residencial" class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-<div class="text-white">
-<h3 class="font-semibold text-lg">Residência Morada dos Lagos</h3>
-<p class="text-sm mb-2">Carlos Barbosa, RS</p>
-<div class="flex space-x-2">
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">450m²</span>
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
-</div>
-</div>
-</div>
-</div>
-<div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
-<img src="https://public.readdy.ai/ai/img_res/124362a2cd04a90b9e5e7ac638dc807f.jpg" alt="Projeto Residencial" class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-<div class="text-white">
-<h3 class="font-semibold text-lg">Residência Vista Verde</h3>
-<p class="text-sm mb-2">Bento Gonçalves, RS</p>
-<div class="flex space-x-2">
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">380m²</span>
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">2023</span>
-</div>
-</div>
-</div>
-</div>
-<div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
-<img src="https://public.readdy.ai/ai/img_res/ea07cad0e6212efa59db71e6d39986c6.jpg" alt="Projeto Multi Residencial" class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-<div class="text-white">
-<h3 class="font-semibold text-lg">Residencial Parque das Araucárias</h3>
-<p class="text-sm mb-2">Caxias do Sul, RS</p>
-<div class="flex space-x-2">
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">12.000m²</span>
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
-</div>
-</div>
-</div>
-</div>
-<div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item">
-<img src="https://public.readdy.ai/ai/img_res/22122257cafcaf74d827efb02227e260.jpg" alt="Projeto Comercial" class="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-110">
-<div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
-<div class="text-white">
-<h3 class="font-semibold text-lg">Centro Empresarial Tramontina</h3>
-<p class="text-sm mb-2">Carlos Barbosa, RS</p>
-<div class="flex space-x-2">
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">8.500m²</span>
-<span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="model-viewer-container" class="relative w-full h-[600px] bg-emerald-50 overflow-hidden">
-<div id="model-controls" class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
-<button id="resetView" class="text-gray-700 hover:text-primary p-2 rounded-full">
-<i class="ri-refresh-line text-xl"></i>
-</button>
-<button id="rotate" class="text-gray-700 hover:text-primary p-2 rounded-full">
-<i class="ri-rotate-3d-line text-xl"></i>
-</button>
-<button id="zoom" class="text-gray-700 hover:text-primary p-2 rounded-full">
-<i class="ri-zoom-in-line text-xl"></i>
-</button>
-<button id="pan" class="text-gray-700 hover:text-primary p-2 rounded-full">
-<i class="ri-drag-move-line text-xl"></i>
-</button>
-<button id="fullscreen" class="text-gray-700 hover:text-primary p-2 rounded-full">
-<i class="ri-fullscreen-line text-xl"></i>
-</button>
-</div>
-</div>
-</div>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
-mobileMenuButton.addEventListener('click', () => {
-mobileMenu.classList.toggle('hidden');
-});
-// Close mobile menu when clicking on a link
-const mobileLinks = mobileMenu.querySelectorAll('a');
-mobileLinks.forEach(link => {
-link.addEventListener('click', () => {
-mobileMenu.classList.add('hidden');
-});
-});
-let scene, camera, renderer, controls;
-const container = document.getElementById('model-viewer-container');
-function init() {
-scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf9fafb);
-camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-camera.position.z = 5;
-renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(container.clientWidth, container.clientHeight);
-container.appendChild(renderer.domElement);
-controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(0, 10, 10);
-scene.add(directionalLight);
-const loader = new THREE.GLTFLoader();
-loader.load('https://vinihorst.github.io/Horst-Engenharia/docs/vini.glb', function(gltf) {
-const model = gltf.scene;
-// Center the model
-const box = new THREE.Box3().setFromObject(model);
-const center = box.getCenter(new THREE.Vector3());
-model.position.sub(center);
-scene.add(model);
-// Adjust camera to fit model
-const size = box.getSize(new THREE.Vector3());
-const maxDim = Math.max(size.x, size.y, size.z);
-const fov = camera.fov * (Math.PI / 180);
-let cameraZ = Math.abs(maxDim / Math.tan(fov / 2));
-camera.position.z = cameraZ * 1.5;
-controls.target.set(0, 0, 0);
-controls.update();
-});
-animate();
-}
-function animate() {
-requestAnimationFrame(animate);
-controls.update();
-renderer.render(scene, camera);
-}
-function onWindowResize() {
-camera.aspect = container.clientWidth / container.clientHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(container.clientWidth, container.clientHeight);
-}
-window.addEventListener('resize', onWindowResize);
-document.getElementById('resetView').addEventListener('click', function() {
-camera.position.set(0, 0, 5);
-controls.target.set(0, 0, 0);
-controls.update();
-});
-document.getElementById('fullscreen').addEventListener('click', function() {
-if (container.requestFullscreen) {
-container.requestFullscreen();
-}
-});
-// Remove model select event listener as we're only showing one model
-init();
-});
-</script>
-<style>
-.portfolio-tab {
-transition: all 0.3s ease;
-}
-.portfolio-tab:not(.active):hover {
-background-color: #f3f4f6;
-}
-.portfolio-item {
-transition: all 0.3s ease;
-}
-</style>
-</section>
-<section id="contato" class="py-16" style="background-color: #dedede;">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="text-center mb-12">
-<h2 class="text-3xl font-bold text-gray-900 mb-4">Entre em Contato</h2>
-<p class="text-gray-600 max-w-2xl mx-auto">Solicite um orçamento e descubra como podemos transformar seu projeto em realidade.</p>
-</div>
-<div class="flex flex-wrap items-center justify-between gap-8 mb-8">
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0" style="background-color: #0ce073;">
-<i class="ri-map-pin-line text-primary text-2xl"></i>
-</div>
-<div>
-<h3 class="text-lg font-semibold text-gray-900">Endereço</h3>
-<p class="text-gray-600">Rua Elisa Tramontina, 338, Sala 302<br>Carlos Barbosa - RS</p>
-</div>
-</div>
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0" style="background-color: #0ce073;">
-<i class="ri-phone-line text-primary text-2xl"></i>
-</div>
-<div>
-<h3 class="text-lg font-semibold text-gray-900">Telefone</h3>
-<p class="text-gray-600">+55 (54) 9 9156-3456</p>
-</div>
-</div>
-<div class="flex items-center space-x-4">
-<div class="w-12 h-12 flex items-center justify-center rounded-lg flex-shrink-0" style="background-color: #0ce073;">
-<i class="ri-mail-line text-primary text-2xl"></i>
-</div>
-<div>
-<h3 class="text-lg font-semibold text-gray-900">Email</h3>
-<p class="text-gray-600">horstengenharia@outlook.com</p>
-</div>
-</div>
-</div>
-<div class="flex justify-center space-x-4">
-<a href="https://wa.me/5554991563456" target="_blank" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors" style="background-color: #0ce073; hover:background-color: #04af5b;">
-<i class="ri-whatsapp-fill text-primary text-2xl"></i>
-<span class="text-gray-700">Fale pelo WhatsApp</span>
-</a>
-<a href="https://www.instagram.com/horst.eng" target="_blank" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors" style="background-color: #0ce073; hover:background-color: #04af5b;">
-<i class="ri-instagram-fill text-primary text-2xl"></i>
-<span class="text-gray-700">Siga no Instagram</span>
-</a>
-<a href="https://maps.app.goo.gl/6z7GCPX2XQ3enKSZ7" target="_blank" class="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors" style="background-color: #0ce073; hover:background-color: #04af5b;">
-<i class="ri-map-pin-fill text-primary text-2xl"></i>
-<span class="text-gray-700">Ver nosso local no Maps</span>
-</a>
-</div>
-</div>
-</section>
-<footer class="text-white py-8" style="background-color: #04af5b;">
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-<div class="flex flex-col items-center justify-center">
-<a href="#" class="flex items-center mb-2">
-<img src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/b4993f0053d1cf82e10cb874daf9c2d6.png" alt="Horst Engenharia Logo" class="h-8">
-</a>
-<p class="text-white mb-4">Excelência em projetos desde 2022</p>
-<div class="border-t w-full mt-4 pt-4 text-center text-white" style="border-color: #0ce073;">
-<p>&copy; 2025 Horst Engenharia. Todos os direitos reservados.</p>
-</div>
-</div>
-</div>
-</footer>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
-mobileMenuButton.addEventListener('click', () => {
-mobileMenu.classList.toggle('hidden');
-});
-// Close mobile menu when clicking on a link
-const mobileLinks = mobileMenu.querySelectorAll('a');
-mobileLinks.forEach(link => {
-link.addEventListener('click', () => {
-mobileMenu.classList.add('hidden');
-});
-});
-let scene, camera, renderer, controls;
-const container = document.getElementById('model-viewer-container');
-function init() {
-scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf9fafb);
-camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-camera.position.z = 5;
-renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(container.clientWidth, container.clientHeight);
-container.appendChild(renderer.domElement);
-controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-directionalLight.position.set(0, 10, 10);
-scene.add(directionalLight);
-const loader = new THREE.GLTFLoader();
-loader.load('https://vinihorst.github.io/Horst-Engenharia/docs/vini.glb', function(gltf) {
-const model = gltf.scene;
-// Center the model
-const box = new THREE.Box3().setFromObject(model);
-const center = box.getCenter(new THREE.Vector3());
-model.position.sub(center);
-scene.add(model);
-// Adjust camera to fit model
-const size = box.getSize(new THREE.Vector3());
-const maxDim = Math.max(size.x, size.y, size.z);
-const fov = camera.fov * (Math.PI / 180);
-let cameraZ = Math.abs(maxDim / Math.tan(fov / 2));
-camera.position.z = cameraZ * 1.5;
-controls.target.set(0, 0, 0);
-controls.update();
-});
-animate();
-}
-function animate() {
-requestAnimationFrame(animate);
-controls.update();
-renderer.render(scene, camera);
-}
-function onWindowResize() {
-camera.aspect = container.clientWidth / container.clientHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(container.clientWidth, container.clientHeight);
-}
-window.addEventListener('resize', onWindowResize);
-document.getElementById('resetView').addEventListener('click', function() {
-camera.position.set(0, 0, 5);
-controls.target.set(0, 0, 0);
-controls.update();
-});
-document.getElementById('fullscreen').addEventListener('click', function() {
-if (container.requestFullscreen) {
-container.requestFullscreen();
-}
-});
-// Remove model select event listener as we're only showing one model
-init();
-const nav = document.querySelector('nav');
-window.addEventListener('scroll', function() {
-if (window.scrollY > 100) {
-nav.classList.add('shadow-sm');
-} else {
-nav.classList.remove('shadow-sm');
-}
-});
-const form = document.querySelector('form');
-form.addEventListener('submit', function(e) {
-e.preventDefault();
-const formData = new FormData(form);
-console.log('Form submitted:', Object.fromEntries(formData));
-});
-const counters = document.querySelectorAll('.counter');
-const speed = 200;
-const startCounting = (counter) => {
-const target = +counter.getAttribute('data-target');
-const count = +counter.innerText;
-const increment = target / speed;
-if (count < target) {
-counter.innerText = Math.ceil(count + increment);
-setTimeout(() => startCounting(counter), 1);
-} else {
-counter.innerText = target;
-}
-};
-const observerCallback = (entries, observer) => {
-entries.forEach(entry => {
-if (entry.isIntersecting) {
-const counter = entry.target;
-startCounting(counter);
-observer.unobserve(counter);
-}
-});
-};
-const observer = new IntersectionObserver(observerCallback, {
-threshold: 0.5
-});
-counters.forEach(counter => {
-observer.observe(counter);
-});
-});
-</script>
+
+<body class="bg-white font-['Inter']">
+  <nav class="fixed w-full bg-white/90 backdrop-blur-sm z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="#" class="flex items-center">
+            <img
+              src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/8c827101d6eadd74cedbd5f827f557d7.png"
+              alt="Horst Engenharia Logo" class="h-8">
+          </a>
+        </div>
+        <div class="hidden md:block">
+          <div class="flex items-center space-x-8">
+            <a href="#inicio" class="text-gray-700 hover:text-primary">Início</a>
+            <a href="#sobre" class="text-gray-700 hover:text-primary">Sobre</a>
+            <a href="#servicos" class="text-gray-700 hover:text-primary">Serviços</a>
+            <a href="#portfolio" class="text-gray-700 hover:text-primary">Portfólio</a>
+            <a href="#contato"
+              class="bg-primary text-white px-6 py-2 !rounded-button hover:bg-primary/90 cursor-pointer">Contato</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <section id="inicio" class="relative min-h-screen flex items-center"
+    style="background-image: url('https://public.readdy.ai/ai/img_res/17d2945d31fa38233f09b1adb6f4fd36.jpg'); background-size: cover; background-position: center;">
+    <div class="absolute inset-0 hero-gradient"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+      <div class="max-w-3xl">
+        <h1 class="text-5xl font-bold text-gray-900 mb-6">Projetamos o Futuro com Precisão e Inovação</h1>
+        <p class="text-xl text-gray-700 mb-8">Transformando visões em realidade através da engenharia de excelência.</p>
+        <div class="flex space-x-4">
+          <button class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-primary/90 cursor-pointer">
+            Conheça Nossos Projetos
+          </button>
+          <button
+            class="border border-gray-300 bg-white/80 backdrop-blur-sm text-gray-700 px-8 py-3 !rounded-button hover:bg-gray-50 cursor-pointer">
+            Fale Conosco
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="servicos" class="py-24 bg-emerald-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nossos Serviços</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Oferecemos soluções completas em engenharia, combinando expertise
+          técnica com inovação.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-building-2-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Estrutural</h3>
+          <p class="text-gray-600">Desenvolvimento de projetos estruturais com foco em segurança e eficiência para
+            edificações.</p>
+        </div>
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-stack-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto de Fundação</h3>
+          <p class="text-gray-600">Análise e desenvolvimento de projetos de fundações adequados para cada tipo de solo e
+            estrutura.</p>
+        </div>
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-flashlight-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Elétrico</h3>
+          <p class="text-gray-600">Instalações elétricas de alta performance e eficiência energética para seu
+            empreendimento.</p>
+        </div>
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-drop-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Projeto Hidráulico</h3>
+          <p class="text-gray-600">Soluções completas para sistemas hidráulicos com foco em sustentabilidade.</p>
+        </div>
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-file-list-3-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Regularização</h3>
+          <p class="text-gray-600">Regularização de imóveis e documentação junto aos órgãos competentes.</p>
+        </div>
+        <div class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all">
+          <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg mb-6 animate-pulse">
+            <i class="ri-customer-service-2-line text-primary text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-3">Assessoria</h3>
+          <p class="text-gray-600">Consultoria técnica especializada para todas as fases do seu projeto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">
+            <span class="counter" data-target="1500000">0</span>
+            <span>m²</span>
+          </div>
+          <p class="text-gray-600">Área Projetada</p>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">
+            <span class="counter" data-target="850">0</span>
+            <span>+</span>
+          </div>
+          <p class="text-gray-600">Projetos Realizados</p>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">
+            <span class="counter" data-target="45">0</span>
+            <span>+</span>
+          </div>
+          <p class="text-gray-600">Cidades Atendidas</p>
+        </div>
+        <div class="p-6">
+          <div class="text-4xl font-bold text-primary mb-2">
+            <span class="counter" data-target="320">0</span>
+            <span>+</span>
+          </div>
+          <p class="text-gray-600">Clientes Satisfeitos</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="portfolio" class="py-24 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Nosso Portfólio</h2>
+        <p class="text-gray-600 max-w-2xl mx-auto">Conheça alguns dos nossos principais projetos e realizações em
+          diferentes segmentos. Explore nossos modelos 3D interativos.</p>
+      </div>
+      <div id="model-viewer-container" class="relative w-full h-[600px] bg-emerald-50 overflow-hidden">
+        <div id="model-controls"
+          class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-4 bg-white/90 backdrop-blur-sm rounded-full px-4 py-2 shadow-lg">
+          <button id="resetView" class="text-gray-700 hover:text-primary p-2 rounded-full">
+            <i class="ri-refresh-line text-xl"></i>
+          </button>
+          <button id="rotate" class="text-gray-700 hover:text-primary p-2 rounded-full">
+            <i class="ri-rotate-3d-line text-xl"></i>
+          </button>
+          <button id="zoom" class="text-gray-700 hover:text-primary p-2 rounded-full">
+            <i class="ri-zoom-in-line text-xl"></i>
+          </button>
+          <button id="pan" class="text-gray-700 hover:text-primary p-2 rounded-full">
+            <i class="ri-drag-move-line text-xl"></i>
+          </button>
+          <button id="fullscreen" class="text-gray-700 hover:text-primary p-2 rounded-full">
+            <i class="ri-fullscreen-line text-xl"></i>
+          </button>
+        </div>
+      </div>
+      <div class="flex justify-center mb-12">
+        <div class="inline-flex p-1 space-x-1 bg-white rounded-full border" role="tablist">
+          <button
+            class="px-6 py-2 text-sm font-medium rounded-full focus:outline-none transition-all duration-300 portfolio-tab active"
+            data-category="todos">Todos</button>
+          <button
+            class="px-6 py-2 text-sm font-medium rounded-full focus:outline-none transition-all duration-300 portfolio-tab"
+            data-category="comercial">Comercial</button>
+          <button
+            class="px-6 py-2 text-sm font-medium rounded-full focus:outline-none transition-all duration-300 portfolio-tab"
+            data-category="residencial">Residencial</button>
+          <button
+            class="px-6 py-2 text-sm font-medium rounded-full focus:outline-none transition-all duration-300 portfolio-tab"
+            data-category="industrial">Industrial</button>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item" data-category="comercial">
+          <img src="https://public.readdy.ai/ai/img_res/d44f79a5c0bd7fe6579f75aea2bdc4af.jpg" alt="Projeto Comercial"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Centro Empresarial Horizonte</h3>
+              <p class="text-sm mb-2">São Paulo, SP</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">25.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item"
+          data-category="residencial">
+          <img src="https://public.readdy.ai/ai/img_res/efce29cdbdfb4ecb8dc99d124090d379.jpg" alt="Projeto Residencial"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Residencial Villa Verde</h3>
+              <p class="text-sm mb-2">Rio de Janeiro, RJ</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">15.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item" data-category="industrial">
+          <img src="https://public.readdy.ai/ai/img_res/8c9371c88042f0d6a1b34a4185b43ed6.jpg" alt="Projeto Industrial"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Complexo Industrial TechPark</h3>
+              <p class="text-sm mb-2">Curitiba, PR</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">50.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item" data-category="comercial">
+          <img src="https://public.readdy.ai/ai/img_res/0097f9b2f02dd80c258913ef106c78f8.jpg" alt="Shopping Center"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Shopping Bella Vista</h3>
+              <p class="text-sm mb-2">Belo Horizonte, MG</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">45.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item"
+          data-category="residencial">
+          <img src="https://public.readdy.ai/ai/img_res/091c23cd546e3db356596f2d5cc4e695.jpg"
+            alt="Condomínio Residencial"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Condomínio Parque das Águas</h3>
+              <p class="text-sm mb-2">Florianópolis, SC</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">30.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2024</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="group relative overflow-hidden rounded-lg cursor-pointer portfolio-item" data-category="industrial">
+          <img src="https://public.readdy.ai/ai/img_res/0301107c9c3b19a2887a1344ddf50348.jpg" alt="Centro Logístico"
+            class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-110">
+          <div
+            class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+            <div class="text-white">
+              <h3 class="font-semibold text-lg">Centro Logístico EcoPort</h3>
+              <p class="text-sm mb-2">Santos, SP</p>
+              <div class="flex space-x-2">
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">75.000m²</span>
+                <span class="text-xs px-2 py-1 bg-white/20 rounded-full">2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-12">
+        <a href="https://readdy.ai/home/7d37102b-cf46-400d-a23e-77c59db6b438/950567d5-25ea-4264-a3b5-ec73f1a7b51f"
+          data-readdy="true"
+          class="bg-primary text-white px-8 py-3 !rounded-button hover:bg-primary/90 cursor-pointer inline-flex items-center">
+          Ver Mais Projetos
+          <i class="ri-arrow-right-line ml-2"></i>
+        </a>
+      </div>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        let scene, camera, renderer, controls;
+        const container = document.getElementById('model-viewer-container');
+        function init() {
+          scene = new THREE.Scene();
+          scene.background = new THREE.Color(0xf9fafb);
+          camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+          camera.position.z = 5;
+          renderer = new THREE.WebGLRenderer({ antialias: true });
+          renderer.setSize(container.clientWidth, container.clientHeight);
+          container.appendChild(renderer.domElement);
+          controls = new THREE.OrbitControls(camera, renderer.domElement);
+          controls.enableDamping = true;
+          controls.dampingFactor = 0.05;
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          scene.add(ambientLight);
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+          directionalLight.position.set(0, 10, 10);
+          scene.add(directionalLight);
+          const loader = new THREE.GLTFLoader();
+          loader.load('https://blocfilestorage.blob.core.windows.net/public/vini.glb', function (gltf) {
+            const model = gltf.scene;
+            // Center the model
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            model.position.sub(center);
+
+            scene.add(model);
+
+            // Adjust camera to fit model
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = camera.fov * (Math.PI / 180);
+            let cameraZ = Math.abs(maxDim / Math.tan(fov / 2));
+            camera.position.z = cameraZ * 1.5;
+
+            controls.target.set(0, 0, 0);
+            controls.update();
+          });
+          animate();
+        }
+        function animate() {
+          requestAnimationFrame(animate);
+          controls.update();
+          renderer.render(scene, camera);
+        }
+        function onWindowResize() {
+          camera.aspect = container.clientWidth / container.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(container.clientWidth, container.clientHeight);
+        }
+        window.addEventListener('resize', onWindowResize);
+        document.getElementById('resetView').addEventListener('click', function () {
+          camera.position.set(0, 0, 5);
+          controls.target.set(0, 0, 0);
+          controls.update();
+        });
+        document.getElementById('fullscreen').addEventListener('click', function () {
+          if (container.requestFullscreen) {
+            container.requestFullscreen();
+          }
+        });
+        // Remove model select event listener as we're only showing one model
+        init();
+        const tabs = document.querySelectorAll('.portfolio-tab');
+        const items = document.querySelectorAll('.portfolio-item');
+        tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => {
+              t.classList.remove('active', 'bg-primary', 'text-white');
+            });
+            // Add active class to clicked tab
+            tab.classList.add('active', 'bg-primary', 'text-white');
+            const category = tab.getAttribute('data-category');
+            items.forEach(item => {
+              if (category === 'todos' || item.getAttribute('data-category') === category) {
+                item.style.display = 'block';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+        // Set initial active state
+        tabs[0].classList.add('active', 'bg-primary', 'text-white');
+      });
+    </script>
+    <style>
+      .portfolio-tab {
+        transition: all 0.3s ease;
+      }
+
+      .portfolio-tab:not(.active):hover {
+        background-color: #f3f4f6;
+      }
+
+      .portfolio-item {
+        transition: all 0.3s ease;
+      }
+    </style>
+  </section>
+  <section id="contato" class="py-24 bg-emerald-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Entre em Contato</h2>
+          <p class="text-gray-600 mb-8">Estamos prontos para ajudar no seu próximo projeto. Entre em contato conosco.
+          </p>
+          <div class="space-y-6">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg flex-shrink-0">
+                <i class="ri-map-pin-line text-primary text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900">Endereço</h3>
+                <p class="text-gray-600">Av. Paulista, 1000 - Bela Vista<br>São Paulo - SP, 01310-100</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg flex-shrink-0">
+                <i class="ri-phone-line text-primary text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900">Telefone</h3>
+                <p class="text-gray-600">+55 (11) 3456-7890</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 flex items-center justify-center bg-emerald-100 rounded-lg flex-shrink-0">
+                <i class="ri-mail-line text-primary text-2xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-gray-900">Email</h3>
+                <p class="text-gray-600">contato@horstengenharia.com.br</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <form class="space-y-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nome</label>
+              <input type="text"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="Seu nome completo">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input type="email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="seu@email.com">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Mensagem</label>
+              <textarea
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary h-32"
+                placeholder="Sua mensagem"></textarea>
+            </div>
+            <button type="submit"
+              class="w-full bg-primary text-white px-6 py-3 !rounded-button hover:bg-primary/90 cursor-pointer">Enviar
+              Mensagem</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="bg-emerald-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div>
+          <a href="#" class="flex items-center mb-4">
+            <img
+              src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/8c827101d6eadd74cedbd5f827f557d7.png"
+              alt="Horst Engenharia Logo" class="h-8">
+          </a>
+          <p class="text-gray-400">Excelência em engenharia desde 1995.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Serviços</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li>Projetos Estruturais</li>
+            <li>Projetos Hidrossanitários</li>
+            <li>Projetos Elétricos</li>
+            <li>Consultoria</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Links Rápidos</h3>
+          <ul class="space-y-2 text-gray-400">
+            <li><a href="#" class="hover:text-white">Sobre Nós</a></li>
+            <li><a href="#" class="hover:text-white">Portfólio</a></li>
+            <li><a href="#" class="hover:text-white">Contato</a></li>
+            <li><a href="#" class="hover:text-white">Blog</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+          <p class="text-gray-400 mb-4">Receba novidades e atualizações.</p>
+          <form class="flex">
+            <input type="email" placeholder="Seu email"
+              class="flex-1 px-4 py-2 rounded-l-lg border-none focus:ring-2 focus:ring-primary text-gray-900">
+            <button type="submit" class="bg-primary px-4 py-2 rounded-r-lg hover:bg-primary/90">
+              <i class="ri-send-plane-line"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="border-t border-emerald-800 mt-12 pt-8 text-center text-emerald-400">
+        <p>&copy; 2025 Horst Engenharia. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      let scene, camera, renderer, controls;
+      const container = document.getElementById('model-viewer-container');
+      function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xf9fafb);
+        camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.z = 5;
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(0, 10, 10);
+        scene.add(directionalLight);
+        const loader = new THREE.GLTFLoader();
+        loader.load('https://blocfilestorage.blob.core.windows.net/public/vini.glb', function (gltf) {
+          const model = gltf.scene;
+          // Center the model
+          const box = new THREE.Box3().setFromObject(model);
+          const center = box.getCenter(new THREE.Vector3());
+          model.position.sub(center);
+
+          scene.add(model);
+
+          // Adjust camera to fit model
+          const size = box.getSize(new THREE.Vector3());
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const fov = camera.fov * (Math.PI / 180);
+          let cameraZ = Math.abs(maxDim / Math.tan(fov / 2));
+          camera.position.z = cameraZ * 1.5;
+
+          controls.target.set(0, 0, 0);
+          controls.update();
+        });
+        animate();
+      }
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+      function onWindowResize() {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      }
+      window.addEventListener('resize', onWindowResize);
+      document.getElementById('resetView').addEventListener('click', function () {
+        camera.position.set(0, 0, 5);
+        controls.target.set(0, 0, 0);
+        controls.update();
+      });
+      document.getElementById('fullscreen').addEventListener('click', function () {
+        if (container.requestFullscreen) {
+          container.requestFullscreen();
+        }
+      });
+      // Remove model select event listener as we're only showing one model
+      init();
+      const nav = document.querySelector('nav');
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 100) {
+          nav.classList.add('shadow-sm');
+        } else {
+          nav.classList.remove('shadow-sm');
+        }
+      });
+      const form = document.querySelector('form');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        console.log('Form submitted:', Object.fromEntries(formData));
+      });
+      const counters = document.querySelectorAll('.counter');
+      const speed = 200;
+      const startCounting = (counter) => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / speed;
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(() => startCounting(counter), 1);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      const observerCallback = (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const counter = entry.target;
+            startCounting(counter);
+            observer.unobserve(counter);
+          }
+        });
+      };
+      const observer = new IntersectionObserver(observerCallback, {
+        threshold: 0.5
+      });
+      counters.forEach(counter => {
+        observer.observe(counter);
+      });
+    });
+  </script>
 </body>
+
 </html>
