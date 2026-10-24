@@ -1,4 +1,4 @@
-/* Interações da página: menu, etapas da história, títulos, obras na horizontal e visualizador do modelo .glb. */
+/* Interações da página (serviços e números ficam direto no index.html, por SEO): menu, etapas da história, títulos, obras na horizontal e visualizador do modelo .glb. */
 
 (function () {
   'use strict';
@@ -9,25 +9,7 @@
   const clamp01 = v => Math.max(0, Math.min(1, v));
   const seg = (p, a, b) => clamp01((p - a) / (b - a));
   const fmt = (v, d) => v.toFixed(d).replace('.', ',');
-  const { NUMEROS = [], SERVICOS, OBRAS = [], TIPOS = [] } = window.HORST;
-
-  // ---------- Números ----------
-  const stats = document.querySelector('[data-numeros]');
-  if (NUMEROS.length) stats.innerHTML = NUMEROS.map(n =>
-    `<li class="stat"><strong>${n.valor}${n.sufixo ? `<sup>${n.sufixo}</sup>` : ''}</strong><span>${n.rotulo}</span></li>`).join('');
-  else stats.closest('.stats-band').remove();
-
-  // ---------- Serviços ----------
-  const ICONES = {
-    est: '<path d="M8 38V10M22 38V10M36 38V10M4 10h36M4 24h36M4 38h36M8 24l14-14M22 24l14-14"/>',
-    fun: '<path d="M4 18h36M19 6v20M25 6v20M12 26h20v6H12zM16 32v8M28 32v8"/><path d="M4 18l4 4M10 18l4 4M30 18l4 4M36 18l4 4" stroke-dasharray="2 2"/>',
-    ele: '<circle cx="22" cy="22" r="16"/><path d="M24 8l-8 16h8l-4 12 10-17h-8l4-11z"/>',
-    hid: '<path d="M4 14h20a6 6 0 0 1 6 6v6M4 20h18a2 2 0 0 1 2 2v4M27 30c0 3 1.5 6 3 6s3-3 3-6-3-6-3-6-3 3-3 6z"/>',
-    reg: '<path d="M10 4h18l8 8v28H10zM28 4v8h8M15 20h16M15 26h16M15 32h9M27 34l3 3 6-7"/>',
-    ass: '<path d="M8 26a14 14 0 0 1 28 0M5 26h34v4H5zM20 12h4v4M14 36h16"/>'
-  };
-  document.querySelector('[data-servicos]').innerHTML = SERVICOS.map(s =>
-    `<article class="svc"><svg class="ico" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">${ICONES[s.icone]}</svg><h3>${s.nome}</h3><p>${s.texto}</p></article>`).join('');
+  const { OBRAS = [], TIPOS = [] } = window.HORST;
 
   // ---------- Obras: fachada desenhada em traço ----------
   function fachada(o) {

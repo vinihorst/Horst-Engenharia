@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /docs/identidade-visual/
 
 Sitemap: https://www.horst.eng.br/sitemap.xml
