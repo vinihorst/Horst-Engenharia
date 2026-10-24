@@ -17,7 +17,8 @@
   --deep-2: #12463D;
   --green: #04B15B;
   --green-lt: #0CE273;
-  --green-dk: #04824A;
+  --green-dk: #037443;
+  --green-head: #03934C;
   --green-tint: #E1F3E9;
   --on-deep-muted: #A9C2BB;
   --amber: #E0A100;
@@ -80,7 +81,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .chap h1, .chap h2 { font-weight: 500; letter-spacing: -.025em; line-height: 1; margin: 18px 0 20px; }
 .chap h1 { font-size: clamp(42px, 5vw, 74px); }
 .chap h2 { font-size: clamp(38px, 4.8vw, 70px); }
-.chap h1 em, .chap h2 em { font-style: normal; color: var(--green); }
+.chap h1 em, .chap h2 em { font-style: normal; color: var(--green-head); }
 .chap p { font-size: 19px; line-height: 1.5; color: var(--muted); max-width: 40ch; }
 .chap .step, .chap p, .chap .legend { transition: opacity .6s ease .25s, transform .7s var(--ease-out) .25s; }
 .chap:not(.on) .step, .chap:not(.on) p, .chap:not(.on) .legend { opacity: 0; transform: translateY(10px); }
@@ -207,8 +208,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .about .photo figcaption strong { display: block; font-size: 21px; font-weight: 500; }
 .about .photo figcaption span { font-size: 15px; color: var(--on-deep-muted); }
 .about-title { margin: 18px 0 26px; font-weight: 400; font-size: clamp(36px, 4vw, 60px); line-height: 1; letter-spacing: -.03em; }
-.about blockquote { margin: 18px 0 30px; font-weight: 400; font-size: clamp(30px, 3.2vw, 46px); line-height: 1.1; letter-spacing: -.025em; }
-.about blockquote em { font-style: normal; color: var(--green); }
+
 .about p { font-size: 18px; line-height: 1.7; color: #24443D; max-width: 60ch; }
 .about p + p { margin-top: 14px; }
 .pillars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 36px; border-top: 1px solid var(--line); }
