@@ -4,8 +4,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Horst Engenharia</title>
-  <link href="https://vinihorst.github.io/Horst-Engenharia/docs/icon.png" rel="icon" type="image/x-icon">
+  <title>Horst Engenharia | Projeto Estrutural e Complementares em Carlos Barbosa - RS</title>
+  <meta name="description"
+    content="Escritório de engenharia em Carlos Barbosa (RS), na Serra Gaúcha. Projetos estruturais, de fundação, elétricos e hidrossanitários, regularização de obras e assessoria técnica, com modelos 3D de cada projeto.">
+  <link rel="canonical" href="https://www.horst.eng.br/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Horst Engenharia">
+  <meta name="theme-color" content="#08ac5c">
+  <meta name="geo.region" content="BR-RS">
+  <meta name="geo.placename" content="Carlos Barbosa">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Horst Engenharia">
+  <meta property="og:url" content="https://www.horst.eng.br/">
+  <meta property="og:title" content="Horst Engenharia | Projeto Estrutural e Complementares">
+  <meta property="og:description"
+    content="Projetos estruturais, de fundação, elétricos e hidrossanitários em Carlos Barbosa e na Serra Gaúcha. Conheça nosso portfólio e explore os projetos em 3D.">
+  <meta property="og:image" content="https://www.horst.eng.br/docs/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Logo da Horst Engenharia sobre fundo verde">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="./docs/icon.png">
+  <link rel="apple-touch-icon" href="./docs/icon.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfessionalService",
+        "@id": "https://www.horst.eng.br/#empresa",
+        "name": "Horst Engenharia",
+        "description": "Escritório de engenharia civil especializado em projeto estrutural, fundações e projetos complementares (elétrico e hidrossanitário), regularização de obras e assessoria técnica.",
+        "url": "https://www.horst.eng.br/",
+        "logo": "https://www.horst.eng.br/docs/FotosLogo/logo.png",
+        "image": "https://www.horst.eng.br/docs/og-image.jpg",
+        "telephone": "+55-54-99156-3456",
+        "email": "horstengenharia@outlook.com",
+        "foundingDate": "2022",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rua Elisa Tramontina, 338, Sala 302",
+          "addressLocality": "Carlos Barbosa",
+          "addressRegion": "RS",
+          "addressCountry": "BR"
+        },
+        "areaServed": [
+          { "@type": "City", "name": "Carlos Barbosa" },
+          { "@type": "AdministrativeArea", "name": "Serra Gaúcha" },
+          { "@type": "State", "name": "Rio Grande do Sul" }
+        ],
+        "hasMap": "https://maps.app.goo.gl/6z7GCPX2XQ3enKSZ7",
+        "sameAs": ["https://www.instagram.com/horst.eng"],
+        "founder": { "@id": "https://www.horst.eng.br/#vinicius" },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Serviços de engenharia",
+          "itemListElement": [
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projeto Estrutural" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projeto de Fundação" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projeto Elétrico" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Projeto Hidrossanitário" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Regularização de Obras" } },
+            { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Assessoria Técnica" } }
+          ]
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.horst.eng.br/#vinicius",
+        "name": "Vinícius Andrei Horst",
+        "jobTitle": "Engenheiro Civil",
+        "image": "https://www.horst.eng.br/docs/FotosLogo/vinao.jpg",
+        "worksFor": { "@id": "https://www.horst.eng.br/#empresa" }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.horst.eng.br/#site",
+        "url": "https://www.horst.eng.br/",
+        "name": "Horst Engenharia",
+        "inLanguage": "pt-BR",
+        "publisher": { "@id": "https://www.horst.eng.br/#empresa" }
+      }
+    ]
+  }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -25,7 +111,7 @@
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <a href="#" class="flex items-center">
-            <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia Logo" class="h-8">
+            <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia" class="h-8">
           </a>
         </div>
         <div class="hidden md:block">
@@ -66,7 +152,7 @@
         <h1 class="text-3xl sm:text-5xl font-bold text-gray-900 mb-6">TECNOLOGIA. INOVAÇÃO. <span
             class="text-[#0ce073]">SOLUÇÃO.</span></h1>
         <img src="https://static.readdy.ai/image/1a832171ecddb7402806697010f99ee4/8c827101d6eadd74cedbd5f827f557d7.png"
-          alt="Horst Engenharia Logo" class="h-12 sm:h-16 mb-8">
+          alt="Horst Engenharia" class="h-12 sm:h-16 mb-8">
         <p class="text-lg sm:text-xl text-gray-700 mb-8">Combinamos tecnologia avançada e expertise para garantir
           projetos de engenharia impecáveis.</p>
         <div class="flex flex-col sm:flex-row gap-4">
@@ -105,7 +191,7 @@
         <div class="relative">
           <img
             src="./docs/FotosLogo/vinao.jpg"
-            alt="Engenheiro Vinicíus Andrei Horst" class="w-full h-[600px] object-cover rounded-lg shadow-lg">
+            alt="Engenheiro civil Vinícius Andrei Horst, fundador da Horst Engenharia" class="w-full h-[600px] object-cover rounded-lg shadow-lg">
           <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-sm p-4 rounded-lg shadow-lg">
             <h3 class="text-lg font-semibold text-gray-900">Vinícius Andrei Horst</h3>
             <p class="text-gray-600">Engenheiro Civil</p>
@@ -126,7 +212,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/5a95c474843913641949a8977b2c3e23.jpg"
-              alt="Structural Engineering" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -141,7 +227,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/51107002354f9703f694709b6073cb36.jpg"
-              alt="Foundation Engineering" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -156,7 +242,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/2bde486ae9e1f86c5452963e29680901.jpg"
-              alt="Electrical Engineering" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -171,7 +257,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/9873813e40ad4327cd5a12eb3be807f9.jpg"
-              alt="Hydraulic Engineering" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -185,7 +271,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/2f60f4466f0b7f21b8cfa2259208dcbd.jpg"
-              alt="Property Regularization" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -199,7 +285,7 @@
           class="service-card bg-white p-8 rounded-lg shadow-sm hover:shadow-md transition-all relative overflow-hidden">
           <div class="absolute inset-0 z-0">
             <img src="https://public.readdy.ai/ai/img_res/9da5a44986fb55cd8d75db787b108633.jpg"
-              alt="Technical Consulting" class="w-full h-full object-cover opacity-10">
+              alt="" class="w-full h-full object-cover opacity-10">
           </div>
           <div class="relative z-10">
             <div class="w-12 h-12 flex items-center justify-center rounded-lg mb-6" style="background-color: #0ce073;">
@@ -426,7 +512,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col items-center justify-center">
         <a href="#" class="flex items-center mb-2">
-          <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia Logo" class="h-8">
+          <img src="./docs/FotosLogo/logo.png" alt="Horst Engenharia" class="h-8">
         </a>
         <p class="text-white mb-4">Excelência em projetos desde 2022</p>
         <div class="border-t w-full mt-4 pt-4 text-center text-white" style="border-color: #0ce073;">
