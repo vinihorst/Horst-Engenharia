@@ -2,7 +2,7 @@
 
 Site institucional da Horst Engenharia, escritório de projetos estruturais e complementares em Carlos Barbosa, RS. Publicado pelo GitHub Pages em [horst.eng.br](https://horst.eng.br/).
 
-O site é a apresentação institucional do escritório: a abertura conta, com uma obra em 3D que se constrói conforme a página rola, as etapas de um projeto (fundação, estrutura, instalações e entrega). Depois vêm o escritório, os serviços, o método de trabalho em BIM, a compatibilização, a seção para arquitetos, construtoras e proprietários, os projetos (estudos de caso), um modelo 3D real para explorar e o contato.
+O site é a apresentação institucional do escritório: a abertura conta, com uma obra em 3D que se constrói conforme a página rola, as etapas de um projeto (fundação, estrutura, instalações e entrega). Depois vêm o escritório, os serviços, o método de trabalho em BIM, um modelo 3D real para explorar, a seção para arquitetos, construtoras e proprietários, os projetos (estudos de caso) e o contato.
 
 ## Estrutura
 
@@ -24,7 +24,7 @@ Não há etapa de build: é HTML, CSS e JavaScript puros. A única biblioteca é
 
 - **Textos e serviços** ficam direto no `index.html`, para o Google ler sem depender de JavaScript. Ao mudar títulos, mantenha um único `h1` e siga o `SEO.md`. Cada serviço tem um resumo (`.curto`, mostrado no celular) e o texto completo (`.completo`).
 - **Obras (estudos de caso)** ficam em `OBRAS`, em `assets/js/conteudo.js`, com o modelo completo no topo: tipo, local, área, disciplinas, sistema estrutural, desafios, soluções, resultados, fotos, antes/depois e modelo 3D. Cada obra vira um card e um estudo de caso que abre na própria página (com link `#projeto-<slug>`); campos vazios não aparecem. Enquanto a lista estiver vazia, a seção mostra os tipos de edificação. Fotos vão em `assets/img/obras/` (de preferência 1600 px de largura, proporção 4:3).
-- **Números** (área projetada, obras etc.) entram em `NUMEROS`, no mesmo arquivo, apenas quando forem reais. Enquanto estiver vazio, a faixa verde mostra só fatos (disciplinas, BIM, ano de início).
+- **Números** da faixa verde ficam no `index.html`: cada um conta do zero até o valor de `data-alvo`; para mudar, troque o `data-alvo` e o texto dentro do `span.count`.
 
 ## Ver no computador
 
@@ -45,5 +45,6 @@ A PP Neue Montreal é uma fonte comercial da Pangram Pangram. Antes de manter o 
 
 - A animação 3D respeita "reduzir movimento" do sistema e pausa quando sai da tela ou a aba fica em segundo plano.
 - Sem JavaScript, a página mostra todos os textos em sequência.
-- O modelo do visualizador só é baixado quando a seção 3D se aproxima da tela.
+- O modelo do visualizador começa a baixar logo depois que a página termina de carregar (navegador ocioso), sem atrasar a abertura.
+- No computador, o fim da abertura segura o prédio pronto na tela por um trecho de rolagem (`END` em `predio.js`).
 - As fontes são servidas pelo próprio site (sem Google Fonts), e as revelações ao rolar usam só CSS e `IntersectionObserver`.

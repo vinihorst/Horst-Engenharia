@@ -191,17 +191,17 @@
   }
   document.addEventListener('horst:progresso', e => etapa(e.detail.p));
   if (story && (!window.THREE || reduce)) {
-    const read = () => { const r = story.getBoundingClientRect(); etapa(clamp01(-r.top / Math.max(1, story.offsetHeight - innerHeight))); };
+    const read = () => { const r = story.getBoundingClientRect(); etapa(clamp01(-r.top / Math.max(1, story.offsetHeight - innerHeight) / (window.HORST_END || 1))); };
     window.addEventListener('scroll', read, { passive: true }); read();
   }
   if (story) stepBtns.forEach((btn, i) => btn.addEventListener('click', () => {
     const total = story.offsetHeight - window.innerHeight, top = story.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: top + total * (B()[i + 2] - 0.012), behavior: reduce ? 'auto' : 'smooth' });
+    window.scrollTo({ top: top + total * (B()[i + 2] - 0.012) * (window.HORST_END || 1), behavior: reduce ? 'auto' : 'smooth' });
   }));
 
   // ---------- Revelações sutis (sem biblioteca: IntersectionObserver + transição CSS) ----------
   if (!reduce && 'IntersectionObserver' in window) {
-    const alvos = document.querySelectorAll('.svc, .stat, .obra, .about .photo, .about > div, .viewer, .etapas > li, .compat-list > li, .compat-fig, .publicos > article');
+    const alvos = document.querySelectorAll('.svc, .stat, .obra, .about .photo, .about > div, .viewer, .etapas > li, .publicos > article');
     const revIO = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('rev-on'); revIO.unobserve(e.target); }
     }), { rootMargin: '0px 0px -6% 0px' });
@@ -211,7 +211,7 @@
     });
   }
 
-  // ---------- Visualizador do modelo .glb (comprimido com Draco; carrega quando a seção se aproxima da tela) ----------
+  // ---------- Visualizador do modelo .glb (comprimido com Draco; carrega logo após a abertura) ----------
   // Outro modelo (ex.: de um estudo de caso) abre com window.HORST_abrirModelo(url, tamanho, nome).
   const stage = document.querySelector('.viewer-stage');
   const loadBtn = document.querySelector('.viewer-load');
@@ -283,10 +283,11 @@
     }
 
     loadBtn.addEventListener('click', () => load(stage.dataset.modelo));
-    if ('IntersectionObserver' in window) {
-      const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(stage.dataset.modelo); } }, { rootMargin: '300px 0px' });
-      near.observe(stage);
-    }
+    // Carrega logo ao entrar no site, mas só depois da abertura (página carregada e navegador ocioso),
+    // para não disputar banda e processamento com a animação inicial.
+    const cedo = () => load(stage.dataset.modelo);
+    const agendar = () => ('requestIdleCallback' in window) ? requestIdleCallback(cedo, { timeout: 2500 }) : setTimeout(cedo, 1200);
+    if (document.readyState === 'complete') agendar(); else window.addEventListener('load', agendar, { once: true });
     const texto = document.querySelector('[data-modelo-texto]');
     window.HORST_abrirModelo = (url, tamanho, nome) => {
       stage.dataset.modelo = url;

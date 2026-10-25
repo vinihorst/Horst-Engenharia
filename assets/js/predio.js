@@ -24,6 +24,10 @@
 
   const BOUNDS = [0, 0.1, 0.3, 0.62, 0.82, 1];
   window.HORST_BOUNDS = BOUNDS;
+  // No computador, a obra termina antes do fim da seção: o trecho final segura o prédio pronto na tela,
+  // para quem rola rápido ainda ver a entrega antes de descer. No celular a rolagem já é curta e controlada.
+  const END = window.matchMedia('(min-width: 861px)').matches ? 0.8 : 1;
+  window.HORST_END = END;
 
   // ---------- Cena ----------
   const mobile = window.matchMedia('(max-width: 860px)').matches;
@@ -418,9 +422,34 @@
   let target = reduce ? 1 : 0, prog = target;
   function readProgress() {
     const r = story.getBoundingClientRect(), total = story.offsetHeight - window.innerHeight;
-    target = reduce ? 1 : clamp01(-r.top / Math.max(1, total));
+    target = reduce ? 1 : clamp01(-r.top / Math.max(1, total) / END);
   }
   window.addEventListener('scroll', readProgress, { passive: true });
+
+  // ---------- Pausa com o prédio pronto (só no computador) ----------
+  // Quem rola rápido passaria direto pela entrega. Ao cruzar o ponto de pausa descendo, a rolagem fica
+  // presa ali até o prédio aparecer pronto por um instante (no máximo 1,6 s). Saltos de menu não são afetados.
+  if (END < 1 && !reduce) {
+    const holdY = () => story.offsetTop + (story.offsetHeight - window.innerHeight) * 0.86;
+    let lastY = window.scrollY, armed = true, lockUntil = 0, lockStart = 0, doneAt = 0;
+    const locked = () => {
+      if (!lockStart) return false;
+      const now = performance.now();
+      if (prog >= 0.995 && !doneAt) doneAt = now;
+      if ((doneAt && now - doneAt > 650) || now > lockUntil) { lockStart = 0; return false; }
+      return true;
+    };
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY, h = holdY();
+      if (armed && lastY <= h && y > h && y - lastY < window.innerHeight * 1.5) {
+        armed = false; lockStart = performance.now(); lockUntil = lockStart + 1600; doneAt = 0;
+      }
+      if (y < h - window.innerHeight) armed = true;
+      if (y > h && locked()) { window.scrollTo(0, h); lastY = h; return; }
+      lastY = y;
+    }, { passive: true });
+    window.addEventListener('wheel', e => { if (e.deltaY > 0 && locked() && window.scrollY >= holdY() - 2) e.preventDefault(); }, { passive: false });
+  }
 
   function resize() {
     const w = sticky.clientWidth, h = sticky.clientHeight;
@@ -447,7 +476,7 @@
 
   function loop() {
     if (!running || document.hidden) return;
-    prog += (target - prog) * (reduce ? 1 : 0.08);
+    prog += (target - prog) * (reduce ? 1 : target === 1 ? 0.12 : 0.08);
     if (Math.abs(target - prog) < 0.0003) prog = target;
     mx += (mouseX - mx) * 0.05; my += (mouseY - my) * 0.05;
     const intro = reduce ? 1 : ease(clamp01((performance.now() - t0) / 2200));

@@ -71,7 +71,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .menu { display: none; }
 
 /* ---------- História: a obra se constrói ---------- */
-.story { position: relative; height: 600vh; }
+.story { position: relative; height: 720vh; }
+
 .sticky { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: radial-gradient(90% 80% at 70% 45%, #FFFFFF 0%, var(--paper) 60%, #E4EAE8 100%); }
 .sticky canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .chapters { position: absolute; inset: 0; pointer-events: none; padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
@@ -226,30 +227,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .etapas h3 { font-size: 22px; line-height: 1.15; letter-spacing: -.015em; margin: 14px 0 10px; }
 .etapas p { color: var(--muted); font-size: 15px; line-height: 1.55; }
 
-/* ---------- Compatibilização ---------- */
-.compat-band { margin-top: 128px; padding-block: 112px; background: var(--paper); }
-.compat-fig { background: var(--white); border: 1px solid var(--line); padding: 28px 24px 12px; margin-bottom: 20px; }
-.compat-fig { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 40px; }
-.compat-fig figure { max-width: 460px; width: 100%; margin: 0 auto; }
-.compat-fig svg { width: 100%; height: auto; display: block; }
-.compat-fig figcaption { padding: 4px 0 16px 9.5%; color: var(--muted); font-size: 15px; line-height: 1.45; }
-.compat-fig figcaption strong { display: block; color: var(--ink); font-weight: 500; font-size: 18px; margin-bottom: 2px; }
-.cf-viga { fill: #E3E8E6; stroke: #8FA39D; stroke-width: 1.5; }
-.cf-arm { stroke: #8FA39D; stroke-width: 1.2; stroke-dasharray: 6 5; fill: none; }
-.cf-tubo { stroke: var(--blue); stroke-width: 10; stroke-linecap: round; fill: none; opacity: .85; }
-.cf-erro { fill: none; stroke: #C2410C; stroke-width: 2.5; }
-.cf-x { stroke: #C2410C; stroke-width: 3; stroke-linecap: round; }
-.cf-furo { fill: var(--white); stroke: var(--green-dk); stroke-width: 2; }
-.cf-cota { stroke: var(--green-dk); stroke-width: 1.4; fill: none; }
-.cf-cota-t { font: 500 15px var(--mono); fill: var(--green-dk); }
-.compat-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.compat-list li { background: var(--white); border: 1px solid var(--line); padding: 24px 24px 26px; }
-.compat-list h3 { font-size: 21px; line-height: 1.2; letter-spacing: -.01em; margin-bottom: 14px; }
-.compat-list p { font-size: 15px; line-height: 1.5; color: var(--muted); }
-.compat-list p + p { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
-.compat-list b { font-weight: 500; color: var(--ink); }
-.compat-list p:last-child b { color: var(--green-dk); }
-
 /* ---------- Para quem ---------- */
 .publicos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--ink); }
 .publicos article { padding: 28px 28px 8px 0; }
@@ -334,7 +311,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .etapas li, .etapas li + li { padding: 22px 20px 18px 0; border-left: 0; border-bottom: 1px solid var(--line); }
   .etapas li:nth-child(even) { padding-left: 20px; border-left: 1px solid var(--line); }
-  .compat-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 860px) {
   :root { --nav-h: 60px; }
@@ -379,10 +355,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .stats:not(.stats-4) .stat strong { font-size: 34px; }
   .stats:not(.stats-4) .stat > span { margin-top: 0; }
   .stats:not(.stats-4) .stat:last-child { border-bottom: 0; }
-  .compat-band { margin-top: 88px; padding-block: 80px; }
-  .compat-fig { padding: 16px 12px 6px; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  .compat-list { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .compat-list li { padding: 20px; }
   .publicos { grid-template-columns: minmax(0, 1fr); }
   .publicos article, .publicos article + article { padding: 24px 0; border-left: 0; border-bottom: 1px solid var(--line); }
   .caso-in { padding: 56px 20px 28px; }
@@ -412,8 +384,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .etapas li:nth-child(even) { padding-left: 0; border-left: 0; }
 }
 @media (min-width: 600px) and (max-width: 860px) {
-  .compat-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .compat-fig { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .about { grid-template-columns: minmax(0, 240px) minmax(0, 1fr); gap: 28px; }
   .about .photo { max-width: none; }
   .obras { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
