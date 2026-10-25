@@ -22,8 +22,8 @@ Não há etapa de build: é HTML, CSS e JavaScript puros. As bibliotecas (three.
 
 ## Como editar o conteúdo
 
-- **Textos, serviços e números** ficam direto no `index.html`, para o Google ler sem depender de JavaScript. Ao mudar títulos, mantenha um único `h1` e siga o `SEO.md`. A faixa de números mostra só fatos confirmados; quando houver contagens reais (área projetada, projetos entregues, cidades atendidas), troque os itens da lista `stats`.
-- **Obras** ficam em `assets/js/conteudo.js`, com instruções no topo. A lista começa vazia de propósito, para o site nunca mostrar uma obra que não existe. Enquanto estiver vazia, a seção mostra os tipos de obra que o escritório projeta; ao adicionar a primeira obra real, ela passa a mostrar o portfólio. Fotos vão em `assets/img/obras/`.
+- **Textos, serviços e números** ficam direto no `index.html`, para o Google ler sem depender de JavaScript. Ao mudar títulos, mantenha um único `h1` e siga o `SEO.md`. Cada serviço tem um resumo (`p.curto`, mostrado no celular) e o texto completo (`p.completo`). Os números contam do zero até o valor de `data-alvo` quando aparecem na tela; para mudar um número, troque o `data-alvo` e o texto dentro do `span.count`.
+- **Obras** ficam em `assets/js/conteudo.js`, com instruções no topo. A grade mostra até 8 obras com foto. Enquanto a lista estiver vazia, a seção mostra os tipos de obra que o escritório projeta. Fotos vão em `assets/img/obras/` (de preferência 1600 px de largura, proporção 4:3).
 
 ## Ver no computador
 
