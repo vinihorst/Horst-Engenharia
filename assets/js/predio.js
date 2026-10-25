@@ -31,8 +31,9 @@
 
   // ---------- Cena ----------
   const mobile = window.matchMedia('(max-width: 860px)').matches;
-  const renderer = new THREE.WebGLRenderer({ antialias: !mobile, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 1.5 : 2));
+  // Celulares têm tela de densidade 3x e o prédio aparece menor: sem antialias e com densidade reduzida as arestas serrilham.
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 2.5 : 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -50,7 +51,7 @@
   const sun = new THREE.DirectionalLight(0xffffff, 1.0);
   sun.position.set(-16, 30, 18);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(mobile ? 1024 : 2048, mobile ? 1024 : 2048);
+  sun.shadow.mapSize.set(2048, 2048);
   sun.shadow.bias = -0.0005;
   Object.assign(sun.shadow.camera, { left: -24, right: 24, top: 24, bottom: -24, near: 1, far: 90 });
   scene.add(sun);
