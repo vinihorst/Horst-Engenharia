@@ -1,0 +1,11 @@
+{
+  "name": "horst-engenharia-site",
+  "private": true,
+  "description": "Ferramentas do site da Horst Engenharia",
+  "scripts": {
+    "otimizar-glb": "node scripts/otimizar-glb.mjs"
+  },
+  "devDependencies": {
+    "@gltf-transform/cli": "4.2.1"
+  }
+}

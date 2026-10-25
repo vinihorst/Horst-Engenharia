@@ -29,8 +29,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
       directionalLight.position.set(0, 10, 10);
       scene.add(directionalLight);
+      // Modelos em docs/modelos/ são comprimidos com Draco (npm run otimizar-glb)
+      const dracoLoader = new THREE.DRACOLoader();
+      dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
       const loader = new THREE.GLTFLoader();
-      loader.load('https://vinihorst.github.io/Horst-Engenharia/docs/modelo_3d.glb', function (gltf) {
+      loader.setDRACOLoader(dracoLoader);
+      loader.load('./docs/modelos/modelo_3d.glb', function (gltf) {
         const model = gltf.scene;
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
@@ -50,12 +54,14 @@ document.addEventListener('DOMContentLoaded', function () {
       renderer.render(scene, camera);
     }
     function onWindowResize() {
+      if (!renderer) return;
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     }
     window.addEventListener('resize', onWindowResize);
     document.getElementById('resetView').addEventListener('click', function () {
+      if (!controls) return;
       camera.position.set(0, 0, 5);
       controls.target.set(0, 0, 0);
       controls.update();
@@ -65,5 +71,16 @@ document.addEventListener('DOMContentLoaded', function () {
         container.requestFullscreen();
       }
     });
-    init();
+    // Só baixa o modelo quando a seção 3D estiver perto de aparecer na tela
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function (entries) {
+        if (entries.some(entry => entry.isIntersecting)) {
+          observer.disconnect();
+          init();
+        }
+      }, { rootMargin: '300px' });
+      observer.observe(container);
+    } else {
+      init();
+    }
   });
