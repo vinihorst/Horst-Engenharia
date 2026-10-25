@@ -119,7 +119,7 @@
 
   <link rel="preload" href="./assets/fonts/PPNeueMontreal-Book.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="./assets/css/site.css?v=20261025-bim">
+  <link rel="stylesheet" href="./assets/css/site.css?v=20261025-e">
   <script>document.documentElement.classList.remove('no-js');</script>
 </head>
 
@@ -134,12 +134,12 @@
           <polygon points="0,2 1,1 1,3 0,3" fill="#04B15B"/><rect x="2" y="2" width="1" height="1" fill="#0CE273"/></g></svg>
         Horst Engenharia
       </a>
-      <nav class="nav-links" aria-label="Principal"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#metodo">Método</a><a href="#obras">Projetos</a><a href="#modelo">Modelo 3D</a><a href="#contato">Contato</a></nav>
+      <nav class="nav-links" aria-label="Principal"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#metodo">Método</a><a href="#modelo">Modelo 3D</a><a href="#obras">Projetos</a><a href="#contato">Contato</a></nav>
       <a class="nav-cta" href="#contato">Fale conosco</a>
       <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">Menu</button>
     </div>
   </header>
-  <nav class="menu gutter" id="menu" aria-label="Menu"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#metodo">Método BIM</a><a href="#compatibilizacao">Compatibilização</a><a href="#obras">Projetos</a><a href="#modelo">Modelo 3D</a><a href="#contato">Contato</a><div class="menu-foot"><a class="btn" href="https://wa.me/5554991563456?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Horst%20Engenharia." target="_blank" rel="noopener">WhatsApp</a><a class="btn line" href="https://www.instagram.com/horst.eng" target="_blank" rel="noopener">Instagram</a></div></nav>
+  <nav class="menu gutter" id="menu" aria-label="Menu"><a href="#sobre">Sobre</a><a href="#servicos">Serviços</a><a href="#metodo">Método BIM</a><a href="#modelo">Modelo 3D</a><a href="#obras">Projetos</a><a href="#contato">Contato</a><div class="menu-foot"><a class="btn" href="https://wa.me/5554991563456?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Horst%20Engenharia." target="_blank" rel="noopener">WhatsApp</a><a class="btn line" href="https://www.instagram.com/horst.eng" target="_blank" rel="noopener">Instagram</a></div></nav>
 
   <main id="conteudo">
     <section class="story" id="inicio" aria-label="Do projeto à obra">
@@ -187,12 +187,12 @@
     </section>
 
     <div class="after">
-      <!-- Faixa de fatos. Números como área projetada ou obras realizadas entram por NUMEROS em assets/js/conteudo.js, só quando forem reais. -->
       <div class="stats-band gutter"><div class="wrap">
-        <ul class="stats" role="list" data-numeros>
-          <li class="stat"><strong>4</strong><span>Disciplinas de engenharia coordenadas no mesmo modelo</span></li>
-          <li class="stat"><strong>BIM</strong><span>Metodologia de projeto, da concepção à documentação</span></li>
-          <li class="stat"><strong>2022</strong><span>Início das atividades, em Carlos Barbosa (RS)</span></li>
+        <ul class="stats stats-4" role="list" data-numeros>
+          <li class="stat"><strong><span class="count" data-alvo="45000">45.000</span><sup>m²</sup></strong><span>Área projetada</span></li>
+          <li class="stat"><strong><span class="count" data-alvo="150">150</span><sup>+</sup></strong><span>Projetos realizados</span></li>
+          <li class="stat"><strong><span class="count" data-alvo="30">30</span><sup>+</sup></strong><span>Cidades atendidas</span></li>
+          <li class="stat"><strong><span class="count" data-alvo="100">100</span><sup>+</sup></strong><span>Clientes atendidos</span></li>
         </ul>
       </div></div>
 
@@ -259,42 +259,33 @@
         </section>
       </div></div>
 
-      <section class="compat-band gutter" id="compatibilizacao">
-        <div class="wrap">
-          <div class="sec-head"><div><span class="eyebrow">Compatibilização</span><h2>Conflitos resolvidos no projeto, não na obra</h2></div><p>Quando cada disciplina é projetada isoladamente, os problemas aparecem no canteiro, onde corrigir custa mais e atrasa a obra. Sobrepor estrutura, arquitetura e instalações no modelo permite encontrar esses conflitos enquanto ainda são linhas no projeto.</p></div>
-          <div class="compat-fig">
-            <figure>
-              <svg viewBox="0 0 420 180" role="img" aria-label="Tubo atravessando a viga sem passagem prevista">
-                <rect x="40" y="50" width="340" height="90" class="cf-viga"/>
-                <path d="M40 120h340M40 70h340" class="cf-arm"/>
-                <path d="M10 92h400" class="cf-tubo"/>
-                <circle cx="210" cy="92" r="22" class="cf-erro"/>
-                <path d="M196 78l28 28M224 78l-28 28" class="cf-x"/>
-              </svg>
-              <figcaption><strong>Sem compatibilização</strong>O tubo cruza a viga e a armadura é cortada na obra.</figcaption>
-            </figure>
-            <figure>
-              <svg viewBox="0 0 420 180" role="img" aria-label="Tubo passando pela viga em um furo previsto no projeto">
-                <rect x="40" y="50" width="340" height="90" class="cf-viga"/>
-                <path d="M40 120h340M40 70h340" class="cf-arm"/>
-                <circle cx="150" cy="95" r="13" class="cf-furo"/>
-                <path d="M10 95h127M163 95h247" class="cf-tubo"/>
-                <path d="M137 32h26M137 26v12M163 26v12" class="cf-cota"/>
-                <text x="176" y="37" class="cf-cota-t">Ø previsto</text>
-              </svg>
-              <figcaption><strong>Com compatibilização</strong>A passagem é posicionada, dimensionada e detalhada no projeto.</figcaption>
-            </figure>
+      <div class="gutter"><div class="wrap">
+        <section class="sec" id="modelo">
+          <div class="viewer">
+            <div class="viewer-info">
+              <span class="eyebrow">Modelo 3D</span>
+              <h2>Explore um modelo coordenado</h2>
+              <p data-modelo-texto>Um modelo de projeto da Horst com estrutura, fundação e instalações na posição em que foram projetadas. Gire e aproxime para ver como as disciplinas se encaixam.</p>
+              <ul class="viewer-tips">
+                <li>Arraste para girar</li>
+                <li>Role ou faça pinça para aproximar</li>
+                <li>Botão direito ou dois dedos para mover</li>
+              </ul>
+            </div>
+            <div class="viewer-stage" data-modelo="./docs/modelos/modelo_3d.glb">
+              <div class="viewer-poster">
+                <div>
+                  <svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1" fill="#04B15B"/><polygon points="1,1 2,0 3,0 3,1" fill="#0CE273"/><polygon points="0,2 1,1 1,3 0,3" fill="#04B15B"/><rect x="2" y="2" width="1" height="1" fill="#0CE273"/></svg>
+                  <div><button class="viewer-load" type="button">Carregar modelo 3D <small>1,2 MB</small></button></div>
+                  <div class="viewer-progress" hidden><b></b></div>
+                  <p class="viewer-status" aria-live="polite"></p>
+                </div>
+              </div>
+              <div class="viewer-tools" hidden><button type="button" data-reset>Reiniciar vista</button><button type="button" data-full>Tela cheia</button></div>
+            </div>
           </div>
-          <ul class="compat-list" role="list">
-            <li><h3>Tubulação atravessando uma viga</h3><p><b>Na obra:</b> o furo é aberto depois da concretagem e pode cortar armaduras ou enfraquecer a peça.</p><p><b>No projeto:</b> a passagem é posicionada na região da viga em que o furo é admissível, dimensionada e indicada no detalhamento.</p></li>
-            <li><h3>Eletroduto em pilar ou viga</h3><p><b>Na obra:</b> eletrodutos embutidos em elementos estruturais reduzem a seção de concreto.</p><p><b>No projeto:</b> o trajeto é lançado sobre a estrutura e desviado de pilares e vigas, ou a passagem é prevista.</p></li>
-            <li><h3>Shaft insuficiente</h3><p><b>Na obra:</b> as prumadas não cabem no espaço previsto e exigem quebras ou carenagens.</p><p><b>No projeto:</b> o shaft é dimensionado pelas tubulações reais e reservado na arquitetura e na estrutura.</p></li>
-            <li><h3>Arquitetura e estrutura desencontradas</h3><p><b>Na obra:</b> pilar no meio de uma abertura, viga aparente no ambiente ou pé-direito menor que o previsto.</p><p><b>No projeto:</b> a posição dos pilares e a altura das vigas são combinadas com o arquiteto ainda na concepção.</p></li>
-            <li><h3>Falta de espaço para instalações</h3><p><b>Na obra:</b> o forro desce além do previsto para que o esgoto tenha caimento.</p><p><b>No projeto:</b> caimentos, rebaixos de laje e alturas de forro são verificados no modelo.</p></li>
-            <li><h3>Sistemas que se cruzam</h3><p><b>Na obra:</b> esgoto, água e elétrica disputam o mesmo trecho de parede ou laje.</p><p><b>No projeto:</b> as redes são modeladas juntas e organizadas antes da documentação.</p></li>
-          </ul>
-        </div>
-      </section>
+        </section>
+      </div></div>
 
       <div class="gutter"><div class="wrap">
         <section class="sec" id="parceiros">
@@ -332,33 +323,6 @@
         <button class="caso-fechar" type="button" data-fechar aria-label="Fechar estudo de caso">Fechar</button>
       </dialog>
 
-      <div class="gutter"><div class="wrap">
-        <section class="sec" id="modelo">
-          <div class="viewer">
-            <div class="viewer-info">
-              <span class="eyebrow">Modelo 3D</span>
-              <h2>Explore um modelo coordenado</h2>
-              <p data-modelo-texto>Um modelo de projeto da Horst com estrutura, fundação e instalações na posição em que foram projetadas. Gire e aproxime para ver como as disciplinas se encaixam.</p>
-              <ul class="viewer-tips">
-                <li>Arraste para girar</li>
-                <li>Role ou faça pinça para aproximar</li>
-                <li>Botão direito ou dois dedos para mover</li>
-              </ul>
-            </div>
-            <div class="viewer-stage" data-modelo="./docs/modelos/modelo_3d.glb">
-              <div class="viewer-poster">
-                <div>
-                  <svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1" fill="#04B15B"/><polygon points="1,1 2,0 3,0 3,1" fill="#0CE273"/><polygon points="0,2 1,1 1,3 0,3" fill="#04B15B"/><rect x="2" y="2" width="1" height="1" fill="#0CE273"/></svg>
-                  <div><button class="viewer-load" type="button">Carregar modelo 3D <small>1,2 MB</small></button></div>
-                  <div class="viewer-progress" hidden><b></b></div>
-                  <p class="viewer-status" aria-live="polite"></p>
-                </div>
-              </div>
-              <div class="viewer-tools" hidden><button type="button" data-reset>Reiniciar vista</button><button type="button" data-full>Tela cheia</button></div>
-            </div>
-          </div>
-        </section>
-      </div></div>
 
       <section class="contact gutter" id="contato">
         <svg class="contact-shapes" viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1" fill="#04B15B" opacity=".55"/><polygon points="1,1 2,0 3,0 3,1" fill="#0CE273" opacity=".35"/><polygon points="0,2 1,1 1,3 0,3" fill="#04B15B" opacity=".35"/><rect x="2" y="2" width="1" height="1" fill="#0CE273" opacity=".2"/></svg>
@@ -384,7 +348,7 @@
             <svg width="34" height="34" viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1" fill="#04B15B"/><polygon points="1,1 2,0 3,0 3,1" fill="#0CE273"/><polygon points="0,2 1,1 1,3 0,3" fill="#04B15B"/><rect x="2" y="2" width="1" height="1" fill="#0CE273"/></svg>
             <span>Horst Engenharia<small>Soluções de engenharia, priorizando a boa execução.</small></span>
           </a>
-          <nav class="foot-links" aria-label="Rodapé"><a href="#servicos">Serviços</a><a href="#metodo">Método BIM</a><a href="#compatibilizacao">Compatibilização</a><a href="#obras">Projetos</a><a href="#contato">Contato</a><a href="https://www.instagram.com/horst.eng" target="_blank" rel="noopener">Instagram</a></nav>
+          <nav class="foot-links" aria-label="Rodapé"><a href="#servicos">Serviços</a><a href="#metodo">Método BIM</a><a href="#modelo">Modelo 3D</a><a href="#obras">Projetos</a><a href="#contato">Contato</a><a href="https://www.instagram.com/horst.eng" target="_blank" rel="noopener">Instagram</a></nav>
           <p class="foot-copy">© <span data-ano>2026</span> Horst Engenharia · Projeto estrutural e complementares em BIM desde 2022 · Eng. civil Vinícius Andrei Horst, CREA-RS 253.677 · Carlos Barbosa, RS</p>
         </div>
       </footer>
@@ -392,9 +356,9 @@
   </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="./assets/js/conteudo.js?v=20261025-bim" defer></script>
-  <script src="./assets/js/predio.js?v=20261025-bim" defer></script>
-  <script src="./assets/js/site.js?v=20261025-bim" defer></script>
+  <script src="./assets/js/conteudo.js?v=20261025-e" defer></script>
+  <script src="./assets/js/predio.js?v=20261025-e" defer></script>
+  <script src="./assets/js/site.js?v=20261025-e" defer></script>
 </body>
 
 </html>

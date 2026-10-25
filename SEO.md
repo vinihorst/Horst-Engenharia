@@ -17,11 +17,10 @@ Um único `<h1>` (na abertura). Cada seção tem um `<h2>` com o assunto dela e 
 | --- | --- | --- |
 | `sobre` | Engenharia feita de perto | escritório de engenharia, engenheiro civil |
 | `servicos` | Projetos de engenharia integrados | projeto estrutural, de fundações, elétrico, hidrossanitário |
-| `metodo` | BIM como forma de projetar | projetos em BIM |
-| `compatibilizacao` | Conflitos resolvidos no projeto, não na obra | compatibilização de projetos |
+| `metodo` | BIM como forma de projetar | projetos em BIM, compatibilização de projetos |
+| `modelo` | Explore um modelo coordenado | modelo 3D / BIM |
 | `parceiros` | Engenharia que trabalha junto | engenharia para arquitetos e construtoras |
 | `obras` | Projetos | portfólio / estudos de caso |
-| `modelo` | Explore um modelo coordenado | modelo 3D / BIM |
 
 Os quatro títulos da animação de abertura também são `<h2>` (etapas da obra).
 
@@ -38,13 +37,13 @@ projeto estrutural (residencial, de edifícios), projeto de fundações, projeto
 2. Não citar normas técnicas (NBR/ABNT) nem números não confirmados.
 3. Toda imagem com `alt` descritivo em português; imagens só decorativas com `alt=""`.
 4. Fotos próprias (não banco de imagens), em `.webp` ou `.jpg` comprimido, com `loading="lazy"` abaixo da dobra.
-5. Modelos `.glb` comprimidos (ver MODELOS-3D.md) e carregados só perto da seção 3D.
+5. Modelos `.glb` comprimidos (ver MODELOS-3D.md) e carregados só depois do carregamento da página.
 
 ## Quando houver dados reais
 
 - **Obras:** preencha `OBRAS` em `assets/js/conteudo.js` (estrutura completa no topo do arquivo). Cada obra ganha um estudo de caso com link próprio (`#projeto-<slug>`).
   Quando houver de 4 a 6 obras com bom material, o próximo passo de SEO é dar a cada estudo de caso uma página própria (`/projetos/<slug>/index.html`), com `<title>` e descrição próprios, e adicioná-las ao `sitemap.xml`. Aí sim faz sentido usar `BreadcrumbList`.
-- **Números:** preencha `NUMEROS` em `assets/js/conteudo.js` só com valores conferidos.
+- **Números:** ficam no `index.html` (faixa verde, `data-alvo`).
 - **Horário de atendimento:** adicione ao `ProfessionalService` no JSON-LD:
   `"openingHoursSpecification": [{ "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "18:00" }]` (com o horário real).
 - **Coordenadas:** com a localização exata do escritório (do Google Perfil da Empresa), adicione `"geo": { "@type": "GeoCoordinates", "latitude": ..., "longitude": ... }`.

@@ -26,7 +26,7 @@
    Fotos: assets/img/obras/, de preferência 1600 px de largura, proporção 4:3, em .webp ou .jpg comprimido.
    A grade mostra até 8 obras; a ordem da lista é a ordem no site.
 
-   NUMEROS: substituem a faixa de fatos abaixo do topo quando preenchidos. Coloque apenas números conferidos.
+   NUMEROS: opcional. Os números da faixa verde ficam no index.html (data-alvo); se preenchida, esta lista os substitui.
      { valor: 45000, sufixo: 'm²', rotulo: 'Área projetada' }     // valor numérico conta do zero ao aparecer */
 
 window.HORST = {
