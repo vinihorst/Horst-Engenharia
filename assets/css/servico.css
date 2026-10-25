@@ -1,0 +1,47 @@
+/* Páginas de serviço (projeto-estrutural/, projeto-eletrico/ ...). Usam site.css e acrescentam só o layout de leitura. */
+
+.pagina-servico main { padding-top: calc(var(--nav-h) + env(safe-area-inset-top, 0px)); }
+.servico { padding-block: 48px 112px; }
+
+.trilha { display: flex; flex-wrap: wrap; gap: 8px; font-size: 14px; color: var(--muted); margin-bottom: 40px; }
+.trilha a { color: var(--muted); }
+.trilha a:hover { color: var(--green-dk); }
+
+.servico h1 { font-size: clamp(44px, 6vw, 88px); line-height: .98; letter-spacing: -.03em; margin-top: 16px; }
+.servico-lead { font-size: clamp(19px, 1.8vw, 23px); line-height: 1.5; color: var(--muted); max-width: 46ch; margin: 24px 0 0; }
+
+.servico-corpo { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 64px; margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--ink); align-items: start; }
+.servico-texto h2 { font-size: clamp(26px, 2.6vw, 34px); letter-spacing: -.02em; line-height: 1.1; margin: 48px 0 16px; }
+.servico-texto h2:first-child { margin-top: 0; }
+.servico-texto p { color: var(--muted); line-height: 1.65; max-width: 62ch; margin: 0; }
+.servico-texto p + p { margin-top: 14px; }
+.servico-texto a { color: var(--green-dk); }
+
+.faq details { border-top: 1px solid var(--line); padding: 16px 0; }
+.faq details:last-child { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; font-weight: 500; font-size: 18px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--green-dk); font-size: 22px; line-height: 1; }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { margin: 10px 0 0; }
+
+.servico-lado { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 24px; }
+.servico-cartao { background: var(--deep); color: #fff; border-radius: 16px; padding: 28px; }
+.servico-cartao h2 { font-size: 24px; letter-spacing: -.01em; }
+.servico-cartao p { color: var(--on-deep-muted); line-height: 1.55; margin: 12px 0 20px; }
+.servico-cartao .servico-contato { margin: 20px 0 0; font-size: 15px; }
+.servico-cartao .servico-contato a { color: #fff; }
+.servico-outros h2 { font: 500 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--green-dk); margin-bottom: 12px; }
+.servico-outros ul { list-style: none; margin: 0; padding: 0; }
+.servico-outros li { border-top: 1px solid var(--line); }
+.servico-outros li:last-child { border-bottom: 1px solid var(--line); }
+.servico-outros a { display: block; padding: 12px 0; text-decoration: none; font-size: 17px; }
+.servico-outros a:hover { color: var(--green-dk); }
+
+@media (max-width: 860px) {
+  .servico { padding-block: 32px 80px; }
+  .servico-corpo { grid-template-columns: 1fr; gap: 48px; margin-top: 48px; }
+  .servico-lado { position: static; }
+  .pagina-servico .escopo { grid-template-columns: 1fr; }
+  .pagina-servico .nav-cta { display: inline-block; }
+}

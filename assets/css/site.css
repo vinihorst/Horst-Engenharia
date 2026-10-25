@@ -296,6 +296,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .foot-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 26px; font-size: 15px; }
 .foot-links a { color: #fff; text-decoration: none; }
 .foot-links a:hover { color: var(--green-lt); }
+.foot-servicos { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 13px; }
+.foot-servicos a { color: var(--on-deep-muted); text-decoration: none; }
+.foot-servicos a:hover { color: var(--green-lt); }
 .foot-copy { grid-column: 1 / -1; margin: 8px 0 0; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.12); font-size: 14px; }
 
 /* resumo dos serviços: só no celular */
