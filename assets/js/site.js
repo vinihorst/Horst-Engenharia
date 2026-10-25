@@ -106,19 +106,22 @@
   // ---------- Números contam do zero ----------
   const counts = document.querySelectorAll('.count[data-alvo]');
   const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
+  // Contam do zero sempre que a faixa entra na tela (e voltam a zero quando sai).
   if (!reduce && 'IntersectionObserver' in window) {
     counts.forEach(el => { el.textContent = '0'; });
     const countIO = new IntersectionObserver(es => es.forEach(e => {
-      if (!e.isIntersecting) return;
-      countIO.unobserve(e.target);
-      const el = e.target, alvo = +el.dataset.alvo, t0 = performance.now(), dur = 2000;
+      const el = e.target;
+      if (!e.isIntersecting) { const r = e.boundingClientRect; if (r.top >= innerHeight || r.bottom <= 0) { el._run = 0; el.textContent = '0'; } return; }
+      if (el._run || e.intersectionRatio < 0.5) return;
+      const alvo = +el.dataset.alvo, t0 = performance.now(), dur = 2000, run = el._run = t0;
       const tick = now => {
+        if (el._run !== run) return;
         const t = clamp01((now - t0) / dur);
         el.textContent = fmtInt(alvo * (1 - Math.pow(1 - t, 3)));
         if (t < 1) requestAnimationFrame(tick);
       };
       requestAnimationFrame(tick);
-    }), { threshold: 0.5 });
+    }), { threshold: [0, 0.5] });
     counts.forEach(el => countIO.observe(el));
   }
 
