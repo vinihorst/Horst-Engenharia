@@ -128,12 +128,13 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .stats { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .stats.stats-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .stats-band { margin-top: 128px; }
-.stat { padding: 64px 32px 60px; border-left: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; }
-.stat:first-child { border-left: 0; padding-left: 0; }
-.stat strong { display: flex; align-items: flex-start; font-weight: 400; font-size: clamp(40px, 4.4vw, 72px); line-height: .9; letter-spacing: -.03em; white-space: nowrap; }
-.stat .count { font-variant-numeric: tabular-nums; }
+.stat { padding: 64px 24px 60px; border-left: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; align-items: center; text-align: center; }
+.stat:first-child { border-left: 0; }
+.stat strong { display: flex; align-items: flex-start; justify-content: center; font-weight: 400; font-size: clamp(40px, 4.4vw, 72px); line-height: .9; letter-spacing: -.03em; white-space: nowrap; }
+.stat .count { font-variant-numeric: tabular-nums; display: inline-block; text-align: right; }
 .stat strong sup { font-size: .4em; line-height: 1; color: var(--green-lt); margin-left: 6px; letter-spacing: 0; position: static; }
-.stat > span { display: block; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.14); color: var(--on-deep-muted); font-size: 16px; max-width: 30ch; }
+.stat > span { display: block; margin-top: 18px; color: var(--on-deep-muted); font-size: 16px; max-width: 30ch; }
+.stat > span::before { content: ""; display: block; width: 32px; height: 2px; background: var(--green); margin: 0 auto 14px; }
 
 /* ---------- Seções ---------- */
 .sec { padding-block: 128px 0; }
@@ -345,9 +346,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .hud { left: 0; right: 0; width: auto; bottom: 18px; padding: 10px 14px 8px; }
   .scroll-cue { display: none; }
   .stats-band { margin-top: 88px; }
-  .stat, .stat:first-child { padding: 28px 12px 26px 0; border-left: 0; border-bottom: 1px solid rgba(255,255,255,.14); }
-  .stats-4 .stat:nth-child(even) { padding-left: 16px; border-left: 1px solid rgba(255,255,255,.14); }
-  .stat > span { padding-top: 10px; }
+  .stat, .stat:first-child { padding: 28px 12px 26px; border-left: 0; border-bottom: 1px solid rgba(255,255,255,.14); }
+  .stats-4 .stat:nth-child(even) { border-left: 1px solid rgba(255,255,255,.14); }
+  .stats-4 .stat:nth-last-child(-n+2) { border-bottom: 0; }
+  .stat > span { margin-top: 12px; }
+  .stat > span::before { margin-bottom: 10px; }
   .sec-head-svc > div { grid-column: auto; }
   .stat strong { font-size: clamp(32px, 9.4vw, 46px); }
   .stat > span { margin-top: 10px; font-size: 14px; }

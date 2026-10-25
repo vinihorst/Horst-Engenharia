@@ -108,6 +108,14 @@
   const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
   // Contam do zero sempre que a faixa entra na tela (e voltam a zero quando sai).
   if (!reduce && 'IntersectionObserver' in window) {
+    // largura fixa do número final, para o conjunto centralizado não balançar durante a contagem
+    const medir = () => counts.forEach(el => {
+      const txt = el.textContent; el.textContent = fmtInt(+el.dataset.alvo); el.style.minWidth = '';
+      el.style.minWidth = el.getBoundingClientRect().width / parseFloat(getComputedStyle(el).fontSize) + 'em';
+      el.textContent = txt;
+    });
+    medir();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(medir);
     counts.forEach(el => { el.textContent = '0'; });
     const countIO = new IntersectionObserver(es => es.forEach(e => {
       const el = e.target;
