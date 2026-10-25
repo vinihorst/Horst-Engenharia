@@ -1,4 +1,4 @@
-/* Interações da página (serviços e números ficam direto no index.html, por SEO): menu, etapas da história, títulos, números, obras e visualizador do modelo .glb. */
+/* Interações da página (textos ficam direto no index.html, por SEO): projetos e estudos de caso, números, menu, etapas da história, títulos e visualizador do modelo .glb. */
 
 (function () {
   'use strict';
@@ -11,19 +11,90 @@
   const fmt = (v, d) => v.toFixed(d).replace('.', ',');
   const { OBRAS = [], TIPOS = [] } = window.HORST || {};
 
-  // ---------- Obras: grade com fotos (até 8) ----------
+  // ---------- Projetos: cards e estudos de caso (dados em conteudo.js) ----------
   const SIMBOLO = '<svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1"/><polygon points="1,1 2,0 3,0 3,1"/><polygon points="0,2 1,1 1,3 0,3"/><rect x="2" y="2" width="1" height="1"/></svg>';
+  const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const lista = arr => (arr || []).filter(Boolean);
   const grid = document.querySelector('[data-obras]');
-  const reais = OBRAS.length > 0;
-  if (grid) grid.innerHTML = (reais ? OBRAS.slice(0, 8) : TIPOS).map(o => reais ? `
-    <li class="obra">
-      <div class="pic">${o.foto ? `<img src="${o.foto}" alt="${o.alt || `${o.categoria} em ${o.cidade}: ${o.nome}, projeto da Horst Engenharia`}" loading="lazy">` : `<div class="ph">${SIMBOLO}</div>`}</div>
-      <div class="body"><span class="cat">${[o.categoria, o.cidade].filter(Boolean).join(' · ')}</span><h3>${o.nome}</h3>${o.texto ? `<p>${o.texto}</p>` : ''}${o.area || o.ano ? `<div class="meta"><span>${o.area || ''}</span><span>${o.ano || ''}</span></div>` : ''}</div>
-    </li>` : `
+  const obras = OBRAS.filter(o => o && o.nome).slice(0, 8).map((o, i) => Object.assign({ slug: 'obra-' + (i + 1) }, o));
+  const reais = obras.length > 0;
+  const capa = o => (lista(o.fotos)[0]) || (o.foto ? { src: o.foto, alt: o.alt } : null);
+  const altPadrao = o => [o.tipo || o.categoria, o.nome, o.cidade].filter(Boolean).join(', ') + ', projeto da Horst Engenharia';
+  if (grid) grid.innerHTML = (reais ? obras : TIPOS).map(o => {
+    if (!reais) return `
     <li class="obra">
       <div class="pic"><div class="ph">${SIMBOLO}</div></div>
-      <div class="body"><span class="cat">Tipo de obra</span><h3>${o.nome}</h3><p>${o.texto}</p></div>
-    </li>`).join('');
+      <div class="body"><span class="cat">Tipo de edificação</span><h3>${esc(o.nome)}</h3><p>${esc(o.texto)}</p></div>
+    </li>`;
+    const f = capa(o), discs = lista(o.disciplinas);
+    return `
+    <li class="obra obra-real">
+      <div class="pic">${f ? `<img src="${esc(f.src)}" alt="${esc(f.alt || altPadrao(o))}" loading="lazy" decoding="async">` : `<div class="ph">${SIMBOLO}</div>`}</div>
+      <div class="body"><span class="cat">${esc([o.tipo || o.categoria, o.cidade].filter(Boolean).join(' · '))}</span>
+        <h3><a href="#projeto-${esc(o.slug)}" data-caso-abrir="${esc(o.slug)}">${esc(o.nome)}</a></h3>
+        ${o.resumo || o.texto ? `<p>${esc(o.resumo || o.texto)}</p>` : ''}
+        ${discs.length ? `<ul class="chips" role="list">${discs.map(d => `<li>${esc(d)}</li>`).join('')}</ul>` : ''}
+        ${o.area || o.ano ? `<div class="meta"><span>${esc(o.area)}</span><span>${esc(o.ano)}</span></div>` : ''}
+        <span class="obra-mais" aria-hidden="true">Ver estudo de caso →</span>
+      </div>
+    </li>`;
+  }).join('');
+  if (reais) {
+    const intro = document.querySelector('[data-obras-intro]');
+    if (intro) intro.textContent = 'Estudos de caso com as disciplinas envolvidas, o sistema estrutural adotado e os principais desafios de engenharia de cada obra.';
+  }
+
+  const dlg = document.getElementById('caso'), casoBox = dlg && dlg.querySelector('[data-caso]');
+  const bloco = (titulo, itens) => itens.length ? `<section><h3>${titulo}</h3><ul role="list">${itens.map(t => `<li>${esc(t)}</li>`).join('')}</ul></section>` : '';
+  function abrirCaso(slug, push) {
+    const o = obras.find(x => x.slug === slug);
+    if (!o || !dlg || typeof dlg.showModal !== 'function') return false;
+    const fotos = lista(o.fotos).length ? lista(o.fotos) : (capa(o) ? [capa(o)] : []);
+    const fichas = [['Tipo', o.tipo || o.categoria], ['Local', o.cidade], ['Área', o.area], ['Ano', o.ano], ['Sistema estrutural', o.sistemaEstrutural], ['Disciplinas', lista(o.disciplinas).join(', ')]].filter(([, v]) => v);
+    const ad = o.antesDepois && o.antesDepois.antes && o.antesDepois.depois ? o.antesDepois : null;
+    casoBox.innerHTML = `
+      <span class="eyebrow">Estudo de caso</span>
+      <h2 id="caso-titulo">${esc(o.nome)}</h2>
+      ${o.resumo ? `<p class="caso-resumo">${esc(o.resumo)}</p>` : ''}
+      ${fichas.length ? `<dl class="caso-ficha">${fichas.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>` : ''}
+      ${bloco('Principais desafios', lista(o.desafios))}
+      ${bloco('Soluções adotadas', lista(o.solucoes))}
+      ${bloco('Características e resultados', lista(o.resultados))}
+      ${fotos.length ? `<div class="caso-fotos">${fotos.map(f => `<figure><img src="${esc(f.src)}" alt="${esc(f.alt || altPadrao(o))}" loading="lazy" decoding="async">${f.legenda ? `<figcaption>${esc(f.legenda)}</figcaption>` : ''}</figure>`).join('')}</div>` : ''}
+      ${ad ? `<div class="caso-ad"><figure><img src="${esc(ad.antes.src)}" alt="${esc(ad.antes.alt || 'Antes')}" loading="lazy"><figcaption>Antes</figcaption></figure><figure><img src="${esc(ad.depois.src)}" alt="${esc(ad.depois.alt || 'Depois')}" loading="lazy"><figcaption>Depois</figcaption></figure></div>` : ''}
+      ${o.modelo ? `<button class="btn" type="button" data-caso-modelo>Abrir o modelo 3D desta obra</button>` : ''}`;
+    const mb = casoBox.querySelector('[data-caso-modelo]');
+    if (mb) mb.addEventListener('click', () => { fecharCaso(); if (window.HORST_abrirModelo) window.HORST_abrirModelo(o.modelo, o.modeloTamanho, o.nome); });
+    dlg.showModal();
+    dlg.scrollTop = 0;
+    if (push) history.replaceState(null, '', '#projeto-' + o.slug);
+    return true;
+  }
+  function fecharCaso() { if (dlg && dlg.open) dlg.close(); }
+  if (dlg) {
+    dlg.querySelector('[data-fechar]').addEventListener('click', fecharCaso);
+    dlg.addEventListener('click', e => { if (e.target === dlg) fecharCaso(); });
+    dlg.addEventListener('close', () => { if (location.hash.startsWith('#projeto-')) history.replaceState(null, '', '#obras'); });
+  }
+  if (grid) grid.addEventListener('click', e => {
+    const card = e.target.closest('.obra-real');
+    if (!card) return;
+    const a = card.querySelector('[data-caso-abrir]');
+    if (a && abrirCaso(a.dataset.casoAbrir, true)) e.preventDefault();
+  });
+  const casoDoHash = () => { const m = location.hash.match(/^#projeto-(.+)$/); if (m) abrirCaso(decodeURIComponent(m[1]), false); };
+  window.addEventListener('hashchange', casoDoHash);
+  casoDoHash();
+
+  // ---------- Números reais (NUMEROS em conteudo.js) substituem a faixa de fatos ----------
+  const numBox = document.querySelector('[data-numeros]');
+  const nums = (window.HORST && window.HORST.NUMEROS || []).filter(n => n && n.rotulo && n.valor != null);
+  if (numBox && nums.length) {
+    numBox.innerHTML = nums.slice(0, 4).map(n => typeof n.valor === 'number'
+      ? `<li class="stat"><strong><span class="count" data-alvo="${n.valor}">${n.valor.toLocaleString('pt-BR')}</span>${n.sufixo ? `<sup>${esc(n.sufixo)}</sup>` : ''}</strong><span>${esc(n.rotulo)}</span></li>`
+      : `<li class="stat"><strong>${esc(n.valor)}</strong><span>${esc(n.rotulo)}</span></li>`).join('');
+    numBox.classList.toggle('stats-4', nums.length >= 4);
+  }
 
   // ---------- Serviços: no celular, resumo com "Ler mais" ----------
   document.querySelectorAll('.svc-mais').forEach(btn => btn.addEventListener('click', () => {
@@ -88,6 +159,7 @@
     document.body.classList.toggle('menu-aberto', open);
   });
   if (menu && menuBtn) menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); document.body.classList.remove('menu-aberto'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.textContent = 'Menu'; }));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menu && menu.classList.contains('open')) { menuBtn.click(); menuBtn.focus(); } });
   const sections = [...document.querySelectorAll('main section[id]')];
   const links = [...document.querySelectorAll('.nav-links a')];
   const sectionObserver = new IntersectionObserver(es => es.forEach(e => {
@@ -127,87 +199,101 @@
     window.scrollTo({ top: top + total * (B()[i + 2] - 0.012), behavior: reduce ? 'auto' : 'smooth' });
   }));
 
-  // ---------- Revelações sutis ----------
-  if (window.gsap && window.ScrollTrigger && !reduce) {
-    gsap.registerPlugin(ScrollTrigger);
-    document.querySelectorAll('.svc, .stat, .obra, .about .photo, .about > div, .viewer').forEach(el => {
-      gsap.from(el, { opacity: 0, y: 14, duration: 0.45, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' } });
+  // ---------- Revelações sutis (sem biblioteca: IntersectionObserver + transição CSS) ----------
+  if (!reduce && 'IntersectionObserver' in window) {
+    const alvos = document.querySelectorAll('.svc, .stat, .obra, .about .photo, .about > div, .viewer, .etapas > li, .compat-list > li, .compat-fig, .publicos > article');
+    const revIO = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('rev-on'); revIO.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -6% 0px' });
+    alvos.forEach(el => {
+      if (el.getBoundingClientRect().top < innerHeight) return;
+      el.classList.add('rev'); revIO.observe(el);
     });
-    window.addEventListener('load', () => ScrollTrigger.refresh());
   }
 
   // ---------- Visualizador do modelo .glb (comprimido com Draco; carrega quando a seção se aproxima da tela) ----------
+  // Outro modelo (ex.: de um estudo de caso) abre com window.HORST_abrirModelo(url, tamanho, nome).
   const stage = document.querySelector('.viewer-stage');
   const loadBtn = document.querySelector('.viewer-load');
   if (stage && loadBtn) {
-    const status = stage.querySelector('.viewer-status'), progress = stage.querySelector('.viewer-progress b'), poster = stage.querySelector('.viewer-poster');
+    const status = stage.querySelector('.viewer-status'), progressBox = stage.querySelector('.viewer-progress'), progress = progressBox.querySelector('b'), poster = stage.querySelector('.viewer-poster');
     const tools = stage.querySelector('.viewer-tools');
     const script = src => new Promise((ok, fail) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
     const JSM = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/';
-    let started = false;
-    const start = async () => {
-      if (started) return;
-      started = true;
-      loadBtn.disabled = true;
-      stage.querySelector('.viewer-progress').hidden = false;
-      status.textContent = 'Preparando o visualizador…';
-      try {
-        if (!window.THREE) throw new Error('three');
-        await Promise.all([script(JSM + 'controls/OrbitControls.js'), script(JSM + 'loaders/GLTFLoader.js'), script(JSM + 'loaders/DRACOLoader.js')]);
-      } catch (e) { status.textContent = 'Não foi possível carregar o visualizador. Verifique a conexão e tente de novo.'; loadBtn.disabled = false; started = false; return; }
+    let ready = null, view = null, pending = null, current = null;
 
+    const prepare = () => ready || (ready = (async () => {
+      if (!window.THREE) throw new Error('three');
+      await Promise.all([script(JSM + 'controls/OrbitControls.js'), script(JSM + 'loaders/GLTFLoader.js'), script(JSM + 'loaders/DRACOLoader.js')]);
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.domElement.setAttribute('role', 'img');
-      renderer.domElement.setAttribute('aria-label', 'Modelo 3D de projeto da Horst Engenharia. Arraste para girar e use a rolagem ou o gesto de pinça para aproximar.');
+      renderer.domElement.setAttribute('aria-label', 'Modelo 3D de projeto da Horst Engenharia, com estrutura, fundação e instalações. Arraste para girar e use a rolagem ou o gesto de pinça para aproximar.');
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 5000);
       scene.add(new THREE.HemisphereLight(0xffffff, 0x0D3931, 0.9));
       const key = new THREE.DirectionalLight(0xffffff, 0.8); key.position.set(-1, 2, 1.5); scene.add(key);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true; controls.dampingFactor = 0.08;
-      let home = null, visible = true, looping = false;
-
       const draco = new THREE.DRACOLoader();
       draco.setDecoderPath(JSM + 'libs/draco/');
       const loader = new THREE.GLTFLoader();
       loader.setDRACOLoader(draco);
-      loader.load(stage.dataset.modelo, gltf => {
+      let visible = true, looping = false;
+      const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+      const render = () => { if (!visible) { looping = false; return; } controls.update(); renderer.render(scene, camera); requestAnimationFrame(render); };
+      const loop = () => { if (visible && !looping) { looping = true; requestAnimationFrame(render); } };
+      new ResizeObserver(fit).observe(stage);
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; loop(); }).observe(stage);
+      view = { renderer, scene, camera, controls, loader, fit, loop, model: null, home: null };
+      tools.querySelector('[data-reset]').addEventListener('click', () => { if (view.home) { camera.position.copy(view.home); controls.target.set(0, 0, 0); } });
+      tools.querySelector('[data-full]').addEventListener('click', () => { if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {}); });
+    })());
+
+    const falhou = msg => { status.textContent = msg; loadBtn.disabled = false; poster.hidden = false; progressBox.hidden = true; pending = null; };
+    async function load(url) {
+      if (!url || url === current || url === pending) return;
+      pending = url;
+      loadBtn.disabled = true;
+      poster.hidden = false; progressBox.hidden = false; progress.style.transform = 'scaleX(0)';
+      status.textContent = 'Preparando o visualizador…';
+      try { await prepare(); } catch (e) { ready = null; return falhou('Não foi possível carregar o visualizador. Verifique a conexão e tente de novo.'); }
+      view.loader.load(url, gltf => {
+        if (pending !== url) return;
+        const { scene, camera, controls, renderer } = view;
+        if (view.model) { scene.remove(view.model); view.model.traverse(o => { if (o.geometry) o.geometry.dispose(); }); }
         const model = gltf.scene;
         const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()), center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
         scene.add(model);
         const radius = size.length() / 2;
-        const dir = new THREE.Vector3(-37.5, 22.7, -43.4).normalize();
-        home = dir.multiplyScalar(radius * 2.1);
+        view.home = new THREE.Vector3(-37.5, 22.7, -43.4).normalize().multiplyScalar(radius * 2.1);
         camera.near = radius / 100; camera.far = radius * 20; camera.updateProjectionMatrix();
-        camera.position.copy(home); controls.target.set(0, 0, 0); controls.update();
+        camera.position.copy(view.home); controls.target.set(0, 0, 0); controls.update();
         controls.minDistance = radius * 0.3; controls.maxDistance = radius * 5;
-        stage.prepend(renderer.domElement);
-        poster.hidden = true; tools.hidden = false;
-        fit(); loop();
-        new IntersectionObserver(([e]) => { visible = e.isIntersecting; loop(); }).observe(stage);
+        if (!renderer.domElement.parentNode) stage.prepend(renderer.domElement);
+        view.model = model; current = url; pending = null;
+        poster.hidden = true; tools.hidden = false; status.textContent = '';
+        view.fit(); controls.update(); renderer.render(scene, camera); view.loop();
       }, xhr => {
         if (xhr.total) { progress.style.transform = `scaleX(${xhr.loaded / xhr.total})`; status.textContent = `Carregando modelo… ${fmt(xhr.loaded / 1048576, 1)} de ${fmt(xhr.total / 1048576, 1)} MB`; }
         else status.textContent = `Carregando modelo… ${fmt(xhr.loaded / 1048576, 1)} MB`;
-      }, () => { status.textContent = 'Não foi possível abrir o modelo agora. Tente novamente mais tarde.'; loadBtn.disabled = false; started = false; });
+      }, () => falhou('Não foi possível abrir o modelo agora. Tente novamente mais tarde.'));
+    }
 
-      function fit() { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); }
-      new ResizeObserver(fit).observe(stage);
-      function loop() { if (visible && !looping) { looping = true; requestAnimationFrame(render); } }
-      function render() {
-        if (!visible) { looping = false; return; }
-        controls.update(); renderer.render(scene, camera);
-        requestAnimationFrame(render);
-      }
-      tools.querySelector('[data-reset]').addEventListener('click', () => { if (home) { camera.position.copy(home); controls.target.set(0, 0, 0); } });
-      tools.querySelector('[data-full]').addEventListener('click', () => { if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {}); });
-    };
-    loadBtn.addEventListener('click', start);
+    loadBtn.addEventListener('click', () => load(stage.dataset.modelo));
     if ('IntersectionObserver' in window) {
-      const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); start(); } }, { rootMargin: '300px 0px' });
+      const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(stage.dataset.modelo); } }, { rootMargin: '300px 0px' });
       near.observe(stage);
     }
+    const texto = document.querySelector('[data-modelo-texto]');
+    window.HORST_abrirModelo = (url, tamanho, nome) => {
+      stage.dataset.modelo = url;
+      const small = loadBtn.querySelector('small'); if (small) small.textContent = tamanho || '';
+      if (texto && nome) texto.textContent = `Modelo de projeto: ${nome}. Gire e aproxime para ver como estrutura e instalações se encaixam.`;
+      document.getElementById('modelo').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+      load(url);
+    };
   }
 })();
