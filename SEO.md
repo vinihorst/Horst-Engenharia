@@ -5,9 +5,10 @@ Regras para manter o SEO do site ao editar ou redesenhar páginas.
 ## O que já está no site
 
 - `<head>` do `index.html`: título, descrição, canonical, Open Graph (prévia no WhatsApp/Instagram/LinkedIn), cartão do X/Twitter e dados estruturados JSON-LD.
-- JSON-LD (`@graph`): `ProfessionalService` (tipo de `LocalBusiness`) com endereço, telefone, e-mail, mapa e Instagram; um `Service` para cada serviço; `Person` (Vinícius); `WebSite` e `WebPage`. Não usamos `BreadcrumbList` porque o site tem uma página só.
+- JSON-LD (`@graph`): `ProfessionalService` (tipo de `LocalBusiness`) com endereço, telefone, e-mail, mapa e Instagram; um `Service` para cada serviço; `Person` (Vinícius); `WebSite` e `WebPage`. As páginas de serviço usam `BreadcrumbList`.
 - `robots.txt` e `sitemap.xml` na raiz. `CNAME` com `horst.eng.br` (o `www` redireciona).
 - `docs/og-image.jpg` (1200×630): imagem que aparece quando o link é compartilhado.
+- Páginas de serviço, uma por busca principal: `projeto-estrutural/`, `projeto-de-fundacoes/`, `projeto-eletrico/` e `projeto-hidrossanitario/`. Ficam fora do menu (o visual da página inicial não muda); são encontradas pelo `sitemap.xml`, pela linha discreta de links no rodapé e pelos links entre elas. Cada uma tem título, descrição, canonical, `BreadcrumbList` e `Service` próprios. O texto vem de `scripts/gerar-paginas-servicos.py`: edite lá e rode `python3 scripts/gerar-paginas-servicos.py .` para regerar.
 
 ## Estrutura de títulos
 
