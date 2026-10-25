@@ -9,13 +9,13 @@
   const clamp01 = v => Math.max(0, Math.min(1, v));
   const seg = (p, a, b) => clamp01((p - a) / (b - a));
   const fmt = (v, d) => v.toFixed(d).replace('.', ',');
-  const { OBRAS = [], TIPOS = [] } = window.HORST;
+  const { OBRAS = [], TIPOS = [] } = window.HORST || {};
 
   // ---------- Obras: grade com fotos (até 8) ----------
   const SIMBOLO = '<svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1"/><polygon points="1,1 2,0 3,0 3,1"/><polygon points="0,2 1,1 1,3 0,3"/><rect x="2" y="2" width="1" height="1"/></svg>';
   const grid = document.querySelector('[data-obras]');
   const reais = OBRAS.length > 0;
-  grid.innerHTML = (reais ? OBRAS.slice(0, 8) : TIPOS).map(o => reais ? `
+  if (grid) grid.innerHTML = (reais ? OBRAS.slice(0, 8) : TIPOS).map(o => reais ? `
     <li class="obra">
       <div class="pic">${o.foto ? `<img src="${o.foto}" alt="${o.alt || `${o.categoria} em ${o.cidade}: ${o.nome}, projeto da Horst Engenharia`}" loading="lazy">` : `<div class="ph">${SIMBOLO}</div>`}</div>
       <div class="body"><span class="cat">${[o.categoria, o.cidade].filter(Boolean).join(' · ')}</span><h3>${o.nome}</h3>${o.texto ? `<p>${o.texto}</p>` : ''}${o.area || o.ano ? `<div class="meta"><span>${o.area || ''}</span><span>${o.ano || ''}</span></div>` : ''}</div>
@@ -81,12 +81,13 @@
 
   // ---------- Menu ----------
   const menu = document.getElementById('menu'), menuBtn = document.querySelector('.menu-btn');
-  menuBtn.addEventListener('click', () => {
+  if (menu && menuBtn) menuBtn.addEventListener('click', () => {
     const open = menu.classList.toggle('open');
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.textContent = open ? 'Fechar' : 'Menu';
+    document.body.classList.toggle('menu-aberto', open);
   });
-  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.textContent = 'Menu'; }));
+  if (menu && menuBtn) menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); document.body.classList.remove('menu-aberto'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.textContent = 'Menu'; }));
   const sections = [...document.querySelectorAll('main section[id]')];
   const links = [...document.querySelectorAll('.nav-links a')];
   const sectionObserver = new IntersectionObserver(es => es.forEach(e => {
@@ -108,20 +109,20 @@
     for (let i = 0; i < 5; i++) if (p >= b[i]) c = i;
     if (c !== last) {
       chaps.forEach((el, i) => el.classList.toggle('on', i === c));
-      hudStep.textContent = NOMES[c];
+      if (hudStep) hudStep.textContent = NOMES[c];
       stepBtns.forEach((btn, i) => btn.classList.toggle('cur', i === c - 1));
       last = c;
     }
-    stepBtns.forEach((btn, i) => { btn.querySelector('b').style.transform = `scaleX(${seg(p, b[i + 1], b[i + 2])})`; });
-    hudPct.textContent = Math.round(seg(p, b[1], 1) * 100) + '%';
-    cue.style.opacity = p < 0.04 ? 1 : 0;
+    stepBtns.forEach((btn, i) => { const bar = btn.querySelector('b'); if (bar) bar.style.transform = `scaleX(${seg(p, b[i + 1], b[i + 2])})`; });
+    if (hudPct) hudPct.textContent = Math.round(seg(p, b[1], 1) * 100) + '%';
+    if (cue) cue.style.opacity = p < 0.04 ? 1 : 0;
   }
   document.addEventListener('horst:progresso', e => etapa(e.detail.p));
-  if (!window.THREE || reduce) {
+  if (story && (!window.THREE || reduce)) {
     const read = () => { const r = story.getBoundingClientRect(); etapa(clamp01(-r.top / Math.max(1, story.offsetHeight - innerHeight))); };
     window.addEventListener('scroll', read, { passive: true }); read();
   }
-  stepBtns.forEach((btn, i) => btn.addEventListener('click', () => {
+  if (story) stepBtns.forEach((btn, i) => btn.addEventListener('click', () => {
     const total = story.offsetHeight - window.innerHeight, top = story.getBoundingClientRect().top + window.scrollY;
     window.scrollTo({ top: top + total * (B()[i + 2] - 0.012), behavior: reduce ? 'auto' : 'smooth' });
   }));

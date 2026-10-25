@@ -42,8 +42,8 @@
   root.position.set(-6.75, 0, -5);
   scene.add(root);
 
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xC9D6CF, 0.9));
-  const sun = new THREE.DirectionalLight(0xffffff, 0.75);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xC2D0C9, 0.68));
+  const sun = new THREE.DirectionalLight(0xffffff, 1.0);
   sun.position.set(-16, 30, 18);
   sun.castShadow = true;
   sun.shadow.mapSize.set(mobile ? 1024 : 2048, mobile ? 1024 : 2048);
@@ -83,7 +83,9 @@
   const coreMat = new THREE.MeshStandardMaterial({ color: 0xD5DCD8, roughness: 0.9, transparent: true });
   const footMat = new THREE.MeshStandardMaterial({ color: 0x04B15B, roughness: 0.7 });
   const ghostMat = new THREE.LineBasicMaterial({ color: 0x04B15B, transparent: true, opacity: 0.5 });
-  const xray = [concrete, coreMat];
+  const GHOST_A = new THREE.Color(0x04B15B), GHOST_B = new THREE.Color(0x24564B);
+  const stairMat = new THREE.MeshStandardMaterial({ color: 0xC9D2CE, roughness: 0.85, transparent: true });
+  const xray = [concrete, coreMat, stairMat];
   const els = [];
 
   function piece(w, h, d, x, y, z, kind, t0, t1, mat, axis) {
@@ -93,9 +95,12 @@
     m.castShadow = m.receiveShadow = true;
     m.position.set(x, axis === 'y' ? y - h / 2 : y, z);
     root.add(m);
-    const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(geo), ghostMat);
-    ghost.position.copy(m.position);
-    root.add(ghost);
+    // degraus ficam sem contorno: no desenho inicial eles só embaralham o núcleo
+    if (mat !== stairMat) {
+      const ghost = new THREE.LineSegments(new THREE.EdgesGeometry(geo), ghostMat);
+      ghost.position.copy(m.position);
+      root.add(ghost);
+    }
     const e = { m, kind, t0, t1, axis, baseY: m.position.y };
     els.push(e);
     return e;
@@ -113,8 +118,17 @@
   for (let f = 0; f < FL; f++) {
     const a = 0.3 + f * 0.08;
     xs.forEach((x, i) => zs.forEach((z, k) => piece(0.25, H, 0.35, x, f * H + H / 2, z, 'col', a + (i + k) * 0.003, a + 0.03 + (i + k) * 0.003, null, 'y')));
-    [[10.2, 3.2, 2.2, 0.2], [10.2, 6.8, 2.2, 0.2], [9.2, 5, 0.2, 3.6], [11.2, 5, 0.2, 3.6]].forEach(([cx, cz, w, d]) =>
+    // núcleo: três paredes; o lado do vão fica aberto para mostrar a escada
+    [[10.2, 3.2, 2.2, 0.2], [10.2, 6.8, 2.2, 0.2], [9.2, 5, 0.2, 3.6]].forEach(([cx, cz, w, d]) =>
       piece(w, H, d, cx, f * H + H / 2, cz, 'col', a + 0.012, a + 0.045, coreMat, 'y'));
+    // escada em U dentro do núcleo: dois lances de 9 degraus e patamar intermediário
+    const y0 = floorY(f), rise = (H + (f > 0 ? 0 : 0.12)) / 18, run = 0.27;
+    for (let i = 0; i < 9; i++) {
+      const h1 = rise * (i + 1), h2 = rise * (i + 10);
+      piece(0.86, h1, run, 10.67, y0 + h1 / 2, 3.5 + run * (i + 0.5), 'col', a + 0.02 + i * 0.002, a + 0.045 + i * 0.002, stairMat, 'y');
+      piece(0.86, h2, run, 9.73, y0 + h2 / 2, 3.5 + run * (8.5 - i), 'col', a + 0.04 + i * 0.002, a + 0.065 + i * 0.002, stairMat, 'y');
+    }
+    piece(1.8, rise * 9, 0.77, 10.2, y0 + rise * 9 / 2, 6.315, 'col', a + 0.035, a + 0.06, stairMat, 'y');
     const yb = (f + 1) * H - 0.25;
     zs.forEach(z => xs.slice(0, -1).forEach((x, i) => piece(xs[i + 1] - x, 0.5, 0.2, (x + xs[i + 1]) / 2, yb, z, 'beam', a + 0.03, a + 0.055, null, 'x')));
     xs.forEach(x => zs.slice(0, -1).forEach((z, i) => piece(0.2, 0.5, zs[i + 1] - z, x, yb, (z + zs[i + 1]) / 2, 'beam', a + 0.035, a + 0.06, null, 'z')));
@@ -206,6 +220,14 @@
     add(g, new THREE.BoxGeometry(0.85, 0.05, 0.85), louca, 0, 0.025, 0);
     add(g, new THREE.CylinderGeometry(0.11, 0.11, 0.03, 20), metal, 0, 2.05, 0);
   };
+  // cozinha: armário baixo, tampo, cuba e torneira (de frente para -z)
+  const cozinha = g => {
+    add(g, new THREE.BoxGeometry(2.4, 0.86, 0.6), new THREE.MeshStandardMaterial({ color: 0x5E7F75, roughness: 0.6 }), 0, 0.43, 0.05);
+    add(g, new THREE.BoxGeometry(2.46, 0.04, 0.64), bancada, 0, 0.88, 0.05);
+    add(g, new THREE.BoxGeometry(0.5, 0.05, 0.36), metal, 0, 0.885, 0.05);
+    add(g, new THREE.CylinderGeometry(0.018, 0.018, 0.26, 10), metal, 0, 1.03, 0.27);
+    add(g, new THREE.BoxGeometry(0.03, 0.03, 0.16), metal, 0, 1.15, 0.2);
+  };
   // tomada: espelho branco com dois furos, voltado para +z
   const tomada = g => {
     add(g, new THREE.BoxGeometry(0.16, 0.16, 0.025), louca, 0, 0, 0);
@@ -232,6 +254,10 @@
     group(5.2, fy, 9.3, b + 0.02, b + 0.04, pia);
     group(3.8, fy, 9.25, b + 0.025, b + 0.045, vaso);
     group(2.6, fy, 9.1, b + 0.03, b + 0.05, ducha);
+    // cozinha: bancada com pia junto às prumadas, com ramal de água e esgoto
+    group(6.9, fy, 7.75, b + 0.02, b + 0.04, cozinha);
+    pipe([[8.7, fy + 0.95, 7.2], [7.4, fy + 0.95, 7.2], [7.4, fy + 0.95, 7.9]], 0x2A78D2, 0.04, b + 0.005, b + 0.035);
+    pipe([[6.9, fy + 0.5, 7.85], [6.9, k === 0 ? -0.3 : fy - 0.2, 7.85], [8.95, k === 0 ? -0.3 : fy - 0.2, 7.85]], 0x7A6553, 0.055, b + 0.02, b + 0.055);
     const yw = fy + 0.55;
     pipe([[8.7, yw, 7.2], [5.2, yw, 7.2], [5.2, yw, 8.8], [2.6, yw, 8.8], [2.6, fy + 2.1, 8.8]], 0x2A78D2, 0.05, b, b + 0.05);
     const ys = k === 0 ? -0.3 : fy - 0.2;
@@ -279,21 +305,62 @@
     }
   }
 
-  // ---------- Câmera: quadros-chave (progresso, azimute, elevação, distância, alvo y) ----------
+  // caixilhos também nas fachadas laterais
+  for (let f = 0; f < FL; f++) {
+    for (let k = 0; k <= 6; k++) {
+      [-0.06, 13.56].forEach(x => {
+        const m = new THREE.Mesh(new THREE.BoxGeometry(0.05, H - 0.55, 0.05), mullMat);
+        m.position.set(x, f * H + H / 2 - 0.12, k * 10 / 6);
+        root.add(m);
+      });
+    }
+  }
+  // térreo: marquise e porta de entrada na fachada da rua
+  const fin = I0 + 0.27;
+  group(11.3, 0, 10, fin, fin + 0.03, g => {
+    add(g, new THREE.BoxGeometry(2.8, 0.12, 1.6), new THREE.MeshStandardMaterial({ color: 0x0D3931, roughness: 0.6 }), 0, 2.75, 0.8);
+    add(g, new THREE.BoxGeometry(1.7, 2.3, 0.06), new THREE.MeshStandardMaterial({ color: 0x24564B, roughness: 0.4, metalness: 0.3 }), 0, 1.15, 0.08);
+    add(g, new THREE.BoxGeometry(0.04, 2.2, 0.07), metal, 0, 1.1, 0.12);
+  });
+  // cobertura: placas solares inclinadas
+  for (let i = 0; i < 3; i++) for (let j = 0; j < 2; j++) {
+    group(2.2 + i * 2.1, FL * H + 0.12, 2.2 + j * 2.6, fin + 0.01 + (i + j) * 0.006, fin + 0.035 + (i + j) * 0.006, g => {
+      const pl = add(g, new THREE.BoxGeometry(1.9, 0.05, 1.1), new THREE.MeshStandardMaterial({ color: 0x1D3A5C, roughness: 0.25, metalness: 0.5 }), 0, 0.55, 0);
+      pl.rotation.x = -0.35;
+      add(g, new THREE.BoxGeometry(0.05, 0.5, 0.05), metal, -0.8, 0.25, 0.3);
+      add(g, new THREE.BoxGeometry(0.05, 0.5, 0.05), metal, 0.8, 0.25, 0.3);
+    });
+  }
+  // calçada, meio-fio e árvores
+  const piso = new THREE.MeshStandardMaterial({ color: 0xCBD5D1, roughness: 1 });
+  group(6.75, 0, 13.2, fin + 0.02, fin + 0.05, g => {
+    add(g, new THREE.BoxGeometry(19, 0.08, 2.2), piso, 0, 0.04, 0);
+    add(g, new THREE.BoxGeometry(19, 0.16, 0.15), new THREE.MeshStandardMaterial({ color: 0xAFBBB6, roughness: 1 }), 0, 0.08, 1.1);
+  });
+  const copa = [0x04B15B, 0x0C9A55, 0x3FBF7F];
+  [[-0.8, 13.4, 1], [4.2, 13.4, 0.85], [9.6, 13.4, 1.1], [16.2, 9.5, 0.9], [16.4, 3.0, 1.05], [-2.6, 4.0, 0.95]].forEach(([x, z, sc], i) =>
+    group(x, 0, z, fin + 0.03 + i * 0.006, fin + 0.06 + i * 0.006, g => {
+      add(g, new THREE.CylinderGeometry(0.07, 0.1, 1.4, 8), new THREE.MeshStandardMaterial({ color: 0x6B5A48, roughness: 1 }), 0, 0.7, 0);
+      const c = add(g, new THREE.IcosahedronGeometry(0.95, 0), new THREE.MeshStandardMaterial({ color: copa[i % 3], roughness: 0.8, flatShading: true }), 0, 2.05, 0);
+      c.scale.set(sc, sc * 1.15, sc);
+    }));
+
+  // ---------- Câmera: quadros-chave (progresso, azimute, elevação, distância, alvo y, distância no celular) ----------
+  // No celular a tela é estreita: a distância varia menos, para o prédio inteiro caber na largura.
   const KEYS = [
-    [0.00, 0.95, 0.42, 48, 4.5],
-    [0.10, 0.70, 0.62, 30, 0.0],
-    [0.30, 0.80, 0.48, 36, 3.0],
-    [0.62, 0.45, 0.30, 38, 5.5],
-    [0.82, 0.15, 0.16, 31, 6.0],
-    [1.00, -0.70, 0.26, 50, 5.0],
+    [0.00, 0.95, 0.42, 48, 4.5, 46],
+    [0.10, 0.70, 0.62, 44, 0.0, 50],
+    [0.30, 0.80, 0.48, 44, 3.0, 42],
+    [0.62, 0.45, 0.30, 42, 5.5, 48],
+    [0.82, 0.15, 0.16, 37, 6.0, 47],
+    [1.00, -0.70, 0.26, 44, 5.0, 47],
   ];
   function camAt(p) {
     let i = 0;
     while (i < KEYS.length - 2 && p > KEYS[i + 1][0]) i++;
     const a = KEYS[i], b = KEYS[i + 1], t = ease(seg(p, a[0], b[0]));
     const L = k => a[k] + (b[k] - a[k]) * t;
-    return { az: L(1), el: L(2), d: L(3), ty: L(4) };
+    return { az: L(1), el: L(2), d: L(mobile ? 5 : 3), ty: L(4) + (mobile ? 0 : 1.6) };
   }
 
   // ---------- Aplicar o progresso ----------
@@ -317,11 +384,13 @@
     // raio-x: estrutura translúcida enquanto as instalações aparecem
     const x = bump(p, 0.6, 0.66, 0.82, 0.88);
     const op = 1 - 0.74 * x;
-    concrete.opacity = op; coreMat.opacity = op;
-    concrete.depthWrite = coreMat.depthWrite = op > 0.99;
+    concrete.opacity = op; coreMat.opacity = op; stairMat.opacity = op;
+    concrete.depthWrite = coreMat.depthWrite = stairMat.depthWrite = op > 0.99;
     els.forEach(e => { if (e.kind === 'slab') { e.m.material.opacity = e.m.userData.t * (1 - 0.8 * x); e.m.material.depthWrite = x < 0.01; } });
 
-    ghostMat.opacity = (0.55 * (1 - seg(p, 0.1, 0.62)) + 0.1 * (1 - seg(p, 0.85, 1))) * intro;
+    // traço do projeto: verde forte no início, depois vira o contorno escuro e fino das peças
+    ghostMat.color.lerpColors(GHOST_A, GHOST_B, seg(p, 0.22, 0.55));
+    ghostMat.opacity = (0.55 * (1 - seg(p, 0.1, 0.45)) + 0.16 + 0.08 * x) * intro;
     const so = bump(p, 0.06, 0.12, 0.28, 0.34);
     soilMat.opacity = 0.32 * so; soilLines.opacity = 0.7 * so; soil.visible = soilEdge.visible = so > 0.001;
 
@@ -357,8 +426,8 @@
     const w = sticky.clientWidth, h = sticky.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
-    if (w / h > 1.15) { camera.zoom = Math.min(1, (w / h) / 1.1); camera.setViewOffset(w, h, -w * 0.17, -h * 0.03, w, h); }
-    else { camera.zoom = 0.5; camera.setViewOffset(w, h, 0, h * 0.2, w, h); }
+    if (w / h > 1.15) { camera.zoom = 0.88 * Math.min(1, (w / h) / 1.55); camera.setViewOffset(w, h, -w * 0.21, -h * 0.03, w, h); }
+    else { camera.zoom = 0.5 * Math.min(1, (h / w) / 2.2); camera.setViewOffset(w, h, 0, h * 0.17, w, h); }
     camera.updateProjectionMatrix();
     readProgress();
   }
