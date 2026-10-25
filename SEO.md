@@ -6,7 +6,7 @@ Regras para manter o SEO do site ao editar ou redesenhar páginas.
 
 - `<head>` do `index.html`: título, descrição, canonical, Open Graph (prévia no WhatsApp/Instagram/LinkedIn) e dados estruturados JSON-LD (`ProfessionalService` + `Person` + `WebSite`).
 - `robots.txt` e `sitemap.xml` na raiz.
-- `CNAME` com `www.horst.eng.br` (domínio próprio no GitHub Pages).
+- `CNAME` com `horst.eng.br` (o `www` redireciona para ele) (domínio próprio no GitHub Pages).
 - `docs/og-image.jpg` (1200×630): imagem que aparece quando o link é compartilhado.
 
 **No redesign, copie o bloco `<head>` inteiro** (do `<title>` até o fim do `<script type="application/ld+json">`). Se mudar endereço, telefone ou serviços, atualize também o JSON-LD.
@@ -34,6 +34,6 @@ Foco em busca local (Serra Gaúcha), porque é assim que clientes e arquitetos p
 
 ## Fora do código
 
-- **Google Perfil da Empresa** (business.google.com): o item que mais pesa em busca local. Mesmo nome, endereço e telefone do site, link para `https://www.horst.eng.br/`, fotos de obras.
-- **Google Search Console**: adicionar o domínio `horst.eng.br`, verificar pelo DNS e enviar `https://www.horst.eng.br/sitemap.xml`.
+- **Google Perfil da Empresa** (business.google.com): o item que mais pesa em busca local. Mesmo nome, endereço e telefone do site, link para `https://horst.eng.br/`, fotos de obras.
+- **Google Search Console**: adicionar o domínio `horst.eng.br`, verificar pelo DNS e enviar `https://horst.eng.br/sitemap.xml`.
 - Pedir para arquitetos e construtoras parceiras linkarem o site; colocar o link na bio do Instagram.

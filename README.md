@@ -1,6 +1,6 @@
 # Horst Engenharia
 
-Site institucional da Horst Engenharia, escritório de projetos estruturais e complementares em Carlos Barbosa, RS. Publicado pelo GitHub Pages em [www.horst.eng.br](https://www.horst.eng.br/).
+Site institucional da Horst Engenharia, escritório de projetos estruturais e complementares em Carlos Barbosa, RS. Publicado pelo GitHub Pages em [horst.eng.br](https://horst.eng.br/).
 
 O site é um portfólio: a abertura conta, com uma obra em 3D que se constrói conforme a página rola, as etapas de um projeto (fundação, estrutura, instalações e entrega). Depois vêm os serviços, as obras, um modelo 3D real para explorar, o escritório e o contato.
 
