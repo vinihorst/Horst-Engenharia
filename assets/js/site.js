@@ -1,80 +1,55 @@
-/* Interações da página (serviços e números ficam direto no index.html, por SEO): menu, etapas da história, títulos, obras na horizontal e visualizador do modelo .glb. */
+/* Interações da página (serviços e números ficam direto no index.html, por SEO): menu, etapas da história, títulos, números, obras e visualizador do modelo .glb. */
 
 (function () {
   'use strict';
   document.documentElement.classList.remove('no-js');
+  document.documentElement.classList.add('js');
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = () => window.matchMedia('(max-width: 860px)').matches;
   const clamp01 = v => Math.max(0, Math.min(1, v));
   const seg = (p, a, b) => clamp01((p - a) / (b - a));
   const fmt = (v, d) => v.toFixed(d).replace('.', ',');
   const { OBRAS = [], TIPOS = [] } = window.HORST;
 
-  // ---------- Obras: fachada desenhada em traço ----------
-  function fachada(o) {
-    const W = 240, H = 160, g = 136, L = [];
-    const line = (x1, y1, x2, y2, e) => L.push(`<line pathLength="1" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" ${e || ''}/>`);
-    const rect = (x, y, w, h, e) => L.push(`<rect pathLength="1" x="${x}" y="${y}" width="${w}" height="${h}" ${e || ''}/>`);
-    const n = o.pavimentos || 1;
-    let top = g, right = 0;
-    if (o.desenho === 'casa') {
-      const w = 110 * (o.largura || 1), x = (W - w) / 2 - 10, fh = 26, h = fh * n;
-      rect(x, g - h, w, h);
-      for (let i = 1; i < n; i++) line(x, g - fh * i, x + w, g - fh * i, 'stroke-dasharray="3 2"');
-      L.push(`<polyline pathLength="1" points="${x - 8},${g - h} ${x + w * 0.55},${g - h - 30} ${x + w + 8},${g - h}"/>`);
-      for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) rect(x + 12 + k * (w - 24) / 3, g - fh * (i + 1) + 7, (w - 24) / 3 - 10, 12, 'stroke-width=".8"');
-      top = g - h - 30; right = x + w + 8;
-    } else if (o.desenho === 'predio') {
-      const w = 92, x = (W - w) / 2 - 10, fh = Math.min(13, 112 / n), h = fh * n;
-      rect(x, g - h, w, h);
-      for (let i = 1; i < n; i++) line(x, g - fh * i, x + w, g - fh * i);
-      for (let i = 0; i < n; i++) for (let k = 0; k < 4; k++) rect(x + w * k / 4 + 4, g - fh * (i + 1) + 3, w / 4 - 8, fh - 6, 'stroke-width=".6"');
-      rect(x + w * 0.62, g - h - 9, w * 0.25, 9, 'stroke-width=".8"');
-      top = g - h - 9; right = x + w;
-    } else if (o.desenho === 'comercial') {
-      const w = 150, x = (W - w) / 2 - 10, fh = 18, h = fh * n;
-      rect(x, g - h, w, h);
-      for (let i = 1; i < n; i++) line(x, g - fh * i, x + w, g - fh * i);
-      for (let i = 0; i < n; i++) rect(x + 6, g - fh * (i + 1) + 4, w - 12, fh - 8, 'stroke-width=".7"');
-      for (let k = 1; k < 6; k++) line(x + w * k / 6, g - h, x + w * k / 6, g, 'stroke-width=".5"');
-      top = g - h; right = x + w;
-    } else {
-      const w = 180, x = (W - w) / 2 - 10, h = 46;
-      L.push(`<polyline pathLength="1" points="${x},${g - h} ${x + w / 2},${g - h - 18} ${x + w},${g - h}"/>`);
-      line(x, g - h, x, g); line(x + w, g - h, x + w, g);
-      for (let k = 1; k < 8; k++) line(x + w * k / 8, g - h, x + w * k / 8, g, 'stroke-width=".6"');
-      rect(x + w * 0.4, g - 30, w * 0.2, 30, 'stroke-width=".9"');
-      top = g - h - 18; right = x + w;
-    }
-    const metros = { casa: n * 3 + 2.5, predio: n * 3 + 1.5, comercial: n * 4, pavilhao: 9 }[o.desenho];
-    const dx = Math.min(W - 10, right + 14);
-    line(dx, top, dx, g, 'stroke-width=".7"'); line(dx - 3, top, dx + 3, top, 'stroke-width=".7"'); line(dx - 3, g, dx + 3, g, 'stroke-width=".7"');
-    L.push(`<text x="${dx - 4}" y="${(top + g) / 2}" transform="rotate(-90 ${dx - 4} ${(top + g) / 2})" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="7" fill="currentColor" stroke="none">${fmt(metros, 1)} m</text>`);
-    line(8, g, W - 8, g, 'stroke-width="1.4"');
-    for (let x = 12; x < W - 8; x += 8) line(x, g + 1, x - 5, g + 7, 'stroke-width=".5"');
-    return `<svg class="elev" viewBox="0 0 ${W} ${H}" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">${L.join('')}</svg>`;
-  }
-  const track = document.querySelector('[data-obras]');
-  const reais = OBRAS.length > 0, itens = reais ? OBRAS : TIPOS;
-  const num = i => `${String(i + 1).padStart(2, '0')} / ${String(itens.length).padStart(2, '0')}`;
-  track.innerHTML = itens.map((o, i) => reais ? `
-    <li class="work">
-      <div class="pic">${o.foto ? `<img src="${o.foto}" alt="${o.nome}, ${o.cidade}" loading="lazy">` : fachada(o)}<span class="idx">${num(i)}</span></div>
-      <div class="body"><span class="cat">${o.categoria} · ${o.ano}</span><h3>${o.nome}</h3>${o.texto ? `<p>${o.texto}</p>` : ''}<div class="meta"><span>${o.cidade}</span><span>${o.area}</span></div></div>
+  // ---------- Obras: grade com fotos (até 8) ----------
+  const SIMBOLO = '<svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1"/><polygon points="1,1 2,0 3,0 3,1"/><polygon points="0,2 1,1 1,3 0,3"/><rect x="2" y="2" width="1" height="1"/></svg>';
+  const grid = document.querySelector('[data-obras]');
+  const reais = OBRAS.length > 0;
+  grid.innerHTML = (reais ? OBRAS.slice(0, 8) : TIPOS).map(o => reais ? `
+    <li class="obra">
+      <div class="pic">${o.foto ? `<img src="${o.foto}" alt="${o.alt || `${o.categoria} em ${o.cidade}: ${o.nome}, projeto da Horst Engenharia`}" loading="lazy">` : `<div class="ph">${SIMBOLO}</div>`}</div>
+      <div class="body"><span class="cat">${[o.categoria, o.cidade].filter(Boolean).join(' · ')}</span><h3>${o.nome}</h3>${o.texto ? `<p>${o.texto}</p>` : ''}${o.area || o.ano ? `<div class="meta"><span>${o.area || ''}</span><span>${o.ano || ''}</span></div>` : ''}</div>
     </li>` : `
-    <li class="work">
-      <div class="pic">${fachada(o)}<span class="idx">${num(i)}</span></div>
+    <li class="obra">
+      <div class="pic"><div class="ph">${SIMBOLO}</div></div>
       <div class="body"><span class="cat">Tipo de obra</span><h3>${o.nome}</h3><p>${o.texto}</p></div>
-    </li>`).join('') + `
-    <li><a class="work more" href="https://www.instagram.com/horst.eng" target="_blank" rel="noopener">
-      <div><h3>${reais ? 'Acompanhe as obras em andamento' : 'Veja as obras no Instagram'}</h3><p>Projetos, obras em andamento e bastidores do escritório.</p></div>
-      <span>@horst.eng ↗</span></a></li>`;
-  if (!reais) track.closest('.works').classList.add('grade');
-  const total = document.querySelector('[data-obras-total]');
-  total.innerHTML = reais
-    ? `<strong>${OBRAS.length} ${OBRAS.length === 1 ? 'obra' : 'obras'}</strong><br>publicadas no portfólio`
-    : '<strong>Do sobrado ao pavilhão</strong><br>estrutura, fundação, elétrica e hidráulica';
+    </li>`).join('');
+
+  // ---------- Serviços: no celular, resumo com "Ler mais" ----------
+  document.querySelectorAll('.svc-mais').forEach(btn => btn.addEventListener('click', () => {
+    const open = btn.closest('.svc').classList.toggle('aberto');
+    btn.setAttribute('aria-expanded', String(open));
+    btn.textContent = open ? 'Ler menos' : 'Ler mais';
+  }));
+
+  // ---------- Números contam do zero ----------
+  const counts = document.querySelectorAll('.count[data-alvo]');
+  const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
+  if (!reduce && 'IntersectionObserver' in window) {
+    counts.forEach(el => { el.textContent = '0'; });
+    const countIO = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return;
+      countIO.unobserve(e.target);
+      const el = e.target, alvo = +el.dataset.alvo, t0 = performance.now(), dur = 2000;
+      const tick = now => {
+        const t = clamp01((now - t0) / dur);
+        el.textContent = fmtInt(alvo * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }), { threshold: 0.5 });
+    counts.forEach(el => countIO.observe(el));
+  }
 
   document.querySelectorAll('[data-ano]').forEach(el => { el.textContent = new Date().getFullYear(); });
 
@@ -97,7 +72,7 @@
     walk(el);
   }
   document.querySelectorAll('.chap h1, .chap h2').forEach(splitWords);
-  const heads = document.querySelectorAll('.sec-head h2, .works-head h2, .contact h2, .viewer-info h2, .about-title');
+  const heads = document.querySelectorAll('.sec-head h2, .contact h2, .viewer-info h2, .about-title');
   heads.forEach(splitWords);
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('w-on'); io.unobserve(e.target); }
@@ -105,20 +80,13 @@
   heads.forEach(h => io.observe(h));
 
   // ---------- Menu ----------
-  const nav = document.querySelector('.nav'), menu = document.getElementById('menu'), menuBtn = document.querySelector('.menu-btn');
+  const menu = document.getElementById('menu'), menuBtn = document.querySelector('.menu-btn');
   menuBtn.addEventListener('click', () => {
     const open = menu.classList.toggle('open');
     menuBtn.setAttribute('aria-expanded', String(open));
     menuBtn.textContent = open ? 'Fechar' : 'Menu';
   });
   menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); menuBtn.textContent = 'Menu'; }));
-  let lastY = window.scrollY;
-  window.addEventListener('scroll', () => {
-    const y = window.scrollY;
-    nav.classList.toggle('hide', y > lastY + 4 && y > 400 && !menu.classList.contains('open'));
-    if (y < lastY - 4) nav.classList.remove('hide');
-    lastY = y;
-  }, { passive: true });
   const sections = [...document.querySelectorAll('main section[id]')];
   const links = [...document.querySelectorAll('.nav-links a')];
   const sectionObserver = new IntersectionObserver(es => es.forEach(e => {
@@ -158,30 +126,10 @@
     window.scrollTo({ top: top + total * (B()[i + 2] - 0.012), behavior: reduce ? 'auto' : 'smooth' });
   }));
 
-  // ---------- Obras na horizontal ----------
-  const works = document.querySelector('.works'), bar = document.getElementById('obras-barra');
-  function sizeWorks() {
-    if (isMobile() || reduce || works.classList.contains('grade')) { works.style.height = ''; track.style.transform = ''; return; }
-    const dist = Math.max(0, track.scrollWidth - window.innerWidth);
-    works.style.height = (window.innerHeight + dist) + 'px';
-    works.dataset.dist = dist;
-  }
-  function moveWorks() {
-    if (isMobile() || reduce) return;
-    const r = works.getBoundingClientRect(), dist = +works.dataset.dist || 0;
-    const t = clamp01(-r.top / Math.max(1, works.offsetHeight - window.innerHeight));
-    track.style.transform = `translate3d(${-dist * t}px,0,0)`;
-    bar.style.transform = `scaleX(${t})`;
-  }
-  sizeWorks(); moveWorks();
-  window.addEventListener('resize', () => { sizeWorks(); moveWorks(); });
-  window.addEventListener('scroll', moveWorks, { passive: true });
-  if (isMobile()) track.addEventListener('scroll', () => { bar.style.transform = `scaleX(${clamp01(track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth))})`; }, { passive: true });
-
   // ---------- Revelações sutis ----------
   if (window.gsap && window.ScrollTrigger && !reduce) {
     gsap.registerPlugin(ScrollTrigger);
-    document.querySelectorAll('.svc, .stat, .about .photo, .about > div, .viewer').forEach(el => {
+    document.querySelectorAll('.svc, .stat, .obra, .about .photo, .about > div, .viewer').forEach(el => {
       gsap.from(el, { opacity: 0, y: 14, duration: 0.45, ease: 'power1.out', scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' } });
     });
     window.addEventListener('load', () => ScrollTrigger.refresh());

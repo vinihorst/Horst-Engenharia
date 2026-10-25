@@ -170,6 +170,48 @@
     lights.push({ m, sp, mat, t });
   }
 
+  // peças de louça e tomadas: grupos que "surgem" junto com as instalações
+  const louca = new THREE.MeshStandardMaterial({ color: 0xFBFCFC, roughness: 0.25, metalness: 0.02 });
+  const metal = new THREE.MeshStandardMaterial({ color: 0xA9B4B0, roughness: 0.3, metalness: 0.7 });
+  const bancada = new THREE.MeshStandardMaterial({ color: 0xD9DEDB, roughness: 0.5 });
+  function group(x, y, z, t0, t1, build, rotY) {
+    const g = new THREE.Group();
+    build(g);
+    g.traverse(o => { if (o.isMesh) o.castShadow = true; });
+    g.position.set(x, y, z);
+    if (rotY) g.rotation.y = rotY;
+    g.scale.setScalar(0.0001);
+    root.add(g);
+    pops.push({ m: g, t0, t1 });
+  }
+  const add = (g, geo, mat, x, y, z) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); g.add(m); return m; };
+  // vaso sanitário com caixa acoplada (frente para -z)
+  const vaso = g => {
+    const pe = add(g, new THREE.CylinderGeometry(0.13, 0.16, 0.3, 20), louca, 0, 0.15, 0); pe.scale.z = 1.25;
+    const bacia = add(g, new THREE.CylinderGeometry(0.19, 0.15, 0.12, 24), louca, 0, 0.36, -0.03); bacia.scale.z = 1.35;
+    add(g, new THREE.BoxGeometry(0.4, 0.035, 0.5), louca, 0, 0.435, -0.03);
+    add(g, new THREE.BoxGeometry(0.38, 0.36, 0.17), louca, 0, 0.6, 0.24);
+    add(g, new THREE.BoxGeometry(0.06, 0.02, 0.04), metal, 0, 0.79, 0.24);
+  };
+  // lavatório: bancada, cuba e torneira
+  const pia = g => {
+    add(g, new THREE.BoxGeometry(0.7, 0.04, 0.48), bancada, 0, 0.84, 0);
+    add(g, new THREE.CylinderGeometry(0.19, 0.15, 0.13, 24), louca, 0, 0.91, -0.02);
+    add(g, new THREE.CylinderGeometry(0.02, 0.02, 0.2, 10), metal, 0, 0.96, 0.17);
+    add(g, new THREE.BoxGeometry(0.03, 0.03, 0.14), metal, 0, 1.05, 0.11);
+    add(g, new THREE.BoxGeometry(0.62, 0.62, 0.42), bancada, 0, 0.51, 0.02).material = new THREE.MeshStandardMaterial({ color: 0xC6CFCB, roughness: 0.7 });
+  };
+  // box do chuveiro: base e ducha
+  const ducha = g => {
+    add(g, new THREE.BoxGeometry(0.85, 0.05, 0.85), louca, 0, 0.025, 0);
+    add(g, new THREE.CylinderGeometry(0.11, 0.11, 0.03, 20), metal, 0, 2.05, 0);
+  };
+  // tomada: espelho branco com dois furos, voltado para +z
+  const tomada = g => {
+    add(g, new THREE.BoxGeometry(0.16, 0.16, 0.025), louca, 0, 0, 0);
+    [-0.03, 0.03].forEach(dx => add(g, new THREE.CylinderGeometry(0.012, 0.012, 0.03, 8), metal, dx, 0, 0.005).rotation.x = Math.PI / 2);
+  };
+
   const I0 = 0.62;
   // água fria: caixa d'água sobre o núcleo, prumada descendo pelo shaft e ramais até os banheiros
   equip(2.2, 1.3, 2.0, 10.2, FL * H + 0.42, 5, 0x8FC2E6, I0, I0 + 0.025);
@@ -186,9 +228,10 @@
 
   for (let k = 0; k < FL; k++) {
     const fy = floorY(k), b = I0 + 0.07 + k * 0.022;
-    // banheiro: lavatório, bacia e chuveiro
-    equip(0.55, 0.85, 0.4, 5.2, fy, 9.15, 0xF4F6F5, b + 0.02, b + 0.04);
-    equip(0.4, 0.42, 0.62, 3.8, fy, 9.2, 0xF4F6F5, b + 0.02, b + 0.04);
+    // banheiro: lavatório, vaso sanitário e chuveiro
+    group(5.2, fy, 9.3, b + 0.02, b + 0.04, pia);
+    group(3.8, fy, 9.25, b + 0.025, b + 0.045, vaso);
+    group(2.6, fy, 9.1, b + 0.03, b + 0.05, ducha);
     const yw = fy + 0.55;
     pipe([[8.7, yw, 7.2], [5.2, yw, 7.2], [5.2, yw, 8.8], [2.6, yw, 8.8], [2.6, fy + 2.1, 8.8]], 0x2A78D2, 0.05, b, b + 0.05);
     const ys = k === 0 ? -0.3 : fy - 0.2;
@@ -200,6 +243,12 @@
     pipe([[2.25, yc, 7.5], [2.25, yc, 2.5], [11.25, yc, 2.5]], 0xE0A100, 0.04, b + 0.03, b + 0.07);
     [[2.25, 7.5], [6.75, 7.5], [11.25, 7.5], [2.25, 2.5], [6.75, 2.5], [11.25, 2.5]].forEach(([x, z], i) =>
       lamp(x, yc - 0.06, z, b + 0.03 + i * 0.006));
+    // tomadas nos pilares e na parede do núcleo, com a descida do eletroduto pelo forro
+    [[4.5, 5.19, 0], [4.5, 4.81, Math.PI], [0, 5.19, 0], [13.5, 5.19, 0], [9.18, 4.2, -Math.PI / 2], [9.18, 6.0, -Math.PI / 2]].forEach(([x, z, r], i) => {
+      const t = b + 0.035 + i * 0.005;
+      pipe([[x, yc, z], [x, fy + 0.38, z]], 0xE0A100, 0.025, t, t + 0.02);
+      group(x, fy + 0.3, z, t + 0.015, t + 0.03, tomada, r);
+    });
   }
 
   // ---------- Entrega: fachada de vidro, caixilhos e guarda-corpo ----------
