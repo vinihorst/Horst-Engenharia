@@ -5,7 +5,7 @@ Regras para manter o SEO do site ao editar ou redesenhar páginas.
 ## O que já está no site
 
 - `<head>` do `index.html`: título, descrição, canonical, Open Graph (prévia no WhatsApp/Instagram/LinkedIn), cartão do X/Twitter e dados estruturados JSON-LD.
-- JSON-LD (`@graph`): `ProfessionalService` (tipo de `LocalBusiness`) com endereço, telefone, e-mail, mapa e Instagram; um `Service` para cada serviço; `Person` (Vinícius, CREA-RS); `WebSite` e `WebPage`. Não usamos `BreadcrumbList` porque o site tem uma página só.
+- JSON-LD (`@graph`): `ProfessionalService` (tipo de `LocalBusiness`) com endereço, telefone, e-mail, mapa e Instagram; um `Service` para cada serviço; `Person` (Vinícius); `WebSite` e `WebPage`. Não usamos `BreadcrumbList` porque o site tem uma página só.
 - `robots.txt` e `sitemap.xml` na raiz. `CNAME` com `horst.eng.br` (o `www` redireciona).
 - `docs/og-image.jpg` (1200×630): imagem que aparece quando o link é compartilhado.
 
