@@ -192,7 +192,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .viewer-info .eyebrow::before { background: var(--green-lt); }
 .viewer-tips { list-style: none; margin: auto 0 0; padding: 18px 0 0; border-top: 1px solid rgba(255,255,255,.14); display: grid; gap: 8px; font-size: 15px; color: var(--on-deep-muted); }
 .viewer-stage { position: relative; background: radial-gradient(80% 80% at 50% 45%, #1A574B 0%, var(--deep-2) 55%, var(--deep) 100%); overflow: hidden; min-height: 420px; }
-.viewer-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.viewer-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .viewer-poster { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 24px; }
 .viewer-poster svg { width: min(46%, 260px); opacity: .9; }
 .viewer-load { margin-top: 24px; display: inline-flex; gap: 10px; align-items: center; background: var(--green-lt); color: var(--deep); border: 0; border-radius: 999px; padding: 14px 22px; font: inherit; font-weight: 500; font-size: 16px; cursor: pointer; transition: transform .2s; }
@@ -408,6 +408,84 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .chap .step { font-size: 12px; }
   .hud { left: auto; width: 360px; }
 }
+/* ---------- Layout v2 (out/2026): cada seção com formato próprio, sem rótulo repetido ---------- */
+.sec-head h2 { margin-top: 0; }
+p, li { text-wrap: pretty; }
+.about-title { margin-top: 0; }
+
+/* Serviços como índice: número, disciplina, resumo; detalhes sob demanda e link para a página do serviço */
+.svc-n { font: 500 13px/1 var(--mono); letter-spacing: .08em; color: var(--green-dk); padding-top: .7em; }
+.svc-destaque .svc-n { padding-top: .9em; }
+.js .svc .curto { display: block; color: var(--ink); font-size: 17px; }
+.js .svc .completo { display: none; }
+.js .svc.aberto .completo { display: block; }
+.js .svc.aberto .curto { display: none; }
+.svc-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 24px; margin-top: 16px; }
+.js .svc-mais { display: inline-block; background: none; border: 0; padding: 6px 0; font: 500 15px/1 var(--sans); color: var(--green-dk); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.svc-link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 0; font-size: 15px; font-weight: 500; color: var(--ink); text-decoration: none; border-bottom: 1.5px solid var(--green); }
+.svc-link span { transition: transform .2s var(--ease-out); }
+.svc-link:hover span { transform: translateX(3px); }
+
+/* Método como faixa de eixos de prancha: balões numerados ligados por uma linha de eixo */
+.sec-head-stack { grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+.sec-head-stack p { max-width: 62ch; }
+.etapas { border-top: 0; position: relative; }
+.etapas::before { content: ""; position: absolute; left: 0; right: 0; top: 20px; height: 1px; background: var(--ink); }
+.etapas li, .etapas li + li { padding: 0 28px 0 0; border-left: 0; }
+.etapas .n { position: relative; z-index: 1; display: grid; place-items: center; width: 40px; height: 40px; border: 1.5px solid var(--ink); border-radius: 50%; background: var(--white); font: 500 15px/1 var(--mono); letter-spacing: 0; color: var(--ink); }
+.etapas .n::after { content: ""; position: absolute; left: 50%; top: 100%; height: 26px; border-left: 1px dashed var(--green); }
+.etapas h3 { margin: 40px 0 10px; }
+
+/* Visualizador 3D em largura total: o modelo é a peça principal, o texto fica por cima */
+.sec-modelo { padding-block: 128px 0; }
+.viewer { display: block; position: relative; min-height: 0; background: var(--deep); }
+.viewer-stage { height: clamp(560px, 84vh, 880px); min-height: 0; }
+.viewer-stage::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 48%; background: linear-gradient(90deg, rgba(13,57,49,.9) 0%, rgba(13,57,49,.55) 55%, rgba(13,57,49,0) 100%); pointer-events: none; z-index: 1; }
+.viewer-info { position: absolute; inset: 0; z-index: 2; display: block; padding-block: 0; pointer-events: none; }
+.viewer-info .wrap { position: relative; height: 100%; }
+.viewer-card { position: absolute; top: 56px; left: 0; width: min(380px, 100%); display: flex; flex-direction: column; gap: 18px; pointer-events: auto; }
+.viewer-card .viewer-tips { margin-top: 6px; }
+.viewer-poster { z-index: 2; padding-left: 36%; }
+.viewer-tools { z-index: 3; }
+.viewer-touch { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 3; background: var(--green-lt); color: var(--deep); border: 0; border-radius: 999px; padding: 13px 22px; font: inherit; font-weight: 500; font-size: 15px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.25); white-space: nowrap; }
+@media (pointer: coarse) { .viewer-tools { top: 14px; bottom: auto; } }
+
+/* Para quem: título fixo ao lado, públicos em linhas */
+.parceiros-in { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: 56px; align-items: start; }
+.sec-head-side { display: block; position: sticky; top: calc(var(--nav-h) + 40px); margin-bottom: 0; }
+.sec-head-side p { margin-top: 22px; }
+.publicos { grid-template-columns: minmax(0, 1fr); }
+.publicos article, .publicos article + article { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 6px 32px; padding: 30px 0; border-left: 0; border-bottom: 1px solid var(--line); }
+.publicos h3 { grid-row: 1 / span 2; font-size: clamp(24px, 2.2vw, 30px); margin-bottom: 0; }
+.publicos ul { margin-top: 14px; }
+
+@media (max-width: 960px) {
+  .etapas { grid-template-columns: minmax(0, 1fr); }
+  .etapas::before { left: 20px; right: auto; top: 20px; bottom: 48px; width: 1px; height: auto; }
+  .etapas li, .etapas li + li, .etapas li:nth-child(even) { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 20px; padding: 0 0 28px; border: 0; }
+  .etapas .n { grid-row: 1 / span 2; }
+  .etapas .n::after { display: none; }
+  .etapas h3 { margin: 8px 0 6px; }
+  .etapas p { max-width: 60ch; }
+  .parceiros-in { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .sec-head-side { position: static; }
+}
+@media (max-width: 860px) {
+  .sec-modelo { padding-block: 88px 0; }
+  .viewer-info { position: static; padding-block: 36px 28px; pointer-events: auto; }
+  .viewer-info .wrap { height: auto; }
+  .viewer-card { position: static; width: auto; }
+  .viewer-card .viewer-tips { display: none; }
+  .viewer-stage { height: 72vh; min-height: 420px; max-height: 640px; }
+  .viewer-stage::after { display: none; }
+  .viewer-poster { padding-left: 24px; }
+  .svc-n { padding-top: .45em; font-size: 12px; }
+}
+@media (max-width: 600px) {
+  .publicos article, .publicos article + article { grid-template-columns: minmax(0, 1fr); }
+  .publicos h3 { grid-row: auto; margin-bottom: 4px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .w > span { transform: none !important; }

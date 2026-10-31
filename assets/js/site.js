@@ -96,7 +96,7 @@
     numBox.classList.toggle('stats-4', nums.length >= 4);
   }
 
-  // ---------- Serviços: no celular, resumo com "Ler mais" ----------
+  // ---------- Serviços: resumo com "Ler mais" e link para a página do serviço ----------
   document.querySelectorAll('.svc-mais').forEach(btn => btn.addEventListener('click', () => {
     const open = btn.closest('.svc').classList.toggle('aberto');
     btn.setAttribute('aria-expanded', String(open));
@@ -247,17 +247,23 @@
       const key = new THREE.DirectionalLight(0xffffff, 0.8); key.position.set(-1, 2, 1.5); scene.add(key);
       const controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true; controls.dampingFactor = 0.08;
+      // No celular, um dedo sobre o modelo continua rolando a página; o giro só liga depois de um toque no botão.
+      const toque = window.matchMedia('(pointer: coarse)').matches, touchBtn = stage.querySelector('.viewer-touch');
+      const travar = on => { controls.enabled = !on; renderer.domElement.style.touchAction = on ? 'pan-y' : 'none'; if (touchBtn) touchBtn.hidden = !on || !view || !view.model; };
+      if (toque) travar(true);
+      if (touchBtn) touchBtn.addEventListener('click', () => travar(false));
       const draco = new THREE.DRACOLoader();
       draco.setDecoderPath(JSM + 'libs/draco/');
       const loader = new THREE.GLTFLoader();
       loader.setDRACOLoader(draco);
       let visible = true, looping = false;
-      const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); };
+      // Em telas largas o texto fica sobre a esquerda do palco, então o centro da vista vai um pouco para a direita.
+      const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; if (w >= 860) camera.setViewOffset(w, h, -w * 0.12, 0, w, h); else camera.clearViewOffset(); camera.updateProjectionMatrix(); };
       const render = () => { if (!visible) { looping = false; return; } controls.update(); renderer.render(scene, camera); requestAnimationFrame(render); };
       const loop = () => { if (visible && !looping) { looping = true; requestAnimationFrame(render); } };
       new ResizeObserver(fit).observe(stage);
-      new IntersectionObserver(([e]) => { visible = e.isIntersecting; loop(); }).observe(stage);
-      view = { renderer, scene, camera, controls, loader, fit, loop, model: null, home: null };
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (!visible && toque) travar(true); loop(); }).observe(stage);
+      view = { renderer, scene, camera, controls, loader, fit, loop, travar: toque ? travar : null, model: null, home: null };
       tools.querySelector('[data-reset]').addEventListener('click', () => { if (view.home) { camera.position.copy(view.home); controls.target.set(0, 0, 0); } });
       tools.querySelector('[data-full]').addEventListener('click', () => { if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {}); });
     })());
@@ -279,13 +285,16 @@
         model.position.sub(center);
         scene.add(model);
         const radius = size.length() / 2;
-        view.home = new THREE.Vector3(-37.5, 22.7, -43.4).normalize().multiplyScalar(radius * 2.1);
+        // Em palco estreito (celular) a câmera recua para o modelo caber na largura.
+        view.fit();
+        view.home = new THREE.Vector3(-37.5, 22.7, -43.4).normalize().multiplyScalar(radius * 2.1 * Math.max(1, 1.15 / camera.aspect));
         camera.near = radius / 100; camera.far = radius * 20; camera.updateProjectionMatrix();
         camera.position.copy(view.home); controls.target.set(0, 0, 0); controls.update();
         controls.minDistance = radius * 0.3; controls.maxDistance = radius * 5;
         if (!renderer.domElement.parentNode) stage.prepend(renderer.domElement);
         view.model = model; current = url; pending = null;
         poster.hidden = true; tools.hidden = false; status.textContent = '';
+        if (view.travar) view.travar(!view.controls.enabled);
         view.fit(); controls.update(); renderer.render(scene, camera); view.loop();
       }, xhr => {
         if (xhr.total) { progress.style.transform = `scaleX(${xhr.loaded / xhr.total})`; status.textContent = `Carregando modelo… ${fmt(xhr.loaded / 1048576, 1)} de ${fmt(xhr.total / 1048576, 1)} MB`; }
