@@ -13,7 +13,7 @@
 .servico-corpo { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 64px; margin-top: 72px; padding-top: 40px; border-top: 1px solid var(--ink); align-items: start; }
 .servico-texto h2 { font-size: clamp(26px, 2.6vw, 34px); letter-spacing: -.02em; line-height: 1.1; margin: 48px 0 16px; }
 .servico-texto h2:first-child { margin-top: 0; }
-.servico-texto p { color: var(--muted); line-height: 1.65; max-width: 62ch; margin: 0; }
+.servico-texto p { color: var(--muted); line-height: 1.65; max-width: 54ch; margin: 0; }
 .servico-texto p + p { margin-top: 14px; }
 .servico-texto a { color: var(--green-dk); }
 
@@ -26,7 +26,7 @@
 .faq details p { margin: 10px 0 0; }
 
 .servico-lado { position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 24px; }
-.servico-cartao { background: var(--deep); color: #fff; border-radius: 16px; padding: 28px; }
+.servico-cartao { background: var(--deep); color: #fff; padding: 28px; }
 .servico-cartao h2 { font-size: 24px; letter-spacing: -.01em; }
 .servico-cartao p { color: var(--on-deep-muted); line-height: 1.55; margin: 12px 0 20px; }
 .servico-cartao .servico-contato { margin: 20px 0 0; font-size: 15px; }

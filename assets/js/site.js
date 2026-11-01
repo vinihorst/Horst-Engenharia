@@ -106,7 +106,7 @@
   // ---------- Números contam do zero ----------
   const counts = document.querySelectorAll('.count[data-alvo]');
   const fmtInt = n => Math.round(n).toLocaleString('pt-BR');
-  // Contam do zero sempre que a faixa entra na tela (e voltam a zero quando sai).
+  // Contam do zero uma vez, quando a faixa entra na tela.
   if (!reduce && 'IntersectionObserver' in window) {
     // largura fixa do número final, para o conjunto centralizado não balançar durante a contagem
     const medir = () => counts.forEach(el => {
@@ -119,8 +119,8 @@
     counts.forEach(el => { el.textContent = '0'; });
     const countIO = new IntersectionObserver(es => es.forEach(e => {
       const el = e.target;
-      if (!e.isIntersecting) { const r = e.boundingClientRect; if (r.top >= innerHeight || r.bottom <= 0) { el._run = 0; el.textContent = '0'; } return; }
-      if (el._run || e.intersectionRatio < 0.5) return;
+      if (!e.isIntersecting || el._run || e.intersectionRatio < 0.5) return;
+      countIO.unobserve(el);
       const alvo = +el.dataset.alvo, t0 = performance.now(), dur = 2000, run = el._run = t0;
       const tick = now => {
         if (el._run !== run) return;
@@ -268,6 +268,79 @@
       tools.querySelector('[data-full]').addEventListener('click', () => { if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {}); });
     })());
 
+    // Disciplinas: o modelo otimizado junta as peças por cor numa paleta; cada triângulo é separado pela cor da paleta que usa.
+    const DISC = [
+      { id: 'estrutura', nome: 'Estrutura', cor: '#8e7640', cores: ['646464', '8e7640', '5a5a5a'] },
+      { id: 'fundacao', nome: 'Fundação', cor: '#d45c1b', cores: ['d45c1b'] },
+      { id: 'eletrica', nome: 'Elétrica', cor: '#e48b2d', cores: ['e48b2d'] },
+      { id: 'hidro', nome: 'Hidrossanitário', cor: '#3f76be', cores: ['ca1c1c', '3f76be', 'e42828', '8dc9d7', '6d1c88', '1f169e'] }
+    ];
+    const PALETA = [];
+    DISC.forEach(d => d.cores.forEach(h => PALETA.push([parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4), 16), d.id])));
+    PALETA.push([255, 255, 255, null]);
+    const camadasBox = document.querySelector('.viewer-camadas');
+    function separar(model) {
+      const grupos = {}, malhas = [];
+      model.traverse(o => { if (o.isMesh) malhas.push(o); });
+      malhas.forEach(mesh => {
+        const geo = mesh.geometry, uv = geo.attributes.uv, img = mesh.material.map && mesh.material.map.image;
+        if (!uv || !img) return;
+        const w = img.width, h = img.height, cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        const ctx = cv.getContext('2d'); ctx.drawImage(img, 0, 0);
+        let px; try { px = ctx.getImageData(0, 0, w, h).data; } catch (e) { return; }
+        const flip = mesh.material.map.flipY;
+        const idx = geo.index ? geo.index.array : null, nTri = (idx ? idx.length : geo.attributes.position.count) / 3;
+        const cache = new Map(), baldes = {};
+        for (let t = 0; t < nTri; t++) {
+          const v = idx ? idx[t * 3] : t * 3;
+          const x = Math.min(w - 1, Math.max(0, Math.floor(uv.getX(v) * w)));
+          const yy = flip ? 1 - uv.getY(v) : uv.getY(v);
+          const y = Math.min(h - 1, Math.max(0, Math.floor(yy * h)));
+          const k = y * w + x;
+          let id = cache.get(k);
+          if (id === undefined) {
+            const r = px[k * 4], g = px[k * 4 + 1], b = px[k * 4 + 2];
+            let best = Infinity; id = null;
+            PALETA.forEach(c => { const d = (c[0] - r) ** 2 + (c[1] - g) ** 2 + (c[2] - b) ** 2; if (d < best) { best = d; id = c[3]; } });
+            cache.set(k, id);
+          }
+          if (!id) continue;
+          const arr = baldes[id] || (baldes[id] = []);
+          if (idx) arr.push(idx[t * 3], idx[t * 3 + 1], idx[t * 3 + 2]); else arr.push(t * 3, t * 3 + 1, t * 3 + 2);
+        }
+        Object.keys(baldes).forEach(id => {
+          const g = new THREE.BufferGeometry();
+          Object.keys(geo.attributes).forEach(n => g.setAttribute(n, geo.attributes[n]));
+          g.setIndex(baldes[id]);
+          const parte = new THREE.Mesh(g, mesh.material);
+          parte.position.copy(mesh.position); parte.quaternion.copy(mesh.quaternion); parte.scale.copy(mesh.scale);
+          mesh.parent.add(parte);
+          (grupos[id] || (grupos[id] = [])).push(parte);
+        });
+        if (Object.keys(baldes).length) mesh.visible = false;
+      });
+      return grupos;
+    }
+    function botoes(grupos) {
+      if (!camadasBox) return;
+      const presentes = DISC.filter(d => grupos[d.id]);
+      camadasBox.innerHTML = '';
+      camadasBox.hidden = presentes.length < 2;
+      presentes.forEach(d => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.setAttribute('aria-pressed', 'true'); b.style.setProperty('--c', d.cor);
+        b.innerHTML = `<i aria-hidden="true"></i>${d.nome}`;
+        b.addEventListener('click', () => {
+          const on = b.getAttribute('aria-pressed') !== 'true';
+          b.setAttribute('aria-pressed', String(on));
+          grupos[d.id].forEach(m => { m.visible = on; });
+          if (view) view.loop();
+        });
+        camadasBox.appendChild(b);
+      });
+    }
+
     const falhou = msg => { status.textContent = msg; loadBtn.disabled = false; poster.hidden = false; progressBox.hidden = true; pending = null; };
     async function load(url) {
       if (!url || url === current || url === pending) return;
@@ -284,6 +357,7 @@
         const box = new THREE.Box3().setFromObject(model), size = box.getSize(new THREE.Vector3()), center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
         scene.add(model);
+        try { botoes(separar(model)); } catch (e) { if (camadasBox) camadasBox.hidden = true; }
         const radius = size.length() / 2;
         // Em palco estreito (celular) a câmera recua para o modelo caber na largura.
         view.fit();
@@ -299,7 +373,7 @@
       }, xhr => {
         if (xhr.total) { progress.style.transform = `scaleX(${xhr.loaded / xhr.total})`; status.textContent = `Carregando modelo… ${fmt(xhr.loaded / 1048576, 1)} de ${fmt(xhr.total / 1048576, 1)} MB`; }
         else status.textContent = `Carregando modelo… ${fmt(xhr.loaded / 1048576, 1)} MB`;
-      }, () => falhou('Não foi possível abrir o modelo agora. Tente novamente mais tarde.'));
+      }, () => falhou('Não foi possível abrir o modelo agora. Use o botão acima para tentar de novo.'));
     }
 
     loadBtn.addEventListener('click', () => load(stage.dataset.modelo));
