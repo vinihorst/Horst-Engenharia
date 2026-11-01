@@ -86,7 +86,7 @@
   <link rel="apple-touch-icon" href="../docs/icon.png">
   <link rel="preload" href="../assets/fonts/PPNeueMontreal-Book.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../assets/css/site.css?v=20261101-audit">
-  <link rel="stylesheet" href="../assets/css/servico.css?v=20261101-audit">
+  <link rel="stylesheet" href="../assets/css/servico.css?v=20261101-servicos3d">
 </head>
 
 <body class="pagina-servico">
@@ -108,6 +108,22 @@
       <nav class="trilha" aria-label="Você está em"><a href="../">Início</a><span aria-hidden="true">/</span><a href="../#servicos">Serviços</a><span aria-hidden="true">/</span><span aria-current="page">Projeto elétrico</span></nav>
       <h1>Projeto elétrico</h1>
       <p class="servico-lead">Circuitos, quadros e entrada de energia dimensionados para o uso real da edificação, com espaço para crescer.</p>
+
+      <figure class="servico-3d">
+        <div class="viewer-stage" data-modelo="../docs/modelos/modelo_3d.glb" data-foco="eletrica">
+          <div class="viewer-poster">
+            <div>
+              <svg viewBox="0 0 3 3" aria-hidden="true"><rect width="1" height="1" fill="#04B15B"/><polygon points="1,1 2,0 3,0 3,1" fill="#0CE273"/><polygon points="0,2 1,1 1,3 0,3" fill="#04B15B"/><rect x="2" y="2" width="1" height="1" fill="#0CE273"/></svg>
+              <div><button class="viewer-load" type="button">Ver a elétrica no modelo 3D <small>1,2 MB</small></button></div>
+              <div class="viewer-progress" hidden><b></b></div>
+              <p class="viewer-status" aria-live="polite"></p>
+            </div>
+          </div>
+          <button class="viewer-touch" type="button" hidden>Toque para girar o modelo</button>
+          <div class="viewer-tools" hidden><button type="button" data-foco aria-pressed="false" hidden>Modelo completo</button><button type="button" data-reset>Reiniciar vista</button><button type="button" data-full>Tela cheia</button></div>
+        </div>
+        <figcaption><span class="servico-3d-cor" style="--c: var(--disc-eletrica)" aria-hidden="true"></span>Elétrica em destaque no modelo BIM de um projeto da Horst; as outras disciplinas aparecem translúcidas. Arraste para girar e aproxime para ver os detalhes.</figcaption>
+      </figure>
 
       <div class="servico-corpo">
         <article class="servico-texto">
@@ -144,6 +160,8 @@
       <p class="foot-copy">© 2026 Horst Engenharia · Eng. civil Vinícius Andrei Horst · Rua Elisa Tramontina, 338, Sala 302 – Centro, Carlos Barbosa – RS, 95185-000</p>
     </div>
   </footer>
+  <script src="../assets/js/modelo3d.js?v=20261101-servicos3d" defer></script>
+  <script src="../assets/js/servico.js?v=20261101-servicos3d" defer></script>
 </body>
 
 </html>
