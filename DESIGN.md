@@ -216,7 +216,7 @@ Duas formas, sem meio-termo: retângulos de canto vivo (0px) para conteúdo (car
 - Cena three.js que se constrói com a rolagem em quatro etapas, com HUD de etapa e porcentagem. Desenha só quando algo muda. Não alterar sem pedido do dono.
 
 ### Visualizador 3D (assinatura)
-- Palco em largura total com gradiente de verde profundo, modelo .glb com Draco, botões "Reiniciar vista" e "Tela cheia", chips de disciplina. Começa a carregar quando a seção se aproxima. No celular, o giro só liga depois de um toque.
+- Palco em largura total com gradiente de verde profundo, modelo .glb com Draco, botões "Reiniciar vista" e "Tela cheia", chips de disciplina. Começa a carregar quando a seção se aproxima. No celular, o giro só liga depois de um toque. Código em assets/js/modelo3d.js. Nas páginas de serviço aparece com a disciplina da página em destaque e as outras translúcidas (opacidade 0.1), com o botão "Modelo completo".
 
 ## Do's and Don'ts
 
