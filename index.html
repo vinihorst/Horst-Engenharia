@@ -119,8 +119,8 @@
 
   <link rel="preload" href="./assets/fonts/PPNeueMontreal-Book.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="./assets/fonts/PPNeueMontreal-Medium.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="./assets/css/site.css?v=20261101-critica2">
-  <script>document.documentElement.classList.remove('no-js');</script>
+  <link rel="stylesheet" href="./assets/css/site.css?v=20261101-audit">
+  <script>document.documentElement.classList.remove('no-js'); if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('estatico');</script>
 </head>
 
 <body>
@@ -144,6 +144,7 @@
   <main id="conteudo">
     <section class="story" id="inicio" aria-label="Do projeto à obra">
       <div class="sticky">
+        <img class="predio-estatico" src="./assets/img/predio-pronto.webp" width="880" height="760" loading="lazy" decoding="async" alt="Edifício de quatro pavimentos em concreto armado, pronto, com fachada de vidro e instalações aparentes.">
         <div class="chapters gutter"><div class="wrap">
           <div class="chap on">
             <span class="eyebrow step"><span class="hide-sm">Escritório de engenharia civil · </span>Projetos em BIM</span>
@@ -354,10 +355,10 @@
     </div>
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="./assets/vendor/three-r128/three.min.js" defer></script>
   <script src="./assets/js/conteudo.js?v=20261025-h" defer></script>
-  <script src="./assets/js/predio.js?v=20261025-i" defer></script>
-  <script src="./assets/js/site.js?v=20261101-critica2" defer></script>
+  <script src="./assets/js/predio.js?v=20261101-audit" defer></script>
+  <script src="./assets/js/site.js?v=20261101-audit" defer></script>
 </body>
 
 </html>

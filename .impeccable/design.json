@@ -1,0 +1,488 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-01T22:20:44Z",
+  "title": "Design System: Horst Engenharia",
+  "extensions": {
+    "colorMeta": {
+      "deep-green": {
+        "role": "primary",
+        "displayName": "Verde profundo Horst",
+        "canonical": "#0D3931",
+        "tonalRamp": [
+          "#18342F",
+          "#245C52",
+          "#2B8777",
+          "#2FB79E",
+          "#48D0B7",
+          "#8ED7CA",
+          "#CBE7E2",
+          "#EFF6F5"
+        ]
+      },
+      "deep-green-2": {
+        "role": "neutral",
+        "displayName": "deep-green-2",
+        "canonical": "#12463D",
+        "tonalRamp": [
+          "#19332F",
+          "#255A51",
+          "#2E8476",
+          "#33B29C",
+          "#4DCCB6",
+          "#90D5C9",
+          "#CCE6E1",
+          "#EFF6F5"
+        ]
+      },
+      "deep-green-3": {
+        "role": "neutral",
+        "displayName": "deep-green-3",
+        "canonical": "#1A574B",
+        "tonalRamp": [
+          "#1A322E",
+          "#28584E",
+          "#328171",
+          "#39AD96",
+          "#52C6B0",
+          "#93D2C6",
+          "#CDE5E0",
+          "#EFF5F4"
+        ]
+      },
+      "deep-foot": {
+        "role": "neutral",
+        "displayName": "deep-foot",
+        "canonical": "#0A2E28",
+        "tonalRamp": [
+          "#183530",
+          "#235C53",
+          "#2A8879",
+          "#2DB8A1",
+          "#47D2BA",
+          "#8DD8CB",
+          "#CAE7E2",
+          "#EEF6F5"
+        ]
+      },
+      "horst-green": {
+        "role": "primary",
+        "displayName": "Verde Horst",
+        "canonical": "#04B15B",
+        "tonalRamp": [
+          "#113B26",
+          "#156A40",
+          "#139F5A",
+          "#0CDA73",
+          "#25F38D",
+          "#7BEAB3",
+          "#C4EED9",
+          "#EDF8F2"
+        ]
+      },
+      "light-green": {
+        "role": "primary",
+        "displayName": "Verde claro",
+        "canonical": "#0CE273",
+        "tonalRamp": [
+          "#123A26",
+          "#18683E",
+          "#179B57",
+          "#12D46F",
+          "#2BED89",
+          "#7EE7B1",
+          "#C5EDD8",
+          "#EDF8F2"
+        ]
+      },
+      "green-dark": {
+        "role": "secondary",
+        "displayName": "Verde de leitura",
+        "canonical": "#037443",
+        "tonalRamp": [
+          "#113B29",
+          "#156A45",
+          "#149F62",
+          "#0CD980",
+          "#26F39A",
+          "#7BEABA",
+          "#C4EEDC",
+          "#EDF8F3"
+        ]
+      },
+      "green-head": {
+        "role": "secondary",
+        "displayName": "Verde de título",
+        "canonical": "#03934C",
+        "tonalRamp": [
+          "#113C27",
+          "#156B40",
+          "#13A05A",
+          "#0BDA74",
+          "#25F48E",
+          "#7BEAB3",
+          "#C3EED9",
+          "#EDF8F2"
+        ]
+      },
+      "green-tint": {
+        "role": "secondary",
+        "displayName": "Verde névoa",
+        "canonical": "#E1F3E9",
+        "tonalRamp": [
+          "#1D3025",
+          "#2D533E",
+          "#3A7956",
+          "#45A16E",
+          "#5EBA87",
+          "#9ACBB0",
+          "#CFE2D8",
+          "#F0F5F2"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "paper",
+        "canonical": "#EEF1F0",
+        "tonalRamp": [
+          "#242827",
+          "#3B4441",
+          "#52605C",
+          "#687D76",
+          "#829790",
+          "#ADB8B4",
+          "#D7DBD9",
+          "#F2F3F2"
+        ]
+      },
+      "paper-edge": {
+        "role": "neutral",
+        "displayName": "paper-edge",
+        "canonical": "#E4EAE8",
+        "tonalRamp": [
+          "#232927",
+          "#3A4542",
+          "#50625C",
+          "#658077",
+          "#7F9A91",
+          "#ABBAB5",
+          "#D6DCDA",
+          "#F2F3F2"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "white",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#8C8C8C",
+          "#B2B2B2",
+          "#D9D9D9",
+          "#F2F2F2"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "ink-soft",
+        "canonical": "#24443D",
+        "tonalRamp": [
+          "#1F2D2A",
+          "#324D47",
+          "#437066",
+          "#529485",
+          "#6BAD9F",
+          "#A1C4BD",
+          "#D2E0DD",
+          "#F0F4F3"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "muted",
+        "canonical": "#4E6660",
+        "tonalRamp": [
+          "#232928",
+          "#3A4643",
+          "#4F635E",
+          "#64817A",
+          "#7E9B93",
+          "#ABBAB6",
+          "#D6DCDA",
+          "#F1F3F3"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "line",
+        "canonical": "#D2DCD9",
+        "tonalRamp": [
+          "#232927",
+          "#3A4542",
+          "#50625D",
+          "#658078",
+          "#7F9A92",
+          "#ABBAB5",
+          "#D6DCDA",
+          "#F2F3F3"
+        ]
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "line-strong",
+        "canonical": "#B9C7C3",
+        "tonalRamp": [
+          "#242927",
+          "#3B4542",
+          "#51615D",
+          "#677F78",
+          "#809891",
+          "#ACB9B5",
+          "#D6DBDA",
+          "#F2F3F3"
+        ]
+      },
+      "on-deep-muted": {
+        "role": "neutral",
+        "displayName": "on-deep-muted",
+        "canonical": "#A9C2BB",
+        "tonalRamp": [
+          "#222A28",
+          "#384743",
+          "#4D665F",
+          "#60857B",
+          "#7A9F94",
+          "#A9BCB7",
+          "#D5DDDA",
+          "#F1F3F3"
+        ]
+      },
+      "on-deep-soft": {
+        "role": "neutral",
+        "displayName": "on-deep-soft",
+        "canonical": "#C9DAD5",
+        "tonalRamp": [
+          "#222A28",
+          "#374843",
+          "#4C675F",
+          "#5F877B",
+          "#78A095",
+          "#A8BDB7",
+          "#D5DDDA",
+          "#F1F3F3"
+        ]
+      },
+      "water-blue": {
+        "role": "tertiary",
+        "displayName": "Azul água fria",
+        "canonical": "#2A78D2",
+        "tonalRamp": [
+          "#172535",
+          "#223E5E",
+          "#28568A",
+          "#2B6EBB",
+          "#4487D4",
+          "#8CB0D9",
+          "#CAD8E8",
+          "#EEF2F6"
+        ]
+      },
+      "power-amber": {
+        "role": "tertiary",
+        "displayName": "Âmbar elétrica",
+        "canonical": "#E0A100",
+        "tonalRamp": [
+          "#3C3010",
+          "#6C5313",
+          "#A27910",
+          "#DFA207",
+          "#F8BB20",
+          "#EDCC78",
+          "#EFE2C3",
+          "#F8F5EC"
+        ]
+      },
+      "sewer-brown": {
+        "role": "tertiary",
+        "displayName": "Marrom esgoto",
+        "canonical": "#7A6553",
+        "tonalRamp": [
+          "#2A2622",
+          "#483F37",
+          "#67584B",
+          "#87715E",
+          "#A18B78",
+          "#BEB2A7",
+          "#DDD8D5",
+          "#F3F2F1"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Frases das etapas do topo."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Título de cada seção."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Subtítulos das páginas de serviço."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido."
+      },
+      "body-long": {
+        "displayName": "Body longo",
+        "purpose": "Parágrafos do Sobre, até 54ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Rótulos, HUD, legendas e status."
+      }
+    },
+    "shadows": [
+      {
+        "name": "obra-hover",
+        "value": "0 18px 40px -24px rgba(13,57,49,.35)",
+        "purpose": "Só no hover dos cards de obra."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "Entradas, hovers e revelações."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "960px"
+      },
+      {
+        "name": "mobile",
+        "value": "860px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal; pílula verde claro.",
+      "html": "<a class=\"ds-btn\" href=\"#\">Fale conosco</a>",
+      "css": ".ds-btn { display:inline-flex; align-items:center; gap:8px; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; font-weight:500; font-size:1rem; padding:14px 22px; border-radius:999px; background:#0CE273; color:#0D3931; text-decoration:none; transition:transform .2s, background .2s; } .ds-btn:hover { transform:translateY(-2px); background:#FFFFFF; } .ds-btn:focus-visible { outline:2px solid #04B15B; outline-offset:3px; }"
+    },
+    {
+      "name": "Botão fantasma",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Ação secundária sobre papel.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">Explorar em 3D</a>",
+      "css": ".ds-btn-ghost { display:inline-flex; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; font-weight:500; font-size:1rem; padding:14px 22px; border-radius:999px; background:transparent; color:#0D3931; border:1.5px solid #B9C7C3; text-decoration:none; transition:background .2s, border-color .2s; } .ds-btn-ghost:hover { background:#FFFFFF; border-color:#04B15B; } .ds-btn-ghost:focus-visible { outline:2px solid #04B15B; outline-offset:3px; }"
+    },
+    {
+      "name": "Botão linha (fundo escuro)",
+      "kind": "button",
+      "refersTo": "button-line-on-deep",
+      "description": "Ação secundária sobre verde profundo.",
+      "html": "<div class=\"ds-deep\"><a class=\"ds-btn-line\" href=\"#\">Enviar e-mail</a></div>",
+      "css": ".ds-deep { background:#0D3931; padding:24px; } .ds-btn-line { display:inline-flex; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; font-weight:500; font-size:1rem; padding:14px 22px; border-radius:999px; color:#FFFFFF; border:1.5px solid rgba(255,255,255,.5); text-decoration:none; } .ds-btn-line:hover { background:rgba(255,255,255,.08); border-color:#0CE273; }"
+    },
+    {
+      "name": "Navegação",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Barra fixa em verde profundo.",
+      "html": "<nav class=\"ds-nav\"><b>Horst Engenharia</b><span><a href=\"#\">Sobre</a><a href=\"#\">Serviços</a><a href=\"#\">Método</a></span><a class=\"ds-nav-cta\" href=\"#\">Fale conosco</a></nav>",
+      "css": ".ds-nav { display:flex; align-items:center; justify-content:space-between; gap:24px; height:68px; padding:0 20px; background:#0D3931; color:#FFFFFF; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; } .ds-nav b { font-weight:400; font-size:1.25rem; } .ds-nav span { display:flex; gap:30px; font-size:.9375rem; } .ds-nav span a { color:#FFFFFF; text-decoration:none; background:linear-gradient(#0CE273,#0CE273) left bottom/0 1.5px no-repeat; transition:background-size .3s; } .ds-nav span a:hover { background-size:100% 1.5px; } .ds-nav-cta { background:#0CE273; color:#0D3931; font-weight:500; font-size:.9375rem; padding:10px 18px; border-radius:999px; text-decoration:none; }"
+    },
+    {
+      "name": "Chip de disciplina",
+      "kind": "chip",
+      "description": "Liga e desliga uma disciplina no 3D.",
+      "html": "<div class=\"ds-deep2\"><button class=\"ds-chip\" aria-pressed=\"true\"><i style=\"background:#8e7640\"></i>Estrutura</button><button class=\"ds-chip\" aria-pressed=\"false\"><i style=\"background:#3f76be\"></i>Hidrossanitário</button></div>",
+      "css": ".ds-deep2 { background:#12463D; padding:20px; display:flex; gap:8px; } .ds-chip { display:inline-flex; align-items:center; gap:8px; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; font-size:.875rem; padding:8px 14px; border-radius:999px; color:#FFFFFF; background:rgba(13,57,49,.75); border:1px solid rgba(255,255,255,.25); cursor:pointer; } .ds-chip i { width:10px; height:10px; border-radius:50%; } .ds-chip[aria-pressed=false] { color:#A9C2BB; background:transparent; border-style:dashed; } .ds-chip[aria-pressed=false] i { opacity:.3; } .ds-chip:focus-visible { outline:2px solid #04B15B; outline-offset:3px; }"
+    },
+    {
+      "name": "Card de obra",
+      "kind": "card",
+      "refersTo": "card-obra",
+      "description": "Card de projeto; canto vivo, sobe no hover.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-pic\"></div><div class=\"ds-card-b\"><small>Residencial</small><h3>Residências e sobrados</h3></div></article>",
+      "css": ".ds-card { background:#FFFFFF; border:1px solid #D2DCD9; font-family: 'Neue Montreal', 'Helvetica Neue', Arial, sans-serif; color:#0D3931; max-width:280px; transition:border-color .25s, transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s; } .ds-card:hover { border-color:#04B15B; transform:translateY(-4px); box-shadow:0 18px 40px -24px rgba(13,57,49,.35); } .ds-card-pic { aspect-ratio:4/3; background:#0D3931; } .ds-card-b { padding:18px; } .ds-card small { font:500 .6875rem/1 'IBM Plex Mono', monospace; letter-spacing:.12em; text-transform:uppercase; color:#037443; } .ds-card h3 { margin:10px 0 0; font-weight:500; font-size:1.25rem; }"
+    },
+    {
+      "name": "Rótulo",
+      "kind": "custom",
+      "refersTo": "label-eyebrow",
+      "description": "Anotação em mono com fio verde.",
+      "html": "<span class=\"ds-eyebrow\">Etapa 01 · Fundação</span>",
+      "css": ".ds-eyebrow { font:500 .75rem/1 'IBM Plex Mono', ui-monospace, monospace; letter-spacing:.14em; text-transform:uppercase; color:#037443; display:inline-flex; align-items:center; gap:10px; } .ds-eyebrow::before { content:''; width:28px; height:1.5px; background:#04B15B; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A prancha coordenada",
+    "overview": "O site se comporta como uma prancha de engenharia bem resolvida: fundo claro de papel, traço fino, eixos e cotas, e um único verde que marca o que importa. A peça central é o prédio que se constrói com a rolagem (fundação, estrutura, instalações, entrega), seguido do modelo BIM real em 3D. Tudo o mais é calmo e técnico para que esses dois momentos sejam a prova do trabalho.\n\nA densidade é baixa: blocos largos, muito respiro, linhas de 1px em vez de caixas e sombras. O tom é de escritório técnico sério, não de startup: nada de gradientes chamativos, ícones genéricos ou cards arredondados flutuando. O verde profundo da marca ancora a navegação, a faixa de números, o 3D, o contato e o rodapé; o papel claro carrega o texto.",
+    "keyCharacteristics": [
+      "Papel claro (#EEF1F0) com texto em verde profundo (#0D3931), nunca preto puro.",
+      "Um acento: verde claro (#0CE273) nos botões sobre fundo escuro e verde Horst (#04B15B) nos traços.",
+      "Linhas finas (1px) separam conteúdo; cartões quase não existem.",
+      "Rótulos em IBM Plex Mono maiúsculo, como anotações de prancha.",
+      "Cores de disciplina (água, elétrica, esgoto) só aparecem no prédio e no 3D."
+    ],
+    "rules": [
+      {
+        "name": "The One Accent Rule",
+        "body": "Só o verde claro preenche botões. Nenhuma outra cor ganha área grande fora das faixas de verde profundo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Discipline Color Rule",
+        "body": "Azul, âmbar e marrom pertencem às instalações do prédio e do modelo 3D. Não usar como cor de interface.",
+        "section": "colors"
+      },
+      {
+        "name": "The Token Rule",
+        "body": "Toda cor sólida nova entra como variável em `:root` (assets/css/site.css). Transparências de branco ou verde profundo (rgba) são permitidas para sobreposições.",
+        "section": "colors"
+      },
+      {
+        "name": "The Rem Rule",
+        "body": "Tamanhos de fonte sempre em rem, para respeitar a letra maior que o visitante escolhe no navegador.",
+        "section": "typography"
+      },
+      {
+        "name": "The Medium Weight Rule",
+        "body": "Títulos em 500. O negrito (700) existe na fonte, mas não é usado em títulos.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Superfícies não têm sombra em repouso. Se algo precisa se destacar, use borda verde ou o fundo verde profundo.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** usar verde profundo (#0D3931) para texto e faixas escuras, e papel (#EEF1F0) como fundo.",
+      "**Do** separar conteúdo com linhas de 1px (#D2DCD9) e espaço, não com sombras.",
+      "**Do** manter botões em pílula e conteúdo em canto vivo.",
+      "**Do** declarar toda cor nova como variável em `:root` e todo tamanho de fonte em rem.",
+      "**Do** manter área de toque de pelo menos 44px nos links (padding com margem negativa, se o visual não puder mudar)."
+    ],
+    "donts": [
+      "**Don't** citar normas técnicas (NBR), número do CREA, \"Serra Gaúcha\" ou responsável técnico (RT) em nenhum texto.",
+      "**Don't** criar formulários de orçamento ou contadores de volume de concreto: o site é portfólio, não captação.",
+      "**Don't** inventar obras ou números; só mostrar dados reais confirmados.",
+      "**Don't** usar azul, âmbar ou marrom fora do prédio e do 3D.",
+      "**Don't** usar títulos em negrito pesado, cantos arredondados em cards ou sombras em repouso."
+    ]
+  }
+}

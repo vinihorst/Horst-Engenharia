@@ -201,7 +201,7 @@
     if (cue) cue.style.opacity = p < 0.04 ? 1 : 0;
   }
   document.addEventListener('horst:progresso', e => etapa(e.detail.p));
-  if (story && (!window.THREE || reduce)) {
+  if (story && (!window.THREE || window.HORST_SEM3D || reduce)) {
     const read = () => { const r = story.getBoundingClientRect(); etapa(clamp01(-r.top / Math.max(1, story.offsetHeight - innerHeight) / (window.HORST_END || 1))); };
     window.addEventListener('scroll', read, { passive: true }); read();
   }
@@ -222,7 +222,7 @@
     });
   }
 
-  // ---------- Visualizador do modelo .glb (comprimido com Draco; carrega logo após a abertura) ----------
+  // ---------- Visualizador do modelo .glb (comprimido com Draco; carrega quando a seção se aproxima) ----------
   // Outro modelo (ex.: de um estudo de caso) abre com window.HORST_abrirModelo(url, tamanho, nome).
   const stage = document.querySelector('.viewer-stage');
   const loadBtn = document.querySelector('.viewer-load');
@@ -230,12 +230,13 @@
     const status = stage.querySelector('.viewer-status'), progressBox = stage.querySelector('.viewer-progress'), progress = progressBox.querySelector('b'), poster = stage.querySelector('.viewer-poster');
     const tools = stage.querySelector('.viewer-tools');
     const script = src => new Promise((ok, fail) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
-    const JSM = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/';
+    // three.js r128 e complementos servidos pelo próprio site (sem depender de CDN).
+    const JSM = './assets/vendor/three-r128/';
     let ready = null, view = null, pending = null, current = null;
 
     const prepare = () => ready || (ready = (async () => {
       if (!window.THREE) throw new Error('three');
-      await Promise.all([script(JSM + 'controls/OrbitControls.js'), script(JSM + 'loaders/GLTFLoader.js'), script(JSM + 'loaders/DRACOLoader.js')]);
+      await Promise.all([script(JSM + 'OrbitControls.js'), script(JSM + 'GLTFLoader.js'), script(JSM + 'DRACOLoader.js')]);
       const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.outputEncoding = THREE.sRGBEncoding;
@@ -253,18 +254,28 @@
       if (toque) travar(true);
       if (touchBtn) touchBtn.addEventListener('click', () => travar(false));
       const draco = new THREE.DRACOLoader();
-      draco.setDecoderPath(JSM + 'libs/draco/');
+      draco.setDecoderPath(JSM + 'draco/');
       const loader = new THREE.GLTFLoader();
       loader.setDRACOLoader(draco);
-      let visible = true, looping = false;
+      // Desenha só enquanto o modelo se move (giro, zoom, inércia, botões); parado, a placa de vídeo descansa.
+      let visible = true, looping = false, dirty = true, quietos = 0;
       // Em telas largas o texto fica sobre a esquerda do palco, então o centro da vista vai um pouco para a direita.
-      const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; if (w >= 860) camera.setViewOffset(w, h, -w * 0.12, 0, w, h); else camera.clearViewOffset(); camera.updateProjectionMatrix(); };
-      const render = () => { if (!visible) { looping = false; return; } controls.update(); renderer.render(scene, camera); requestAnimationFrame(render); };
-      const loop = () => { if (visible && !looping) { looping = true; requestAnimationFrame(render); } };
+      const render = () => {
+        if (!visible) { looping = false; return; }
+        const mexeu = controls.update();
+        if (mexeu || dirty) { renderer.render(scene, camera); dirty = false; quietos = 0; }
+        else if (++quietos > 20) { looping = false; return; }
+        requestAnimationFrame(render);
+      };
+      const loop = () => { if (visible && !looping) { looping = true; quietos = 0; requestAnimationFrame(render); } };
+      const redraw = () => { dirty = true; loop(); };
+      const fit = () => { const w = stage.clientWidth, h = stage.clientHeight; renderer.setSize(w, h, false); camera.aspect = w / h; if (w >= 860) camera.setViewOffset(w, h, -w * 0.12, 0, w, h); else camera.clearViewOffset(); camera.updateProjectionMatrix(); redraw(); };
+      controls.addEventListener('start', redraw);
+      controls.addEventListener('change', redraw);
       new ResizeObserver(fit).observe(stage);
-      new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (!visible && toque) travar(true); loop(); }).observe(stage);
-      view = { renderer, scene, camera, controls, loader, fit, loop, travar: toque ? travar : null, model: null, home: null };
-      tools.querySelector('[data-reset]').addEventListener('click', () => { if (view.home) { camera.position.copy(view.home); controls.target.set(0, 0, 0); } });
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (!visible && toque) travar(true); redraw(); }).observe(stage);
+      view = { renderer, scene, camera, controls, loader, fit, loop, redraw, travar: toque ? travar : null, model: null, home: null };
+      tools.querySelector('[data-reset]').addEventListener('click', () => { if (view.home) { camera.position.copy(view.home); controls.target.set(0, 0, 0); redraw(); } });
       tools.querySelector('[data-full]').addEventListener('click', () => { if (stage.requestFullscreen) stage.requestFullscreen().catch(() => {}); });
     })());
 
@@ -335,6 +346,7 @@
           const on = b.getAttribute('aria-pressed') !== 'true';
           b.setAttribute('aria-pressed', String(on));
           grupos[d.id].forEach(m => { m.visible = on; });
+          if (view) view.redraw();
           if (view) view.loop();
         });
         camadasBox.appendChild(b);
@@ -377,11 +389,14 @@
     }
 
     loadBtn.addEventListener('click', () => load(stage.dataset.modelo));
-    // Carrega logo ao entrar no site, mas só depois da abertura (página carregada e navegador ocioso),
-    // para não disputar banda e processamento com a animação inicial.
+    // Começa a baixar quando a seção está a cerca de três telas de distância (por volta de Serviços),
+    // para o modelo já estar pronto ao chegar, sem gastar dados de quem lê só o topo e sai.
     const cedo = () => load(stage.dataset.modelo);
-    const agendar = () => ('requestIdleCallback' in window) ? requestIdleCallback(cedo, { timeout: 2500 }) : setTimeout(cedo, 1200);
-    if (document.readyState === 'complete') agendar(); else window.addEventListener('load', agendar, { once: true });
+    if ('IntersectionObserver' in window) {
+      const perto = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { perto.disconnect(); cedo(); } }, { rootMargin: '0px 0px 300% 0px' });
+      const agendar = () => perto.observe(stage);
+      if (document.readyState === 'complete') agendar(); else window.addEventListener('load', agendar, { once: true });
+    } else window.addEventListener('load', cedo, { once: true });
     const texto = document.querySelector('[data-modelo-texto]');
     window.HORST_abrirModelo = (url, tamanho, nome) => {
       stage.dataset.modelo = url;

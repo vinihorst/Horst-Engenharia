@@ -9,8 +9,6 @@
 
 (function () {
   'use strict';
-  if (!window.THREE) return;
-
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const clamp01 = v => Math.max(0, Math.min(1, v));
   const seg = (p, a, b) => clamp01((p - a) / (b - a));
@@ -21,6 +19,9 @@
   const story = document.querySelector('.story');
   const sticky = story && story.querySelector('.sticky');
   if (!sticky) return;
+  // Sem WebGL (ou se o script do three.js não carregar), mostra uma imagem do prédio pronto no lugar.
+  const semTresD = () => { window.HORST_SEM3D = true; sticky.classList.add('sem-3d'); document.documentElement.classList.add('estatico'); };
+  if (!window.THREE) return semTresD();
 
   const BOUNDS = [0, 0.1, 0.3, 0.62, 0.82, 1];
   window.HORST_BOUNDS = BOUNDS;
@@ -31,9 +32,11 @@
 
   // ---------- Cena ----------
   const mobile = window.matchMedia('(max-width: 860px)').matches;
-  // Celulares têm tela de densidade 3x e o prédio aparece menor: sem antialias e com densidade reduzida as arestas serrilham.
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, mobile ? 2.5 : 2));
+  // Antialias mantém as arestas limpas; acima de 2x a diferença não se vê e só pesa no celular.
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+  catch (e) { return semTresD(); }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.outputEncoding = THREE.sRGBEncoding;
@@ -420,10 +423,12 @@
   }
 
   // ---------- Progresso da rolagem ----------
-  let target = reduce ? 1 : 0, prog = target;
+  let target = reduce ? 1 : 0, prog = target, dirty = true;
+  let running = true, frame = 0, idle = false;
   function readProgress() {
     const r = story.getBoundingClientRect(), total = story.offsetHeight - window.innerHeight;
     target = reduce ? 1 : clamp01(-r.top / Math.max(1, total) / END);
+    wake();
   }
   window.addEventListener('scroll', readProgress, { passive: true });
 
@@ -453,33 +458,39 @@
   }
 
   function resize() {
-    const w = sticky.clientWidth, h = sticky.clientHeight;
+    // Com movimento reduzido o topo cresce para caber os textos, mas o prédio ocupa só a primeira tela.
+    const w = sticky.clientWidth, h = reduce ? Math.min(sticky.clientHeight, window.innerHeight) : sticky.clientHeight;
     renderer.setSize(w, h, false);
     camera.aspect = w / h;
     if (w / h > 1.15) { camera.zoom = 0.88 * Math.min(1, (w / h) / 1.55); camera.setViewOffset(w, h, -w * 0.21, -h * 0.03, w, h); }
     else { camera.zoom = 0.5 * Math.min(1, (h / w) / 2.2); camera.setViewOffset(w, h, 0, h * 0.17, w, h); }
     camera.updateProjectionMatrix();
+    dirty = true;
     readProgress();
   }
   new ResizeObserver(resize).observe(sticky);
   resize();
 
   let mouseX = 0, mouseY = 0, mx = 0, my = 0;
-  window.addEventListener('pointermove', e => { mouseX = e.clientX / window.innerWidth - 0.5; mouseY = e.clientY / window.innerHeight - 0.5; }, { passive: true });
+  window.addEventListener('pointermove', e => { mouseX = e.clientX / window.innerWidth - 0.5; mouseY = e.clientY / window.innerHeight - 0.5; wake(); }, { passive: true });
 
+  // Desenha só enquanto algo muda (rolagem, mouse, entrada, tamanho). Parado, o último quadro fica na tela
+  // e a placa de vídeo descansa; qualquer rolagem ou movimento do mouse retoma o desenho.
   const t0 = performance.now();
-  let running = true, frame = 0;
+  function wake() { if (idle && running && !document.hidden) { idle = false; frame = requestAnimationFrame(loop); } }
   new IntersectionObserver(es => {
     running = es[0].isIntersecting;
-    if (running) { cancelAnimationFrame(frame); loop(); }
+    if (running) { cancelAnimationFrame(frame); idle = false; loop(); }
   }).observe(sticky);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { cancelAnimationFrame(frame); loop(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && running) { cancelAnimationFrame(frame); idle = false; loop(); } });
 
   function loop() {
     if (!running || document.hidden) return;
     prog += (target - prog) * (reduce ? 1 : target === 1 ? 0.12 : 0.08);
     if (Math.abs(target - prog) < 0.0003) prog = target;
     mx += (mouseX - mx) * 0.05; my += (mouseY - my) * 0.05;
+    if (Math.abs(mouseX - mx) < 0.0005) mx = mouseX;
+    if (Math.abs(mouseY - my) < 0.0005) my = mouseY;
     const intro = reduce ? 1 : ease(clamp01((performance.now() - t0) / 2200));
     const c = camAt(prog);
     const d = c.d + (1 - intro) * 22, az = c.az - (1 - intro) * 0.5 + (reduce ? 0 : mx * 0.18), el = Math.max(0.05, c.el - (reduce ? 0 : my * 0.08));
@@ -488,6 +499,8 @@
     const info = apply(prog, intro);
     renderer.render(scene, camera);
     document.dispatchEvent(new CustomEvent('horst:progresso', { detail: { p: prog, floors: info.floors } }));
+    if (prog === target && intro >= 1 && mx === mouseX && my === mouseY && !dirty) { idle = true; return; }
+    dirty = false;
     frame = requestAnimationFrame(loop);
   }
   loop();
