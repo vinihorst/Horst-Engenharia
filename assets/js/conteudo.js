@@ -27,7 +27,7 @@
    A grade mostra até 8 obras; a ordem da lista é a ordem no site.
 
    NUMEROS: opcional. Os números da faixa verde ficam no index.html (data-alvo); se preenchida, esta lista os substitui.
-     { valor: 45000, sufixo: 'm²', rotulo: 'Área projetada' }     // valor numérico conta do zero ao aparecer */
+     { valor: 45000, prefixo: '+', sufixo: 'm²', rotulo: 'Área projetada' }     // valor numérico conta do zero ao aparecer; prefixo e sufixo são opcionais */
 
 window.HORST = {
   OBRAS: [],

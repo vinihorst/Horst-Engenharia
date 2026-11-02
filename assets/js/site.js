@@ -91,7 +91,7 @@
   const nums = (window.HORST && window.HORST.NUMEROS || []).filter(n => n && n.rotulo && n.valor != null);
   if (numBox && nums.length) {
     numBox.innerHTML = nums.slice(0, 4).map(n => typeof n.valor === 'number'
-      ? `<li class="stat"><strong><span class="count" data-alvo="${n.valor}">${n.valor.toLocaleString('pt-BR')}</span>${n.sufixo ? `<sup>${esc(n.sufixo)}</sup>` : ''}</strong><span>${esc(n.rotulo)}</span></li>`
+      ? `<li class="stat"><strong>${n.prefixo ? `<span class="mais">${esc(n.prefixo)}</span>` : ''}<span class="count" data-alvo="${n.valor}">${n.valor.toLocaleString('pt-BR')}</span>${n.sufixo ? `<sup>${esc(n.sufixo)}</sup>` : ''}</strong><span>${esc(n.rotulo)}</span></li>`
       : `<li class="stat"><strong>${esc(n.valor)}</strong><span>${esc(n.rotulo)}</span></li>`).join('');
     numBox.classList.toggle('stats-4', nums.length >= 4);
   }

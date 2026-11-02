@@ -138,6 +138,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .stat:first-child { border-left: 0; }
 .stat strong { display: flex; align-items: flex-start; justify-content: center; font-weight: 400; font-size: clamp(2.5rem, 4.4vw, 4.5rem); line-height: .9; letter-spacing: -.03em; white-space: nowrap; }
 .stat .count { font-variant-numeric: tabular-nums; display: inline-block; text-align: right; }
+.stat strong .mais { font-size: .55em; line-height: 1; color: var(--green-lt); align-self: center; margin-right: .06em; letter-spacing: 0; transform: translateY(-.04em); }
 .stat strong sup { font-size: .4em; line-height: 1; color: var(--green-lt); margin-left: 6px; letter-spacing: 0; position: static; }
 .stat > span { display: block; margin-top: 18px; color: var(--on-deep-muted); font-size: 1rem; max-width: 30ch; }
 .stat > span::before { content: ""; display: block; width: 32px; height: 2px; background: var(--green); margin: 0 auto 14px; }
