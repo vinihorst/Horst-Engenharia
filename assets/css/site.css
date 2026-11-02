@@ -213,9 +213,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .viewer-tools button:hover { background: var(--deep); border-color: var(--green-lt); }
 
 /* ---------- Sobre ---------- */
-.about { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 56px; align-items: stretch; }
+.about { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 64px; align-items: center; }
 .about > div { display: flex; flex-direction: column; }
-.about .pillars { margin-top: auto; }
+.about .pillars { margin-top: 0; }
 .about .photo { align-self: start; }
 .about .photo { position: relative; overflow: hidden; }
 .about .photo { margin: 0; }
