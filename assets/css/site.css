@@ -527,9 +527,9 @@ p, li { text-wrap: pretty; }
 
 /* Sobre, telas largas: texto maior ocupando a altura da foto, fatos numa linha embaixo */
 @media (min-width: 1101px) {
-  .about { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); align-items: start; }
+  .about { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); align-items: center; }
   .about-title { font-size: clamp(2.5rem, 4.6vw, 4.25rem); }
-  .about p { font-size: 1.3125rem; line-height: 1.6; max-width: 46ch; }
+  .about p { font-size: 1.3125rem; line-height: 1.6; max-width: none; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
   .about .pillars { padding-top: 40px; }
   .about .pillars div { padding: 16px 16px 0 0; }
 }
