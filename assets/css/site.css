@@ -525,13 +525,11 @@ p, li { text-wrap: pretty; }
   .w > span { transform: none !important; }
 }
 
-/* Sobre, telas largas: os fatos viram uma coluna à direita do texto, sem sobrar vazio ao lado dos parágrafos */
+/* Sobre, telas largas: texto maior ocupando a altura da foto, fatos numa linha embaixo */
 @media (min-width: 1101px) {
-  .about > div { display: grid; grid-template-columns: minmax(0, 54ch) minmax(220px, 1fr); column-gap: 56px; grid-template-rows: auto auto minmax(0, 1fr); align-content: center; }
-  .about > div > :not(dl):not(p) { grid-column: 1 / -1; }
-  .about > div > p { grid-column: 1; align-self: start; }
-  .about .pillars { grid-column: 2; grid-row: 2 / span 2; align-self: start; margin-top: 6px; grid-template-columns: minmax(0, 1fr); padding-top: 0; }
-  .about .pillars div { padding: 12px 0 12px; }
-  .about .pillars div:last-child { border-bottom: 1px solid var(--line); }
-  .about .pillars dt { margin-bottom: 6px; }
+  .about { grid-template-columns: minmax(0, 360px) minmax(0, 1fr); align-items: start; }
+  .about-title { font-size: clamp(2.5rem, 4.6vw, 4.25rem); }
+  .about p { font-size: 1.3125rem; line-height: 1.6; max-width: 46ch; }
+  .about .pillars { padding-top: 40px; }
+  .about .pillars div { padding: 16px 16px 0 0; }
 }
